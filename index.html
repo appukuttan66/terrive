@@ -791,7 +791,7 @@ function calcURL(){
     getProfileInfo(u)
     getFollowers(u)
   }
-  else if (username === undefined) {
+  else if (username === null) {
     document.getElementById("login").classList.replace("invisible","visible")
   }
 }
