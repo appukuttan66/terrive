@@ -534,7 +534,7 @@ var client = new hivesigner.Client({
   app: 'terrive',
   callbackURL: 'https://terrive.on.fleek.co/auth.html',
 });
-Var accessToken = localStorage.getItem('token')
+var accessToken = localStorage.getItem('token')
 client.setAccessToken(accessToken)
 
 hive.api.setOptions({ url: 'https://rpc.ecency.com' });
