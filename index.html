@@ -26,7 +26,18 @@
 <div id="loader" class="position-fixed visible text-center w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;" data-bs-keyboard="false">
 <h1 class="d-flex justify-content-center align-items-center text-secondary satisfy w-100 h-100 bg-light">Terrive</h1>
 </div>
-                                                                                      
+ 
+<div id="login" class="position-fixed invisible w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;">
+  <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
+    <h1 class="mt-auto">Login to Terrive</h1><br>
+    <p class="lead mx-3">Terrive is a decentralized photo sharing platform powered by the hive blockchain.</p>
+    <p class="lead">Login To Terrive Using :<p>
+    <a href="https://hivesigner.com/oauth2/authorize?client_id=terrive&callback_uri=https://terrive.on.fleek.co" class="btn btn-lg" style="background: #ccc;"><img height="26" class="me-2" src="https://hivesigner.com/logo.svg">HiveSigner</a>
+    <footer class="mt-auto text-secondary">
+      <p>Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg> by appukuttan66</p>
+    </footer>
+  </div>
+</div>                                                                           
                                                                                      
 <nav class="navbar fixed-top navbar-light bg-white">
   <div class="container-fluid">
@@ -521,14 +532,12 @@ ul {
 
 var client = new hivesigner.Client({
   app: 'terrive',
-  callbackURL: 'https://appukuttan66.github.io',
+  callbackURL: 'https://terrive.on.fleek.co/auth.html',
 });
-var accessToken = 'eyJzaWduZWRfbWVzc2FnZSI6eyJ0eXBlIjoicG9zdGluZyIsImFwcCI6InRlcnJpdmUifSwiYXV0aG9ycyI6WyJhazY2Il0sInRpbWVzdGFtcCI6MTYyNDQ5NDQ0Nywic2lnbmF0dXJlcyI6WyIxZjRjNmNkNGQzYzdlNDcxYzU3MmRkYTNlNGY4Yzg5YWJjZmZkNWUzYTc3ODhhOTExMTUwZDNhZWM0YjkxMDYwYmEzYmE2ZTg0NWM2ZjVkNzc4MDFiODI3YjA1ZGE2YzBmNDBhNjJmMzE1ZGZlZjY3NGJlNDdkM2Y1NTQ3OGU0ODQ0Il19'
-
+Var accessToken = localStorage.getItem('token')
 client.setAccessToken(accessToken)
 
 hive.api.setOptions({ url: 'https://rpc.ecency.com' });
-localStorage.setItem("username","ak66")
 
 var username = localStorage.getItem("username");
 var eleHome = document.getElementById("home");
@@ -551,8 +560,6 @@ function postTypeSelector(type) {
     document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br>'; 
   } else if (type == 'video') {
     document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-video-url" onchange="loadPostPreview(this.value,this.id)" type="text" class="form-control" placeholder="URL of Video"><br><input id="upload-video-url-cover" type="text" class="form-control" placeholder="URL of Cover Image"><br>';
-  } else if (type == 'trv') {
-    document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-video-url" onchange="loadPostPreview(this.value,this.id)" type="text" class="form-control" placeholder="URL of TRVideo"><br>';
   }
 }
 
@@ -610,7 +617,7 @@ function submitPost(){
   else if (document.getElementById('upload-video-url')) {
     taglist.push("trhome")
     var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
-    var bodyV = "![]("+alt+") <br><br> ### See this post on [Terrive](https://appukuttan66.github.io/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://appukuttan66.github.io)";
+    var bodyV = "![]("+alt+") <br><br> ### See this post on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrible.on.fleek.co)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo')
@@ -783,6 +790,9 @@ function calcURL(){
     getBlog(u)
     getProfileInfo(u)
     getFollowers(u)
+  }
+  else if (username === undefined) {
+    document.getElementById("login").classList.replace("invisible","visible")
   }
 }
 
