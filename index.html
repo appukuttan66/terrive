@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://files.peakd.com">
 <link rel="preconnect" href="https://images.ecency.com">
 <link rel="preconnect" href="https://hivesigner.com">
-<link rel="preconnect" href="cdn.jsdelivr.net">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -603,7 +603,7 @@ function submitPost(){
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "![]("+imagelink[0]+") <br><br> ### See this post on [Terrive](https://appukuttan66.github.io/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://appukuttan66.github.io)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
-    broadcastPost(username,permlink,permlink,body,jsonMetadata,'trhome')
+    broadcastPost(username,permlink,body,jsonMetadata,'trhome')
   }
   else if (document.getElementById('upload-video-url') && document.getElementById('upload-video-url-cover')) {
     taglist.push("trhome")
