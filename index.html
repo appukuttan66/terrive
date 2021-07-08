@@ -626,7 +626,7 @@ function submitPost(){
 
 function broadcastPost(u,permlink,body,jsonMetadata,type){
   client.comment('',type,u,permlink,permlink,body,jsonMetadata, function (err,res) {
-    if (err === null || er.error_description === undefined){
+    if (err === null || err.error_description === undefined){
      console.log(res)
      clearUploadTray();
     }else {
