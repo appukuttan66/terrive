@@ -955,10 +955,10 @@ function getNotifications () {
        console.log(xhr.status);
        var json = JSON.parse(xhr.responseText);
        var counter = 0;
+       var eleNot = document.getElementById("notify-body");
+       eleNot.innerHTML = ""
        while (counter < json.result.length) {
          var not = json.result[counter];
-         var eleNot = document.getElementById("notify-body");
-         eleNot.innerHTML = ""
          if(not === undefined) {
            console.log(not)
          }else {
