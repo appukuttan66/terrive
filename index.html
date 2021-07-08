@@ -601,14 +601,14 @@ function submitPost(){
   
   if(document.getElementById('upload-image-url')) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
-    var body = "![]("+imagelink[0]+") <br><br> ### See this post on [Terrive](https://appukuttan66.github.io/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://appukuttan66.github.io)";
+    var body = "![]("+imagelink[0]+") <br><br> ### See this post on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
     broadcastPost(username,permlink,body,jsonMetadata,'trhome')
   }
   else if (document.getElementById('upload-video-url') && document.getElementById('upload-video-url-cover')) {
     taglist.push("trhome")
     var coverV = document.getElementById('upload-video-url-cover').value;
-    var bodyVC = "![]("+coverV+") <br><br> ### See this post on [Terrive](https://appukuttan66.github.io/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://appukuttan66.github.io)";
+    var bodyVC = "![]("+coverV+") <br><br> ### See this post on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
     broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo')
@@ -616,7 +616,7 @@ function submitPost(){
   else if (document.getElementById('upload-video-url')) {
     taglist.push("trhome")
     var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
-    var bodyV = "![]("+alt+") <br><br> ### See this post on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrible.on.fleek.co)";
+    var bodyV = "![]("+alt+") <br><br> ### See this post on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo')
