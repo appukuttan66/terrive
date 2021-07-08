@@ -578,7 +578,7 @@ function loadPostPreview(src,id){
   else {
     var images = src.split(' ')
     if (images.length == 1) {
-      document.getElementById("upload-preview").innerHTML += '<img crossOrigin="Anonymous" src="'+images[0]+'" class="w-100 rounded mb-3">'
+      document.getElementById("upload-preview").innerHTML += '<img src="'+images[0]+'" class="w-100 rounded mb-3">'
     } 
     else if (images.length > 1) {
       document.getElementById("upload-preview").innerHTML += '<div id="carouselPreviewControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPreviewControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPreviewControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
