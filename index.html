@@ -918,6 +918,9 @@ function getNew () {
 document.querySelectorAll('a[href="#home"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
     getFeed();
+    if (username === null) {
+      document.getElementById("login").classList.replace("invisible","visible")
+    }
 });});
 
 document.querySelectorAll('a[href="#profile"]').forEach(function(ele){
@@ -980,6 +983,9 @@ document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
   getNew();
     document.getElementById("loader").classList.replace("invisible","visible")
+    if (username === null) {
+      document.getElementById("login").classList.replace("invisible","visible")
+    }
 });});
 
 function filterTag(res,type) {
