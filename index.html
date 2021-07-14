@@ -562,7 +562,7 @@ function linklock() {
   var json = {
     'login': true,
   }
-  window.open("https://hivesigner.com/sign/custom-json?authority=posting&required_posting_auths=%5B%22"+linkLockName+"%22%5D&id=trlogin&json="+JSON.stringify(json)+"&redirect_uri=https://terrive.on.fleek.co/auth.html"+encodeURIComponent('?username='+linkLockName+'&type=linklock'))
+  location.href = "https://hivesigner.com/sign/custom-json?authority=posting&required_posting_auths=%5B%22"+linkLockName+"%22%5D&id=trlogin&json="+JSON.stringify(json)+"&redirect_uri=https://terrive.on.fleek.co/auth.html"+encodeURIComponent('?username='+linkLockName+'&type=linklock')
 }
   
 function postTypeSelector(type) {
@@ -646,7 +646,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type){
       }
     })
   } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_permlink="+type+"&author="+username+"&permlink="+permlink+"&title="+permlink+"&body="+body+"&json_metadata="+jsonMetadata)
+    window.open("https://hivesigner.com/sign/comment?parent_permlink="+type+"&author="+username+"&permlink="+permlink+"&title="+permlink+"&body="+body+"&json_metadata="+encodeURIComponent(jsonMetadata),"_blank")
     clearUploadTray();
   }
 }
@@ -745,7 +745,7 @@ function postLike(){
         else {alert(err.error_description);}
       })
     } else if (loginType == "linklock"){
-      window.open("https://hivesigner.com/sign/vote?voter="+username+"&author="+author+"&permlink="+permlink+"&weight="+10)
+      window.open("https://hivesigner.com/sign/vote?voter="+username+"&author="+author+"&permlink="+permlink+"&weight="10,"_blank")
     }
   }
 
@@ -755,12 +755,17 @@ function postComment(){
   var parentPermlink = rTarg.getAttribute("data-tr-permlink")
   var permlink = Math.random().toString(36).substring(2);
   var body = document.querySelector("#post-tray .modal-footer input").value
-  client.comment(parentAuthor, parentPermlink, username, permlink, '', body, '', function (err, res) {
-    if ( err === null ){
-      console.log(res)
-      body = "";
-    }else {alert(err.error_description);}
-  });
+  if(accessToken){
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, '', function (err, res) {
+      if ( err === null ){
+        console.log(res)
+        body = "";
+      }else {alert(err.error_description);}
+    });
+  } else if (loginType == "linklock") {
+    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"parent_permlink="+parentPermlink+"&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
+    body = "";
+  }
 }
 
 document.getElementById('sharePop').addEventListener('show.bs.modal',function(event){
