@@ -643,7 +643,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type){
       }
     })
   } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_permlink="+type+"&author="+username+"&permlink="+permlink+"&title="+permlink+"&body="+body+"&json_metadata="+encodeURIComponent(jsonMetadata),"_blank")
+    window.open("https://hivesigner.com/sign/comment?parent_permlink="+type+"&author="+username+"&permlink="+permlink+"&title="+permlink+"&body="+body+"&json_metadata="+JSON.stringify(jsonMetadata),"_blank")
     clearUploadTray();
   }
 }
@@ -760,7 +760,7 @@ function postComment(){
       }else {alert(err.error_description);}
     });
   } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
+    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&title=%22%22&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
     body = "";
   }
 }
