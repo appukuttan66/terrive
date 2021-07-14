@@ -760,7 +760,7 @@ function postComment(){
       }else {alert(err.error_description);}
     });
   } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&title=%22%22&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
+    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&title=%22%22&author="+username+"&permlink="+permlink+"&body="+body+"&json_metadata={}","_blank")
     body = "";
   }
 }
