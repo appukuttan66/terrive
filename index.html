@@ -559,10 +559,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 
 function linklock() {
   var linkLockName = prompt("username");
-  var json = {
-    'login': true,
-  }
-  location.href = "https://hivesigner.com/sign/custom-json?authority=posting&required_posting_auths=%5B%22"+linkLockName+"%22%5D&id=trlogin&json="+JSON.stringify(json)+"&redirect_uri=https://terrive.on.fleek.co/auth.html"+encodeURIComponent('?username='+linkLockName+'&type=linklock')
+  location.href = "https://terrive.on.fleek.co/auth.html?username="+linkLockName+"&type=linklock"
 }
   
 function postTypeSelector(type) {
@@ -763,7 +760,7 @@ function postComment(){
       }else {alert(err.error_description);}
     });
   } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"parent_permlink="+parentPermlink+"&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
+    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&author="+username+"&permlink="+permlink+"&body="+body,"_blank")
     body = "";
   }
 }
@@ -899,14 +896,18 @@ function like(id) {
   var eleAuthor = document.getElementById("author-"+counter);
   var author = eleAuthor.innerHTML;
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
-   client.vote(username, author, permlink, 1000, function (err, res) {
-    if(err === null) {
-      console.log(res)
-      ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
-      ele.style.fill = "#ff0000";
-      eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
-    }else{alert(err.error_description);}
-  });
+   if (accessToken) {
+    client.vote(username, author, permlink, 1000, function (err, res) {
+      if(err === null) {
+        console.log(res)
+        ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+        ele.style.fill = "#ff0000";
+        eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
+      }else{alert(err.error_description);}
+    });
+  } else if (loginType == "linklock"){
+      window.open("https://hivesigner.com/sign/vote?voter="+username+"&author="+author+"&permlink="+permlink+"&weight="+10,"_blank")
+    }
   
 }
 
