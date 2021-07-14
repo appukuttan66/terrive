@@ -2,11 +2,17 @@
 <body>
 <script>
 var urlParams = new URLSearchParams(location.search)
-var username = urlParams.get('username')
-var token = urlParams.get('access_token')
-localStorage.setItem('username',username)
-localStorage.setItem('token',token)
-window.setTimeout(location.href = "/", 500)
+if (urlParams.has('username') && urlParams.has('access_token')) {
+  localStorage.setItem('username',urlParams.get('username'))
+  localStorage.setItem('token',urlParams.get('access_token'))
+  window.setTimeout(location.href = "/", 500)
+} else if (urlParams.has('username') && urlParams.has('type')) {
+  localStorage.setItem("username",urlParams.get('username'))
+  localStorage.setItem("type",urlParams.get('type'))
+  window.setTimeout(location.href = "/", 500)
+} else {
+  window.setTimeout(location.href = "/", 500)
+}
 </script>
 </body>
 </html>
