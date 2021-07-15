@@ -147,7 +147,7 @@
   function pushBlog(res) {
     var i = 0;
     while(i < res.result.length) {
-      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replace("-"," ")+'</h5><a target="_blank" href="https://peakd.com/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
+      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replaceAll("-"," ")+'</h5><a target="_blank" href="https://peakd.com/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
       i = i + 1;
     }
   }
