@@ -33,7 +33,7 @@
     <p class="lead mx-3">Terrive is a decentralized photo sharing platform powered by the hive blockchain.</p>
     <a target="_blank" href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.on.fleek.co%2Fauth.html" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" class="me-2" src="https://hivesigner.com/logo.svg">HiveSigner</a>
     <div class="w-75 bg-secondary position-relative my-3" style="height:1px; max-width: 32em;"><p class="bg-light w-25 position-relative start-50 translate-middle">OR</p></div>
-    <button onclick="linklock()" class="btn btn-lg satisfy text-white" style="background: linear-gradient(45deg,#8ec5fc,#e0c3fc);"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-shield-lock-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5z"/></svg> LinkLock</button>
+    <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" width="140"></button>
     <footer class="mt-auto text-secondary satisfy">
       <p><a href="/about" class="text-secondary">About</a></p>
       <p>Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
@@ -557,9 +557,35 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 })
 }
 
-function linklock() {
-  var linkLockName = prompt("username");
-  location.href = "https://terrive.on.fleek.co/auth.html?username="+linkLockName+"&type=linklock"
+function keychainLogin(){
+  alert("This feature is a WORK IN PROGRESS ... Warning: Stuff may break")
+  var keychainUser = prompt("username")
+  hive_keychain.requestEncodeMessage(
+    keychainUser,
+    keychainUser,
+    "#login-true",
+    "Posting",
+    function (response) {
+      console.log("endoding key ...");
+      console.log(response);
+      if ( response.success == true ) {
+        hive_keychain.requestVerifyKey(
+        keychainUser,
+        response.result,
+        "Posting",
+        function (res) {
+          console.log("verifying key ...");
+          console.log(res);
+          if (res.result == "#login-true") {
+            localStorage.setItem("username",keychainUser);
+            localStorage.setItem("type","keychain");
+            window.setTimeout(location.reload(),500);
+          }
+        }
+        );
+      }
+    }
+  );
 }
   
 function postTypeSelector(type) {
@@ -642,9 +668,25 @@ function broadcastPost(u,permlink,body,jsonMetadata,type){
         alert(err.error_description)
       }
     })
-  } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_permlink="+type+"&author="+username+"&permlink="+permlink+"&title="+permlink+"&body="+body+"&json_metadata="+JSON.stringify(jsonMetadata),"_blank")
-    clearUploadTray();
+  } else if (loginType == "keychain") {
+    hive_keychain.requestPost(
+    u,
+    permlink,
+    body,
+    type,
+    '',
+    jsonMetadata,
+    permlink,
+    '',
+    function (response) {
+      console.log("publishing post ...");
+      console.log(response);
+      if(response.success == true) {
+        console.log("post published!")
+        clearUploadTray();
+      }
+    }
+  );
   }
 }
 
@@ -666,10 +708,10 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           console.log(res);
        }else{alert(err.error_description);}
       });
-    } else if (loginType == "linklock"){
+    } else if (loginType == "keychain"){
       //
-      //TODO: finish linklock url
-      window.open("https://hivesigner.com/sign/custom_json?authority=posting")
+      //TODO
+      alert("reblog is not supported!")
     }
   })
 });
@@ -741,8 +783,21 @@ function postLike(){
         }
         else {alert(err.error_description);}
       })
-    } else if (loginType == "linklock"){
-      window.open("https://hivesigner.com/sign/vote?voter="+username+"&author="+author+"&permlink="+permlink+"&weight="+10,"_blank")
+    } else if (loginType == "keychain"){
+      hive_keychain.requestVote(
+        username,
+        permlink,
+        author,
+        10,
+        function (response) {
+          console.log("voting ...");
+          console.log(response);
+          if (response.success == true){
+            document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            document.querySelector('#post-like').style.fill = "#ff0000";
+            likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
+        }
+      );
     }
   }
 
@@ -759,9 +814,24 @@ function postComment(){
         body = "";
       }else {alert(err.error_description);}
     });
-  } else if (loginType == "linklock") {
-    window.open("https://hivesigner.com/sign/comment?parent_author="+parentAuthor+"&parent_permlink="+parentPermlink+"&title=%22%22&author="+username+"&permlink="+permlink+"&body="+body+"&json_metadata={}","_blank")
-    body = "";
+  } else if (loginType == "keychain") {
+        hive_keychain.requestPost(
+          username,
+          '',
+          body,
+          parentPermlink,
+          parentAuthor,
+          '',
+          permlink,
+          '',
+          function (response) {
+            console.log("commenting ...");
+            console.log(response);
+            if (response.success == true){
+              body = "";
+            }
+          }
+        );
   }
 }
 
@@ -905,8 +975,21 @@ function like(id) {
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
       }else{alert(err.error_description);}
     });
-  } else if (loginType == "linklock"){
-      window.open("https://hivesigner.com/sign/vote?voter="+username+"&author="+author+"&permlink="+permlink+"&weight="+10,"_blank")
+  } else if (loginType == "keychain"){
+      hive_keychain.requestVote(
+        username,
+        permlink,
+        author,
+        10,
+        function (response) {
+          console.log("voting ...");
+          console.log(response);
+          if (response.success == true){
+            ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            ele.style.fill = "#ff0000";
+            eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
+        }
+      );
     }
   
 }
