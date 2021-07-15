@@ -713,9 +713,25 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
        }else{alert(err.error_description);}
       });
     } else if (loginType == "keychain"){
-      //
-      //TODO
-      alert("reblog is not supported!")
+      var json = JSON.stringify([
+        'reblog',
+        {
+          account: username,
+          author: author,
+          permlink: permLink,
+        },
+      ]);
+      hive_keychain.requestCustomJson(
+          username,
+          'follow',
+          'Posting',
+          json,
+          'Reblog a Post',
+          function (response) {
+            console.log("reblogging ...");
+            console.log(response);
+          }
+       );
     }
   })
 });
@@ -1007,14 +1023,40 @@ function followToggle(ele) {
     alert("Ehh!! Why do you want to follow yourself!!");
   }
   else {
-    
-    client.follow(username,account,function(err,res){
-      if(err == null) {
-        console.log(res);
-        ele.innerHTML = "Followed";
-        ele.classList.replace("btn-primary","btn-outline-primary")
-      }else{alert(err.error_description);}
-    })
+    if (accessToken) {
+      client.follow(username,account,function(err,res){
+        if(err == null) {
+          console.log(res);
+          ele.innerHTML = "Followed";
+          ele.classList.replace("btn-primary","btn-outline-primary")
+        }else{alert(err.error_description);}
+      });
+    }else if (loginType == "keychain") {
+      var json = JSON.stringify([
+        'follow',
+        {
+           follower: username,
+           following: account,
+           what: ['blog'], //null value for unfollow, 'blog' for follow
+        },
+      ]);
+
+       hive_keychain.requestCustomJson(
+          username,
+          'follow',
+          'Posting',
+          json,
+          'Follow a User',
+          function (response) {
+            console.log("following ...");
+            console.log(response);
+            if (response.success == true){
+              ele.innerHTML = "Followed";
+              ele.classList.replace("btn-primary","btn-outline-primary")
+            }
+          }
+       );
+    }
   }
 }
 
