@@ -808,8 +808,9 @@ function postComment(){
   var parentPermlink = rTarg.getAttribute("data-tr-permlink")
   var permlink = Math.random().toString(36).substring(2);
   var body = document.querySelector("#post-tray .modal-footer input").value
+  var json = JSON.stringify({app: "terrive/0.0.0"})
   if(accessToken){
-    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, '', function (err, res) {
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, json, function (err, res) {
       if ( err === null ){
         console.log(res)
         body = "";
@@ -822,7 +823,7 @@ function postComment(){
           body,
           parentPermlink,
           parentAuthor,
-          '',
+          json,
           permlink,
           '',
           function (response) {
