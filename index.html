@@ -749,7 +749,7 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   var type = rTarg.getAttribute("data-tr-type")
   if (type == "vid") {
     pushPost(author,permlink,body,'',lc,children);
-    document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" onloadedmetadata="this.play()" onclick="if (this.paused || this.ended){this.play()}else{this.pause()}" autostart></video>'
+    document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
   }
   else {
     pushPost(author,permlink,body,images,lc,children);
