@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <title>Terrive: Decentralized Photo-Sharing Platform</title>
+  <meta name="og:title" content="Terrive: Decentralized Photo-Sharing Platform">
+  <meta name="description" content="Terrive is a decentralized Photo-Sharing Platform powered by the Hive Blockchain.">
+  <meta name="og:description" content="Terrive is a decentralized Photo-Sharing Platform powered by the Hive Blockchain.">
+  <meta name="keywords" content="Decentralized, Photo, Images, Social Media">
+  <meta name="og:site_name" content="Terrive">
+  <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&amp;display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -147,7 +153,7 @@
   function pushBlog(res) {
     var i = 0;
     while(i < res.result.length) {
-      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replaceAll("-"," ")+'</h5><a target="_blank" href="https://peakd.com/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
+      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replaceAll("-"," ")+'</h5><a target="_blank" href="https://peakd.com/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
       i = i + 1;
     }
   }
