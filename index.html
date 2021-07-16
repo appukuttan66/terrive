@@ -11,13 +11,15 @@
   <meta name="og:site_name" content="Terrive Login">
   <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
 <link rel="preconnect" href="https://rpc.ecency.com">
+  <link rel="dns-prefetch" href="https://rpc.ecency.com">
 <link rel="preconnect" href="https://images.hive.blog">
-<link rel="preconnect" href="https://files.peakd.com">
 <link rel="preconnect" href="https://images.ecency.com">
+  <link rel="dns-prefetch" href="https://images.ecency.com">
 <link rel="preconnect" href="https://hivesigner.com">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://ipfs.io">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
@@ -38,14 +40,14 @@
   <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
     <h1 class="mt-auto satisfy">Login to Terrive</h1><br>
     <p class="lead mx-3">Terrive is a Decentralized Photo-Sharing Platform powered by the Hive Blockchain.</p>
-    <a target="_blank" href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.on.fleek.co%2Fauth.html" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" class="me-2" src="https://hivesigner.com/logo.svg">HiveSigner</a>
+    <a target="_blank" href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.on.fleek.co%2Fauth.html" rel="noopener" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" height="auto" class="me-2" src="https://hivesigner.com/logo.svg" alt="Hivesigner">HiveSigner</a>
     <div class="w-75 position-relative my-4" style="height:1px; max-width: 32em; background: #ccc;"><p class="bg-light position-relative start-50 translate-middle" style="color: #aaa; width: 50px;">OR</p></div>
-    <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" width="140"></button>
+    <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain Login" width="140" height="auto"></button>
     <footer class="mt-auto text-secondary satisfy">
       <p>
         <a href="/about" class="text-secondary">About</a>
         <a href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
-        <a href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
+        <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
       </p>
       <p>Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
     </footer>
@@ -234,18 +236,18 @@
               <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
             </svg>
           </a>
-          <a id="share-twitter" href="#" target="_blank" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Twitter">
+          <a id="share-twitter" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Twitter">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bi bi-twitter bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16" fill="#1DA1F2">
               <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
 
             </svg>
           </a>
-          <a id="share-facebook" href="#" target="_blank" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Facebook">
+          <a id="share-facebook" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Facebook">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#4267B2" class="bi bi-facebook bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
               <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
             </svg>
           </a>
-          <a id="share-reddit" href="#" target="_blank" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Reddit">
+          <a id="share-reddit" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Reddit">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#FF4500" class="bi bi-reddit bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
               <path d="M6.167 8a.831.831 0 0 0-.83.83c0 .459.372.84.83.831a.831.831 0 0 0 0-1.661zm1.843 3.647c.315 0 1.403-.038 1.976-.611a.232.232 0 0 0 0-.306.213.213 0 0 0-.306 0c-.353.363-1.126.487-1.67.487-.545 0-1.308-.124-1.671-.487a.213.213 0 0 0-.306 0 .213.213 0 0 0 0 .306c.564.563 1.652.61 1.977.61zm.992-2.807c0 .458.373.83.831.83.458 0 .83-.381.83-.83a.831.831 0 0 0-1.66 0z"/>
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.828-1.165c-.315 0-.602.124-.812.325-.801-.573-1.9-.945-3.121-.993l.534-2.501 1.738.372a.83.83 0 1 0 .83-.869.83.83 0 0 0-.744.468l-1.938-.41a.203.203 0 0 0-.153.028.186.186 0 0 0-.086.134l-.592 2.788c-1.24.038-2.358.41-3.17.992-.21-.2-.496-.324-.81-.324a1.163 1.163 0 0 0-.478 2.224c-.02.115-.029.23-.029.353 0 1.795 2.091 3.256 4.669 3.256 2.577 0 4.668-1.451 4.668-3.256 0-.114-.01-.238-.029-.353.401-.181.688-.592.688-1.069 0-.65-.525-1.165-1.165-1.165z"/>
