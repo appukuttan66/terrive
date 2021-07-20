@@ -641,7 +641,7 @@ function submitPost(){
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
   
-  if(document.getElementById('upload-image-url')) {
+  if(document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "![]("+imagelink[0]+") <br><br> **See this Image on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+")** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
@@ -658,7 +658,7 @@ function submitPost(){
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
     var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
-    var bodyV = "![]("+alt+") <br><br> **See this Video on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video")** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var bodyV = "![]("+alt+") <br><br> **See this Video on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video)** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo')
