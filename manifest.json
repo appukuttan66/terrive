@@ -1,5 +1,8 @@
 {
  "name": "Terrive",
+ "display": "standalone",
+ "background_color": "#f8f9fa",
+ "description": "A Decentralized Photo and Video Sharing Platform",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
