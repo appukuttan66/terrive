@@ -11,7 +11,7 @@
   <meta name="og:description" content="Login to Terrive. Terrive is a decentralized Photo-Sharing Platform powered by the Hive Blockchain.">
   <meta name="og:site_name" content="Terrive Login">
   <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
-  <!--Favicons-->
+  <!--Favicons and Manifest-->
   <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-icon-72x72.png">
@@ -25,9 +25,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <meta name="theme-color" content="#f8f9fa">
   <link rel="manifest" href="/manifest.json">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+  <!--Registering Service Worker-->
+  <script>
+    if ('serviceWorker' in navigator ) {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
   <!--Preconnects-->
   <link rel="preconnect" href="https://rpc.ecency.com">
   <link rel="dns-prefetch" href="https://rpc.ecency.com">
@@ -46,406 +53,372 @@
   <script src="https://cdn.jsdelivr.net/npm/hivesigner@latest/lib/hivesigner.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/remarkable@2.0.1/dist/remarkable.min.js"></script>
   </head>
-<body class="h-100 w-100 bg-light p-3 my-5">
+  <body class="h-100 w-100 bg-light p-3 my-5">
 
-
-
-
-<div id="loader" class="position-fixed visible text-center w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;" data-bs-keyboard="false">
-<h1 class="d-flex justify-content-center align-items-center text-secondary satisfy w-100 h-100 bg-light">Terrive</h1>
-</div>
+    <div id="loader" class="position-fixed visible text-center w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;" data-bs-keyboard="false">
+      <h1 class="d-flex justify-content-center align-items-center text-secondary satisfy w-100 h-100 bg-light">Terrive</h1>
+    </div>
  
-<div id="login" class="position-fixed invisible w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;">
-  <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
-    <h1 class="mt-auto satisfy">Login to Terrive</h1><br>
-    <p class="lead mx-3">Terrive is a Decentralized Photo-Sharing Platform powered by the Hive Blockchain.</p>
-    <a target="_blank" href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.on.fleek.co%2Fauth.html" rel="noopener" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" height="auto" class="me-2" src="https://hivesigner.com/logo.svg" alt="Hivesigner">HiveSigner</a>
-    <div class="w-75 position-relative my-4" style="height:1px; max-width: 32em; background: #ccc;"><p class="bg-light position-relative start-50 translate-middle" style="color: #aaa; width: 50px;">OR</p></div>
-    <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain Login" width="140" height="auto"></button>
-    <footer class="mt-auto text-secondary satisfy">
-      <p>
-        <a href="/about" class="text-secondary">About</a>
-        <a href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
-        <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
-      </p>
-      <p>Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
-    </footer>
-  </div>
-</div>                                                                           
+    <div id="login" class="position-fixed invisible w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999999;">
+      <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
+        <h1 class="mt-auto satisfy">Login to Terrive</h1><br>
+        <p class="lead mx-3">Terrive is a Decentralized Photo-Sharing Platform powered by the Hive Blockchain.</p>
+        <a href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.on.fleek.co%2Fauth.html" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" height="auto" class="me-2" src="https://hivesigner.com/logo.svg" alt="Hivesigner">HiveSigner</a>
+        <div class="w-75 position-relative my-4" style="height:1px; max-width: 32em; background: #ccc;"><p class="bg-light position-relative start-50 translate-middle" style="color: #aaa; width: 50px;">OR</p></div>
+        <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain Login" width="140" height="auto"></button>
+        <footer class="mt-auto text-secondary satisfy">
+          <p>
+            <a href="/about" class="text-secondary">About</a>
+            <a href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
+            <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
+          </p>
+          <p>Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
+        </footer>
+      </div>
+    </div>                                                                           
                                                                                      
-<nav class="navbar fixed-top navbar-light bg-white">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Terrive</a>
+    <nav class="navbar fixed-top navbar-light bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Terrive</a>
     
-    <div>
-      <ul class="nav justify-content-center tr-top-nav">
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="#home" data-bs-toggle="tab">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-house-door" viewBox="0 0 16 16">
-              <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
-            </svg>
-          </a>
-        </li>
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="#search" data-bs-toggle="tab">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-search" viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-          </a>
-        </li>
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="#discover" data-bs-toggle="tab">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-compass" viewBox="0 0 16 16">
-              <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-              <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
-            </svg>
-          </a>
-        </li>
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="#profile" data-bs-toggle="tab">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-person-circle" viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div>
-      <a role="button" class="navbar-brand tr-nav-icon-side" data-bs-toggle="modal" href="#upload-tray">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-  <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
-</svg>
-      </a>
-    <a role="button" class="navbar-brand tr-nav-icon-side" data-bs-toggle="offcanvas" href="#notify-tray">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-      </svg>
-    </a>
-    </div>
-  </div>
-</nav>
-
-
-
-
-<nav class="navbar fixed-bottom navbar-light bg-white py-3 border-top-terrive">
-  <div class="container-fluid nav">
-    <a href="#home" class="mx-auto" data-bs-toggle="tab">
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-house-door" viewBox="0 0 16 16">
-  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
-</svg>
-</a>
-<a class="mx-auto" href="#search" data-bs-toggle="tab">
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-search" viewBox="0 0 16 16">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-</svg>
-</a>
-<a href="#discover" class="mx-auto" data-bs-toggle="tab">
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-compass" viewBox="0 0 16 16">
-  <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-  <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
-</svg>
-</a>
-<a href="#profile" class="mx-auto" data-bs-toggle="tab">
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-person-circle" viewBox="0 0 16 16">
-  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-</svg>
-</a>
-  </div>
-</nav>
-
-
-  <div id="notify-tray" class="offcanvas offcanvas-end shadow w-75-l" tabindex="-1" data-bs-keyboard="true" data-bs-backdrop="true">
-     <div class="offcanvas-header">
-      <h6 class="offcanvas-title">Notifications</h6>
-      <svg onclick="getNotifications()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-repeat ms-3 mt-1" viewBox="0 0 16 16">
-        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
-        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
-      </svg>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-     </div>
-    <div id="notify-body" class="offcanvas-body p-0">
-    </div>
-  </div>
-
-  
-  
-
-
-
-<div class="modal fade" id="upload-tray" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">New Post</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <br><div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" onclick="postTypeSelector(this.value)" value="image" checked>
-  <label class="form-check-label" for="exampleRadios1">
-    Image
-  </label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" onclick="postTypeSelector(this.value)" value="video">
-  <label class="form-check-label" for="exampleRadios2">
-    Video
-  </label>
-</div>
-
-        </div><br>
-        <div id="upload-input-wrap">
-          <input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URL"><br>
+        <div>
+          <ul class="nav justify-content-center tr-top-nav">
+            <li class="nav-item mx-1">
+             <a class="nav-link" href="#home" data-bs-toggle="tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-house-door" viewBox="0 0 16 16">
+                  <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </svg>
+              </a>
+            </li>
+            <li class="nav-item mx-1">
+              <a class="nav-link" href="#search" data-bs-toggle="tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+              </a>
+            </li>
+            <li class="nav-item mx-1">
+              <a class="nav-link" href="#discover" data-bs-toggle="tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-compass" viewBox="0 0 16 16">
+                  <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                  <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
+                </svg>
+              </a>
+            </li>
+            <li class="nav-item mx-1">
+              <a class="nav-link" href="#profile" data-bs-toggle="tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="dark" class="bi bi-person-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+              </a>
+            </li>
+          </ul>
         </div>
-        <div id="upload-preview"></div>
-        
-<span class="text-secondary ms-1" style="font-size:14px;"><span class="text-primary" id="text-length">0</span>/150</span>
-<textarea id="textbox" class="form-control" placeholder="Description" onchange="calcLength()" onkeydown="calcLength()"></textarea><br>
-<input id="tag" type="text" class="form-control w-25 d-inline" placeholder="Tags" onkeydown="calcTag(event)"><span id="tagTray" class="w-75 d-inline"></span><br>
-
+        <div>
+          <a role="button" class="navbar-brand tr-nav-icon-side" data-bs-toggle="modal" href="#upload-tray">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+            </svg>
+          </a>
+          <a role="button" class="navbar-brand tr-nav-icon-side" data-bs-toggle="offcanvas" href="#notify-tray">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+            </svg>
+          </a>
       </div>
-      <div class="modal-footer">
-       <span class="text-secondary me-3" style="font-size:14px;">Need help? Check out the <a href="#">FAQs</a></span>
-        <button type="button" class="btn btn-outline-primary" onclick="clearUploadTray()">Clear</button>
-        <button type="button" class="btn btn-primary" onclick="submitPost()">Upload</button>
+      </div>
+    </nav>
+
+    <nav class="navbar fixed-bottom navbar-light bg-white py-3 border-top-terrive">
+      <div class="container-fluid nav">
+        <a href="#home" class="mx-auto" data-bs-toggle="tab">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-house-door" viewBox="0 0 16 16">
+            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+          </svg>
+        </a>
+        <a class="mx-auto" href="#search" data-bs-toggle="tab">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </a>
+        <a href="#discover" class="mx-auto" data-bs-toggle="tab">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-compass" viewBox="0 0 16 16">
+            <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+            <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
+          </svg>
+        </a>
+        <a href="#profile" class="mx-auto" data-bs-toggle="tab">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="dark" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <div id="notify-tray" class="offcanvas offcanvas-end shadow w-75-l" tabindex="-1" data-bs-keyboard="true" data-bs-backdrop="true">
+       <div class="offcanvas-header">
+        <h6 class="offcanvas-title">Notifications</h6>
+        <svg onclick="getNotifications()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-repeat ms-3 mt-1" viewBox="0 0 16 16">
+          <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+          <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+        </svg>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+       </div>
+      <div id="notify-body" class="offcanvas-body p-0">
       </div>
     </div>
-  </div>
-</div>
 
-  
-  
-  
-  
-  <div class="modal fade" id="reblogPop" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirm Reblog</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to reblog "<span id="reblog-pop-permlink" class="link-secondary"></span>" to your profile ?
-      </div>
-      <div class="modal-footer">
-        <button id="reblog-pop-yes" type="button" data-bs-dismiss="modal" class="btn btn-primary">Yes</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="modal fade" id="upload-tray" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">New Post</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <br>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" onclick="postTypeSelector(this.value)" value="image" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                  Image
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" onclick="postTypeSelector(this.value)" value="video">
+                <label class="form-check-label" for="exampleRadios2">
+                  Video
+                </label>
+              </div>
+            </div><br>
+            <div id="upload-input-wrap">
+              <input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URL"><br>
+            </div>
+            <div id="upload-preview"></div>
 
+            <span class="text-secondary ms-1" style="font-size:14px;"><span class="text-primary" id="text-length">0</span>/150</span>
+            <textarea id="textbox" class="form-control" placeholder="Description" onchange="calcLength()" onkeydown="calcLength()"></textarea><br>
+            <input id="tag" type="text" class="form-control w-25 d-inline" placeholder="Tags" onkeydown="calcTag(event)"><span id="tagTray" class="w-75 d-inline"></span><br>
 
-  <div class="modal fade" id="sharePop" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Share</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body my-3">
-          <input type="text" id="share-copy-txtbx" class="form-control mb-3">
-          <div class=" d-flex align-items-center justify-content-center">
-          <a id="share-link" href="#" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Copy Link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bi bi-link-45deg bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
-              <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
-            </svg>
-          </a>
-          <a id="share-twitter" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Twitter">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bi bi-twitter bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16" fill="#1DA1F2">
-              <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
-
-            </svg>
-          </a>
-          <a id="share-facebook" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#4267B2" class="bi bi-facebook bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
-              <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-            </svg>
-          </a>
-          <a id="share-reddit" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Reddit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#FF4500" class="bi bi-reddit bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
-              <path d="M6.167 8a.831.831 0 0 0-.83.83c0 .459.372.84.83.831a.831.831 0 0 0 0-1.661zm1.843 3.647c.315 0 1.403-.038 1.976-.611a.232.232 0 0 0 0-.306.213.213 0 0 0-.306 0c-.353.363-1.126.487-1.67.487-.545 0-1.308-.124-1.671-.487a.213.213 0 0 0-.306 0 .213.213 0 0 0 0 .306c.564.563 1.652.61 1.977.61zm.992-2.807c0 .458.373.83.831.83.458 0 .83-.381.83-.83a.831.831 0 0 0-1.66 0z"/>
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.828-1.165c-.315 0-.602.124-.812.325-.801-.573-1.9-.945-3.121-.993l.534-2.501 1.738.372a.83.83 0 1 0 .83-.869.83.83 0 0 0-.744.468l-1.938-.41a.203.203 0 0 0-.153.028.186.186 0 0 0-.086.134l-.592 2.788c-1.24.038-2.358.41-3.17.992-.21-.2-.496-.324-.81-.324a1.163 1.163 0 0 0-.478 2.224c-.02.115-.029.23-.029.353 0 1.795 2.091 3.256 4.669 3.256 2.577 0 4.668-1.451 4.668-3.256 0-.114-.01-.238-.029-.353.401-.181.688-.592.688-1.069 0-.65-.525-1.165-1.165-1.165z"/>
-            </svg>
-          </a>
+          </div>
+          <div class="modal-footer">
+           <span class="text-secondary me-3" style="font-size:14px;">Need help? Check out the <a href="#">FAQs</a></span>
+            <button type="button" class="btn btn-outline-primary" onclick="clearUploadTray()">Clear</button>
+            <button type="button" class="btn btn-primary" onclick="submitPost()">Upload</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  
- 
 
-<div id="post-tray" class="modal">
-  <div class="modal-dialog modal-fullscreen modal-lg mx-auto" style="max-width: 52em;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <img src="" class="rounded-circle" height="38">
-        <h5 class="ms-3 fw-bold modal-title satisfy"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body px-0 mx-0">
-        <div class="w-100 post-img"></div>
-        <div class="border-bottom p-3 satisfy">
-          <svg xmlns="http://www.w3.org/2000/svg" onclick="postLike()" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="post-like">
-            <path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-          </svg>
-          <span id="like-count-post" class="ms-2">0</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16">
-            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-          </svg>
-          <span id="children-post" class="ms-2">0</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-          </svg>
-        </div>
-        <div class="p-3 border-bottom satisfy text-secondary text-center" id="post-body"></div>
-        <p class="post-comment"></p>
-      </div>
-      <div class="modal-footer">
-        <div class="input-group mb-3 w-max-32 mx-auto">
-          <input type="text" class="form-control" placeholder="Say Something ...">
-          <button onclick="postComment()" class="btn btn-outline-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cursor" viewBox="0 0 16 16">
-              <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"/>
-            </svg>
-          </button>
+    <div class="modal fade" id="reblogPop" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Reblog</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to reblog "<span id="reblog-pop-permlink" class="link-secondary"></span>" to your profile ?
+          </div>
+          <div class="modal-footer">
+            <button id="reblog-pop-yes" type="button" data-bs-dismiss="modal" class="btn btn-primary">Yes</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-
-
-
+    <div class="modal fade" id="sharePop" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Share</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body my-3">
+            <input type="text" id="share-copy-txtbx" class="form-control mb-3">
+            <div class=" d-flex align-items-center justify-content-center">
+            <a id="share-link" href="#" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Copy Link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bi bi-link-45deg bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
+                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+              </svg>
+            </a>
+            <a id="share-twitter" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bi bi-twitter bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16" fill="#1DA1F2">
+                <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+              </svg>
+            </a>
+            <a id="share-facebook" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#4267B2" class="bi bi-facebook bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+            </a>
+            <a id="share-reddit" href="#" target="_blank" rel="noopener" class="mx-auto text-decoration-none" data-bs-toggle="tooltip" title="Reddit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#FF4500" class="bi bi-reddit bi-share p-3 rounded-circle bg-white shadow" viewBox="0 0 16 16">
+                <path d="M6.167 8a.831.831 0 0 0-.83.83c0 .459.372.84.83.831a.831.831 0 0 0 0-1.661zm1.843 3.647c.315 0 1.403-.038 1.976-.611a.232.232 0 0 0 0-.306.213.213 0 0 0-.306 0c-.353.363-1.126.487-1.67.487-.545 0-1.308-.124-1.671-.487a.213.213 0 0 0-.306 0 .213.213 0 0 0 0 .306c.564.563 1.652.61 1.977.61zm.992-2.807c0 .458.373.83.831.83.458 0 .83-.381.83-.83a.831.831 0 0 0-1.66 0z"/>
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.828-1.165c-.315 0-.602.124-.812.325-.801-.573-1.9-.945-3.121-.993l.534-2.501 1.738.372a.83.83 0 1 0 .83-.869.83.83 0 0 0-.744.468l-1.938-.41a.203.203 0 0 0-.153.028.186.186 0 0 0-.086.134l-.592 2.788c-1.24.038-2.358.41-3.17.992-.21-.2-.496-.324-.81-.324a1.163 1.163 0 0 0-.478 2.224c-.02.115-.029.23-.029.353 0 1.795 2.091 3.256 4.669 3.256 2.577 0 4.668-1.451 4.668-3.256 0-.114-.01-.238-.029-.353.401-.181.688-.592.688-1.069 0-.65-.525-1.165-1.165-1.165z"/>
+              </svg>
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
  
-  
-  
+
+    <div id="post-tray" class="modal">
+      <div class="modal-dialog modal-fullscreen modal-lg mx-auto" style="max-width: 52em;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="" class="rounded-circle" height="38">
+            <h5 class="ms-3 fw-bold modal-title satisfy"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body px-0 mx-0">
+            <div class="w-100 post-img"></div>
+            <div class="border-bottom p-3 satisfy">
+              <svg xmlns="http://www.w3.org/2000/svg" onclick="postLike()" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="post-like">
+                <path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+              </svg>
+              <span id="like-count-post" class="ms-2">0</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              </svg>
+              <span id="children-post" class="ms-2">0</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+              </svg>
+            </div>
+            <div class="p-3 border-bottom satisfy text-secondary text-center" id="post-body"></div>
+            <p class="post-comment"></p>
+          </div>
+          <div class="modal-footer">
+            <div class="input-group mb-3 w-max-32 mx-auto">
+              <input type="text" class="form-control" placeholder="Say Something ...">
+              <button onclick="postComment()" class="btn btn-outline-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cursor" viewBox="0 0 16 16">
+                  <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   
 <div class="tab-content">
 
-  <main id="home" class="my-3 pb-5 tab-pane fade show active">
-  </main>
+    <main id="home" class="my-3 pb-5 tab-pane fade show active">
+    </main>
 
 
-<main id="search" class="justify-content-center tab-pane pb-3 fade">
- 
-<div class="container-fluid">
-<div class="p-3 bg-white w-100 mt-3 shadow">
-  <div class="input-group input-group-lg mx-auto w-max-32">
-    <div class="btn btn-primary">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-search" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-        </svg>
+    <main id="search" class="justify-content-center tab-pane pb-3 fade">
+
+    <div class="container-fluid">
+    <div class="p-3 bg-white w-100 mt-3 shadow">
+      <div class="input-group input-group-lg mx-auto w-max-32">
+        <div class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+          </div>
+        <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeydown="getSearch(this.id)">
       </div>
-    <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeydown="getSearch(this.id)">
-  </div>
- </div>
-</div>
-  <div id="search-tray" class="w-100 p-3 shadow bg-white my-5 list-group">
-  </div>
-</main>
-
-
-  
-  <main id="discover" class=" w-100 h-100 tab-pane fade">
-    
+     </div>
+    </div>
+      <div id="search-tray" class="w-100 p-3 shadow bg-white my-5 list-group">
+      </div>
+    </main>
+ 
+  <main id="discover" class=" w-100 h-100 tab-pane fade">    
   </main>  
 
-  
-  
-  
-  
-
-
-<main id="profile" class="w-100 h-100 py-3 w-max-56 mx-auto tab-pane fade">
-  <div class="w-max-42 mx-auto">
-
-   <img id="profile-info-profile-pic" class="rounded-circle float-start shadow" height="120" width="120">
-    <p class="satisfy float-start fw-bold fs-3 mt-4 ms-4"><span id="profile-info-username">@username</span><br>
-      <button class="btn btn-primary mt-3 shadow" onclick="followToggle(this);">Follow</button>
-    </p>
-<div class="float-end mt-5 fw-bold tr-follow">
-    <p id="profile-info-followers" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No followers"><span class="count"></span> followers</p>
-    <p id="profile-info-following" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No following"><span class="count"><span> following</p>
-</div>
-  </div>
-  <br>
-    <p id="profile-info-about" class="w-100 float-start mt-4 fs-6 text-center satisfy"></p>
-  <div class="w-100 float-start my-3">
-    <ul role="tablist" class="nav nav-tabs border-top border-botto bg-light tr-profile-nav">
-      <li class="nav-item mx-auto p-2" role="presentation">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16" data-bs-toggle="tab" data-bs-target="#profile-grid">
-  <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13zM1.5 1a.5.5 0 0 0-.5.5V5h4V1H1.5zM5 6H1v4h4V6zm1 4h4V6H6v4zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5v-4zm1 0v4h4v-4H6zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11h-4zm0-1h4V6h-4v4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11v4zm-1 0V1H6v4h4z"/>
-          </svg>
-      </li>
-      <li class="nav-item mx-auto p-2" role="presentation">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16" data-bs-toggle="tab" data-bs-target="#profile-video">
-  <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
-  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-</svg>
-      </li>
-<li class="nav-item mx-auto p-2" role="presentation">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16"  data-bs-toggle="tab" data-bs-target="#profile-info">
-  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
-</svg>
-</li>
-    </ul>
-  </div>
-  <div class="w-100 float-start">
-    <div class="tab-content m-0 p-0 w-100">
-      <div class="container w-100 m-0 p-0 tab-pane mx-auto pb-3 mb-3 fade show active" id="profile-grid" data-bs-toggle="tabpanel">
-        <div class="row w-100 row-cols-3 m-0 p-0 mx-auto pb-3 mb-3">
+    <main id="profile" class="w-100 h-100 py-3 w-max-56 mx-auto tab-pane fade">
+      <div class="w-max-42 mx-auto">
+       <img id="profile-info-profile-pic" class="rounded-circle float-start shadow" height="120" width="120">
+        <p class="satisfy float-start fw-bold fs-3 mt-4 ms-4"><span id="profile-info-username">@username</span><br>
+          <button class="btn btn-primary mt-3 shadow" onclick="followToggle(this);">Follow</button>
+        </p>
+        <div class="float-end mt-5 fw-bold tr-follow">
+            <p id="profile-info-followers" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No followers"><span class="count"></span> followers</p>
+            <p id="profile-info-following" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No following"><span class="count"><span> following</p>
         </div>
       </div>
-      <div class="container w-100 tab-pane pb-3 mb-3 fade p-0 m-0 mx-auto" id="profile-video" data-bs-toggle="tabpanel">
-        <div class="row w-100 row-cols-3 p-0 m-0 mx-auto mb-3 pb-3">
-        </div>
+      <br>
+      <p id="profile-info-about" class="w-100 float-start mt-4 fs-6 text-center satisfy"></p>
+      <div class="w-100 float-start my-3">
+        <ul role="tablist" class="nav nav-tabs border-top border-botto bg-light tr-profile-nav">
+          <li class="nav-item mx-auto p-2" role="presentation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16" data-bs-toggle="tab" data-bs-target="#profile-grid">
+              <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13zM1.5 1a.5.5 0 0 0-.5.5V5h4V1H1.5zM5 6H1v4h4V6zm1 4h4V6H6v4zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5v-4zm1 0v4h4v-4H6zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11h-4zm0-1h4V6h-4v4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11v4zm-1 0V1H6v4h4z"/>
+             </svg>
+          </li>
+          <li class="nav-item mx-auto p-2" role="presentation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-play-btn" viewBox="0 0 16 16" data-bs-toggle="tab" data-bs-target="#profile-video">
+              <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+            </svg>
+          </li>
+          <li class="nav-item mx-auto p-2" role="presentation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16"  data-bs-toggle="tab" data-bs-target="#profile-info">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+              <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
+            </svg>
+          </li>
+        </ul>
       </div>
-      <div class="container text-center pt-3 satisfy tab-pane fade" id="profile-info" style="font-size: 20px;">
-        <span class="text-secondary" style="font-size: 12px;">Power</span>
-        <div class="progress w-max-42 mx-auto">
-          <div id="profile-info-vp" class="progress-bar bg-secondary" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        
-        <p class="text-secondary mt-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Account Reputation"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-  <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-</svg> <span id="profile-info-rep"></span></p>
-        <p class="text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Location"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-  <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
-  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-</svg> <span id="profile-info-loc">Earth<span></p>
-<p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Website"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
-  <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-  <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
-</svg> <span id="profile-info-web">https://example.com</span></p>
-<p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Total Posts"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
-  <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-  <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-</svg> <span id="profile-info-pst-count"></span></p>
-          <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Created On"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="pe-1" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
-  <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-</svg>  <span id="profile-info-created"></span></p>
-<p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Last Update"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
-  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
-</svg> <span id="profile-info-last-up"></span></p>
-          <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Recovery Account"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
-  <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
-  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-</svg> <span id="profile-info-rec-acc"></span></p>
-          
+      <div class="w-100 float-start">
+        <div class="tab-content m-0 p-0 w-100">
+          <div class="container w-100 m-0 p-0 tab-pane mx-auto pb-3 mb-3 fade show active" id="profile-grid" data-bs-toggle="tabpanel">
+            <div class="row w-100 row-cols-3 m-0 p-0 mx-auto pb-3 mb-3">
+            </div>
           </div>
-    </div>
-  </div>
-</main>
+          <div class="container w-100 tab-pane pb-3 mb-3 fade p-0 m-0 mx-auto" id="profile-video" data-bs-toggle="tabpanel">
+            <div class="row w-100 row-cols-3 p-0 m-0 mx-auto mb-3 pb-3">
+            </div>
+          </div>
+          <div class="container text-center pt-3 satisfy tab-pane fade" id="profile-info" style="font-size: 20px;">
+            <span class="text-secondary" style="font-size: 12px;">Power</span>
+            <div class="progress w-max-42 mx-auto">
+              <div id="profile-info-vp" class="progress-bar bg-secondary" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <p class="text-secondary mt-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Account Reputation"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+              <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+            </svg> <span id="profile-info-rep"></span></p>
+            <p class="text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Location"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+              <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+              <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg> <span id="profile-info-loc">Earth<span></p>
+            <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Website"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+              <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+              <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+            </svg> <span id="profile-info-web">https://example.com</span></p>
+            <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Total Posts"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
+              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+            </svg> <span id="profile-info-pst-count"></span></p>
+              <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Created On"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="pe-1" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+              </svg>  <span id="profile-info-created"></span></p>
+              <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Last Update"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+              </svg> <span id="profile-info-last-up"></span></p>
+              <p class="text-secondary" data-bs-toggle="tooltip" data-bs-position="top" title="Recovery Account"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+                <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
+                <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+              </svg> <span id="profile-info-rec-acc"></span></p>
+
+            </div>
+        </div>
+      </div>
+    </main>
 
 </div>
 
