@@ -15,6 +15,12 @@
   - [Blog](https://hivel.ink/@terrive/posts)
   - [About Page](https://terrive.on.fleek.co/about)
 
+## Contact
+
+- Matrix 
+  - [Terrive room](https://matrix.to/#/!dhKAdbofOBAbIrQZVG:matrix.org?via=matrix.org)
+  - [Contact me](https://matrix.to/#/@appukuttan66:matrix.org)
+
 ## License
 
 [MIT](https://terrive.on.fleek.co/LICENSE)
