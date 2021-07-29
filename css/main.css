@@ -5,6 +5,10 @@
 nav, .card-body, .card-title, .dropdown-item, .text-muted, .satisfy {
  font-family: 'Satisfy', cursive;
 }
+.offline-notify{
+  transition: transform 0.3s;
+  transform: translateY(-150%);
+}
 .newtag {
   height: 10px;
   width: 10px;
