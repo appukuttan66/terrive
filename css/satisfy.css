@@ -9,4 +9,5 @@
        url('../fonts/satisfy-v11-latin-regular.woff') format('woff'),
        url('../fonts/satisfy-v11-latin-regular.ttf') format('truetype'),
        url('../fonts/satisfy-v11-latin-regular.svg#Satisfy') format('svg');
+  font-display: swap;
 }
