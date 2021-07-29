@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <title>Terrive: Decentralized Photo-Sharing Platform</title>
   <meta name="og:type" content="website">
   <meta name="og:title" content="Terrive: Decentralized Photo-Sharing Platform">
@@ -11,9 +10,8 @@
   <meta name="og:description" content="Terrive is a decentralized Photo-Sharing Platform powered by the Hive Blockchain.">
   <meta name="og:site_name" content="Terrive">
   <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
-  <link href="https://fonts.googleapis.com/css2?family=Satisfy&amp;display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="../css/about.css" rel="stylesheet">
 </head>
 <body class="w-100 h-100 bg-light text-center">
 
@@ -76,87 +74,7 @@
         <li class="nav-item"><a class="nav-link h3 text-dark" href="#">Back to top</a></li>
       </ul>
   </footer>
-  <style>
-    .satisfy {
-      font-family: 'Satisfy',cursive;
-     }
-    html{
-      --bg-tr: linear-gradient(45deg,#8ec5fc,#e0c3fc);
-      --bg-tr-f: linear-gradient(45deg,var(--bs-dark),transparent);
-    }
-    .bg-tr, .bg-tr-h:hover {
-      background: var(--bg-tr);
-    }
-    .bg-tr-fade {
-      background: var(--bg-tr-f);
-    } 
-    .bg-nav-white {
-      background: var(--bs-light);
-      opacity: 0.9;
-    }
-    .border-bottom-tr {
-      border-bottom: 2px transparent solid;
-      border-image: var(--bg-tr);
-      border-image-slice: 1;
-    }
-    .text-tr , .text-tr-hover:hover {
-        background-image: var(--bg-tr);
-        -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-    }
-    .text-tr-white:hover {
-      background-color: #fff;
-      background-image: none;
-    }
-    .btn-light:hover {
-      background: transparent;
-    }
-    .btn-blog:hover {
-      opacity: 0.8;
-    }
-    @media (min-width: 42em) {
-      .r-50 {
-        max-width: 50%;
-      }
-    }
-  </style>
-  <script>
-    var navbar = document.querySelector('.fixed-top');
-    window.onscroll = function() {
-      if (window.scrollY > 300) {
-          navbar.classList.add('bg-nav-white');
-          navbar.classList.replace('navbar-dark','navbar-light')
-      } else {
-          navbar.classList.remove('bg-nav-white');
-          navbar.classList.replace('navbar-light','navbar-dark')
-      }
-  };
-  getBlog()
-  function getBlog() {
-    var url = "https://api.hive.blog";
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url);
-
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-          console.log(xhr.status);
-          pushBlog(JSON.parse(xhr.responseText));
-       }};
-
-    var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_blog_entries", "params":["terrive",0,3], "id":1}';
-
-    xhr.send(data);
-  }
-  function pushBlog(res) {
-    var i = 0;
-    while(i < res.result.length) {
-      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replaceAll("-"," ")+'</h5><a target="_blank" rel="noopener" href="https://hivel.ink/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
-      i = i + 1;
-    }
-  }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" defer integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script src="../js/about.js" defer></script>
 </body>
 </html>
