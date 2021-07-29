@@ -58,6 +58,8 @@ html{
   .text-start, .text-end {
     text-align: center !important;
   }
+}
+@media (min-width: 320px) {
   iframe {
     width: auto;
   }
