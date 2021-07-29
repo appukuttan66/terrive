@@ -3,6 +3,8 @@ self.addEventListener("install",function(installEvent){
     caches.open("sw-cache").then(function(cache){
       return cache.add('index.html');
       return cache.add('auth.html');
+      return cache.add('js/main.js');
+      return cache.add('css/main.css');
     })
   );
 });

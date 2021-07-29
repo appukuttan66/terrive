@@ -1,0 +1,61 @@
+.satisfy {
+  font-family: 'Satisfy',cursive;
+}
+html{
+  --bg-tr: linear-gradient(45deg,#8ec5fc,#e0c3fc);
+  --bg-tr-f: linear-gradient(45deg,var(--bs-dark),transparent);
+}
+.boing {
+  animation-name: boing;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+@keyframes boing {
+  0% {
+    bottom: 3rem;
+  }
+  50% {
+    bottom: 0;
+  }
+  100% {
+    bottom: 3rem;
+  }
+}
+.bg-tr, .bg-tr-h:hover {
+  background: var(--bg-tr);
+}
+.bg-tr-fade {
+  background: var(--bg-tr-f);
+} 
+.bg-nav-white {
+  background: var(--bs-light);
+  opacity: 0.9;
+}
+.border-bottom-tr {
+  border-bottom: 2px transparent solid;
+  border-image: var(--bg-tr);
+  border-image-slice: 1;
+}
+.text-tr , .text-tr-hover:hover {
+   background-image: var(--bg-tr);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+.text-tr-white:hover {
+  background-color: #fff;
+  background-image: none;
+}
+.btn-light:hover {
+  background: transparent;
+}
+.btn-blog:hover {
+  opacity: 0.8;
+}
+@media (min-width: 42em) {
+  .r-50 {
+     max-width: 50%;
+   }
+  .text-start, .text-end {
+    text-align: center !important;
+  }
+}

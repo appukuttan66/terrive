@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <title>Terrive: Decentralized Photo-Sharing Platform</title>
   <meta name="og:type" content="website">
   <meta name="og:title" content="Terrive: Decentralized Photo-Sharing Platform">
@@ -11,9 +10,10 @@
   <meta name="og:description" content="Terrive is a decentralized Photo-Sharing Platform powered by the Hive Blockchain.">
   <meta name="og:site_name" content="Terrive">
   <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
-  <link href="https://fonts.googleapis.com/css2?family=Satisfy&amp;display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <link rel="preload" href="../fonts/satisfy-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="../css/satisfy.css" rel="stylesheet">
+  <link href="../css/about.css" rel="stylesheet">
 </head>
 <body class="w-100 h-100 bg-light text-center">
 
@@ -40,10 +40,22 @@
 </nav>
 
   <div class="w-100 h-100 flex-column d-flex justify-content-center align-items-center text-white bg-tr">
-<h1 class="satisfy mb-3">Terrive</h1>
+    <h1 class="satisfy mb-3 mt-auto">Terrive</h1>
     <p class="lead px-5" style="max-width: 42em;">Your first step to Decentralized Social Media</p>
     <a href="/" class="btn btn-lg btn-light rounded-pill border-2 mb-2"><span class="text-tr text-tr-white">Get Started</span></a>
     <a href="https://signup.hive.io" target="_blank" rel="noopener" class="btn btn-lg btn-outline-light text-white rounded-pill border-2"><span class="text-tr-hover">Create Account</span></a>
+    <a href="#seenon" class="mt-auto mb-5 position-relative boing">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="var(--bs-light)" class="bi bi-chevron-double-down" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        <path fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+      </svg>
+    </a>
+  </div>
+  <div id="seenon" class="mt-5">
+    <div class="lead mb-3">Featured On</div>
+    <a href="https://www.stateofthedapps.com/dapps/terrive" class="mx-3"><img class="shadow" src="https://storageapi.fleek.co/appukuttan66-team-bucket/icon-rounded-black.svg" title="stateofthedapps" alt="SD" height="76" width="76"></a>
+    <a href="https://hiveprojects.io/projects/p/terrive/" class="mx-3"><img class="shadow bg-dark p-3 rounded" src="https://storageapi.fleek.co/appukuttan66-team-bucket/apple-touch-icon.png" title="hiveprojects" alt="HP" height="76" width="76"></a>
+    <a href="https://awesome.ipfs.io" class="mx-3"><img src="https://images.ecency.com/76x76/https://awesome.ipfs.io/images/logo.png" class="shadow p-2 bg-dark rounded" title="Awesome IPFS ( soon )" alt="IPFS" height="76" width="76"></a>
   </div>
   <div id="features" class="p-3 mt-5">
     <div class="lead">Features</div>
@@ -68,95 +80,36 @@
     <div class="lead">Blog</div>
     
   </div>
+  <div id="mail" class="mt-5">
+    <div class="lead">Subscribe to Terrive's Newsletter</div><br>
+    <iframe src="https://terrive.substack.com/embed" width="480" height="320" class="bg-light border border-primary border-2 shadow"></iframe>
+  </div>
   <footer class="p-5">
-    <ul class="navbar-nav w-100">
-        <li class="nav-item"><a class="nav-link h3 text-dark" href="#features">Features</a></li>
-        <li class="nav-item"><a class="nav-link h3 text-dark" href="#blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link h3 text-dark" href="https://hivel.ink/@terrive/comprehensive-guide-to-terrive">Help</a></li>
-        <li class="nav-item"><a class="nav-link h3 text-dark" href="#">Back to top</a></li>
-      </ul>
+    <a href="https://github.com/appukuttan66/terrive" class="text-decoration-none mx-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="var(--bs-light)" class="bi bi-github" viewBox="0 0 16 16">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+    </a>
+    <a href="https://matrix.to/#/!dhKAdbofOBAbIrQZVG:matrix.org?via=matrix.org" class="text-decoration-none mx-2">
+      <svg width="32" height="32" viewBox="0 0 1024 1024" fill="var(--bs-light)" xmlns="http://www.w3.org/2000/svg">
+        <path d="M414 204C414 180.804 432.804 162 456 162C610.64 162 736 287.36 736 442C736 465.196 717.196 484 694 484C670.804 484 652 465.196 652 442C652 333.752 564.248 246 456 246C432.804 246 414 227.196 414 204Z"/>
+        <path d="M610 820C610 843.196 591.196 862 568 862C413.36 862 288 736.64 288 582C288 558.804 306.804 540 330 540C353.196 540 372 558.804 372 582C372 690.248 459.752 778 568 778C591.196 778 610 796.804 610 820Z"/>
+        <path d="M204 610C180.804 610 162 591.196 162 568C162 413.36 287.36 288 442 288C465.196 288 484 306.804 484 330C484 353.196 465.196 372 442 372C333.752 372 246 459.752 246 568C246 591.196 227.196 610 204 610Z"/>
+        <path d="M820 414C843.196 414 862 432.804 862 456C862 610.64 736.64 736 582 736C558.804 736 540 717.196 540 694C540 670.804 558.804 652 582 652C690.248 652 778 564.248 778 456C778 432.804 796.804 414 820 414Z"/>
+      </svg>
+    </a>
+    <a href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-decoration-none mx-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--bs-light)" class="bi bi-gift" viewBox="0 0 16 16">
+        <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zM1 4v2h6V4H1zm8 0v2h6V4H9zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5V7zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5H7z"/>
+      </svg>
+    </a>
+    <a href="https://hivel.ink/@terrive" class="text-decoration-none mx-2">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="var(--bs-light)" width="22" height="22">
+        <path d="M260.353,254.878,131.538,33.1a2.208,2.208,0,0,0-3.829.009L.3,254.887A2.234,2.234,0,0,0,.3,257.122L129.116,478.9a2.208,2.208,0,0,0,3.83-.009L260.358,257.113A2.239,2.239,0,0,0,260.353,254.878Zm39.078-25.713a2.19,2.19,0,0,0,1.9,1.111h66.509a2.226,2.226,0,0,0,1.9-3.341L259.115,33.111a2.187,2.187,0,0,0-1.9-1.111H190.707a2.226,2.226,0,0,0-1.9,3.341ZM511.7,254.886,384.9,33.112A2.2,2.2,0,0,0,382.99,32h-66.6a2.226,2.226,0,0,0-1.906,3.34L440.652,256,314.481,476.66a2.226,2.226,0,0,0,1.906,3.34h66.6a2.2,2.2,0,0,0,1.906-1.112L511.7,257.114A2.243,2.243,0,0,0,511.7,254.886ZM366.016,284.917H299.508a2.187,2.187,0,0,0-1.9,1.111l-108.8,190.631a2.226,2.226,0,0,0,1.9,3.341h66.509a2.187,2.187,0,0,0,1.9-1.111l108.8-190.631A2.226,2.226,0,0,0,366.016,284.917Z"></path>
+      </svg>
+    </a>
   </footer>
-  <style>
-    .satisfy {
-      font-family: 'Satisfy',cursive;
-     }
-    html{
-      --bg-tr: linear-gradient(45deg,#8ec5fc,#e0c3fc);
-      --bg-tr-f: linear-gradient(45deg,var(--bs-dark),transparent);
-    }
-    .bg-tr, .bg-tr-h:hover {
-      background: var(--bg-tr);
-    }
-    .bg-tr-fade {
-      background: var(--bg-tr-f);
-    } 
-    .bg-nav-white {
-      background: var(--bs-light);
-      opacity: 0.9;
-    }
-    .border-bottom-tr {
-      border-bottom: 2px transparent solid;
-      border-image: var(--bg-tr);
-      border-image-slice: 1;
-    }
-    .text-tr , .text-tr-hover:hover {
-        background-image: var(--bg-tr);
-        -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-    }
-    .text-tr-white:hover {
-      background-color: #fff;
-      background-image: none;
-    }
-    .btn-light:hover {
-      background: transparent;
-    }
-    .btn-blog:hover {
-      opacity: 0.8;
-    }
-    @media (min-width: 42em) {
-      .r-50 {
-        max-width: 50%;
-      }
-    }
-  </style>
-  <script>
-    var navbar = document.querySelector('.fixed-top');
-    window.onscroll = function() {
-      if (window.scrollY > 300) {
-          navbar.classList.add('bg-nav-white');
-          navbar.classList.replace('navbar-dark','navbar-light')
-      } else {
-          navbar.classList.remove('bg-nav-white');
-          navbar.classList.replace('navbar-light','navbar-dark')
-      }
-  };
-  getBlog()
-  function getBlog() {
-    var url = "https://api.hive.blog";
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url);
-
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-          console.log(xhr.status);
-          pushBlog(JSON.parse(xhr.responseText));
-       }};
-
-    var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_blog_entries", "params":["terrive",0,3], "id":1}';
-
-    xhr.send(data);
-  }
-  function pushBlog(res) {
-    var i = 0;
-    while(i < res.result.length) {
-      document.getElementById('blog').innerHTML += '<div class="card mt-3 mx-auto border-0 shadow" style="max-width: 42em;"><img src="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit" class="card-img-top" alt="..."><div class="card-body"><h5 class="card-title">By: <span class="text-tr satisfy">'+res.result[i].author+'</span></h5><h5 class="card-title">'+res.result[i].permlink.replaceAll("-"," ")+'</h5><a target="_blank" rel="noopener" href="https://hivel.ink/@'+res.result[i].author+'/'+res.result[i].permlink+'" class="border-bottom-tr btn border-2 text-tr mt-3 btn-blog">Read Blog</a></div></div>'
-      i = i + 1;
-    }
-  }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" defer integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script src="../js/about.js" defer></script>
 </body>
 </html>
