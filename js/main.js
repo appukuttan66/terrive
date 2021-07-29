@@ -713,5 +713,11 @@ if (json.video) {
 }
 
 window.addEventListener("load",function(){
-  document.getElementById("loader").classList.replace("visible","invisible")
+  document.getElementById("loader").classList.replace("visible","invisible");
+  window.addEventListener("offline",function(){
+    document.querySelector(".offline-notify").classList.add("offline");
+  })
+  window.addEventListener("online",function(){
+    document.querySelector(".offline-notify").classList.remove("offline");
+  })
 })
