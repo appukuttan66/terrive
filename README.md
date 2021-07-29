@@ -18,7 +18,7 @@
 ## Contact
 
 - Matrix 
-  - [Terrive room](https://matrix.to/#/!dhKAdbofOBAbIrQZVG:matrix.org?via=matrix.org)
+  - [Terrive's room](https://matrix.to/#/!dhKAdbofOBAbIrQZVG:matrix.org?via=matrix.org)
   - [Contact me](https://matrix.to/#/@appukuttan66:matrix.org)
 
 ## License
