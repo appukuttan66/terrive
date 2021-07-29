@@ -1,5 +1,6 @@
 {
  "name": "Terrive Lite",
+ "short_name": "Terrive",
  "display": "standalone",
  "start_url": "index.html",
  "background_color": "#f8f9fa",
