@@ -12,13 +12,13 @@ html{
 }
 @keyframes boing {
   0% {
-    bottom: 3rem;
+    bottom: 5%;
   }
   50% {
     bottom: 0;
   }
   100% {
-    bottom: 3rem;
+    bottom: 5%;
   }
 }
 .bg-tr, .bg-tr-h:hover {
@@ -57,5 +57,10 @@ html{
    }
   .text-start, .text-end {
     text-align: center !important;
+  }
+}
+@media (min-width: 320px){
+  iframe {
+    width: auto;
   }
 }
