@@ -586,7 +586,7 @@ function getNotifications () {
            console.log(not)
          }else {
            let x;
-           if ( not.type = reply ) {
+           if ( not.type = "reply" ) {
             x = "&reply";
            } else {
             x = "";
