@@ -527,13 +527,13 @@ function getFeed () {
   });
 }
 
+const cfwrkr = work("js/created.js")
 function getNew () {
-  hive.api.getDiscussionsByCreated({tag: 'trhome', limit: 35, truncate_body: 1,} , function(err,res) {
-    if ( err === null ) {
-      filterTag(res,"new");
-    } else {console.log(err);}
-  });
+  cfwrkr.postMessage(hive.api)
 }
+cfwrkr.addEventListener("message", e => {
+      filterTag(e.data,"new");
+});
 
 document.querySelectorAll('a[href="#home"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
