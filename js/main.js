@@ -694,12 +694,12 @@ function pushProfile (res) {
     if (img === undefined) {console.log(counter);}
     else if (res[counter].category == 'trhome') {
       eleProfileGrid.innerHTML += '<div id="trImg'+counter+'" class="col tr-profile-img" data-bs-toggle="modal" data-bs-target="#post-tray" data-tr-src="'+img.toString()+'" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-children="'+res[counter].children+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-body="'+json.description+'"></div>';
-      document.querySelector('#trImg'+counter).style.backgroundImage = 'url("https://images.ecency.com/p/'+b58(img[0])+'"?format=webp&mode=fit&width=400")';
+      document.querySelector('#trImg'+counter).style.backgroundImage = 'url("https://images.ecency.com/p/'+b58(img[0])+'"?format=webp&mode=fit")';
     }
     else if (res[counter].category === 'trvideo') {
       console.log(json.video)
       eleProfileVideo.innerHTML += '<div id="trVid'+counter+'" class="col bg-secondary rounded tr-profile-img tr-profile-video-gra" data-bs-toggle="modal" data-bs-target="#post-tray" data-tr-author="'+res[counter].author+'" data-tr-src="'+json.video[0]+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-children="'+res[counter].children+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-body="'+json.description+'" data-tr-type="vid"></div>';
-      document.querySelector('#trVid'+counter).style.backgroundImage = 'url("https://images.ecency.com/p/'+b58(img[0])+'?format=webp&mode=fit&width=400")';
+      document.querySelector('#trVid'+counter).style.backgroundImage = 'url("https://images.ecency.com/p/'+b58(img[0])+'?format=webp&mode=fit")';
     }
     document.getElementById("loader").classList.replace("visible","invisible")
     counter = counter + 1;
