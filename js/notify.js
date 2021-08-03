@@ -13,7 +13,7 @@ addEventListener("message", event => {
        var json = JSON.parse(xhr.responseText);
        while (counter < json.result.length) {
          var not = json.result[counter];
-         if(not !=== undefined) {
+         if(not !== undefined) {
            let x;
            if ( not.type == "reply" ) {
             x = "&reply";
