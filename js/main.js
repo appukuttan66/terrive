@@ -55,14 +55,6 @@ function keychainLogin(){
   );
 }
 
-var cfwrkr = new Worker("js/created.js")
-
-cfwrkr.addEventListener("message", function(e) {
-      filterTag(e.data,"new");
-})
-function getNew () {
-  cfwrkr.postMessage(hive.api)
-}
 
 function postTypeSelector(type) {
   if (type == 'image') {
@@ -527,7 +519,6 @@ function followToggle(ele) {
   }
 }
 
-getNew();
 function getFeed () {
   hive.api.getDiscussionsByFeed({ tag: username, limit: 100, truncate_body: 1,} , function(err,res){
     if ( err === null ) {
@@ -535,7 +526,13 @@ function getFeed () {
       } else{console.log(err);}
   });
 }
-
+function getNew() {
+  hive.api.getDiscussionsByCreated({tag: 'trhome', limit: 35, truncate_body: 1,} , function(err,res) {
+    if ( err === null ) {
+      filterTag(res,"new");
+    } else {console.log(err);}
+  });
+}
 document.querySelectorAll('a[href="#home"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
     getFeed();
@@ -693,7 +690,8 @@ if (json.video) {
 }
 
 window.addEventListener("load",function(){
-  document.getElementById("loader").classList.replace("visible","invisible"); 
+  document.getElementById("loader").classList.replace("visible","invisible");
+  getNew()
   window.addEventListener("offline",function(){
     document.querySelector(".offline-notify").classList.add("offline");
   })
