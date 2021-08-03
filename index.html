@@ -37,16 +37,14 @@
   </script>
   <!--Preconnects, DNS prefetch and Preload-->
   <link rel="preload" href="fonts/satisfy-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://rpc.ecency.com">
   <link rel="dns-prefetch" href="https://rpc.ecency.com">
-  <link rel="preconnect" href="https://images.hive.blog">
   <link rel="preconnect" href="https://images.ecency.com">
   <link rel="dns-prefetch" href="https://images.ecency.com">
-  <link rel="preconnect" href="https://hivesigner.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <!--CSS-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="css/main.css" rel="stylesheet">
   <link href="css/satisfy.css" rel="stylesheet">
   </head>
@@ -207,7 +205,7 @@
 
           </div>
           <div class="modal-footer">
-           <span class="text-secondary me-3" style="font-size:14px;">Need help? Check out the <a href="#">FAQs</a></span>
+           <span class="text-secondary me-3" style="font-size:14px;">Need help? Check out the <a href="about">FAQs</a></span>
             <button type="button" class="btn btn-outline-primary" onclick="clearUploadTray()">Clear</button>
             <button type="button" class="btn btn-primary" onclick="submitPost()">Upload</button>
           </div>
@@ -295,7 +293,7 @@
                 <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
               </svg>
             </div>
-            <div class="p-3 border-bottom satisfy text-secondary text-center" id="post-body"></div>
+            <div class="p-3 border-bottom text-secondary text-center" id="post-body"></div>
             <p class="post-comment"></p>
           </div>
           <div class="modal-footer">
@@ -425,7 +423,7 @@
 
 </div>
   <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/hivesigner@latest/lib/hivesigner.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/remarkable@2.0.1/dist/remarkable.min.js" defer></script>
   <script src="js/b58.js" defer></script>
