@@ -1,5 +1,6 @@
 addEventListener("message", event => {
   const [rpc, username] = event.data;
+  var counter = 0;
   
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url);
