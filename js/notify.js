@@ -1,5 +1,5 @@
 addEventListener("message", event => {
-  const [rpc, username] = event.data;
+  const [url, username] = event.data;
   var counter = 0;
   
   var xhr = new XMLHttpRequest();
