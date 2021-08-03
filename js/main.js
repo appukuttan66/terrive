@@ -565,7 +565,7 @@ function getProfileInfo(u) {
   })
 }
 
-const notifywrkr = work("notify.js");
+const notifywrkr = work("js/notify.js");
 
 notifywrkr.addEventListener("message",function(e){
   document.getElementById("notify-body").innerHTML += e.data;
