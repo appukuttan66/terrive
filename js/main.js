@@ -527,18 +527,14 @@ function getFeed () {
   });
 }
 
-function work(me) {
-  var wrkr = new Worker(me);
-  return wrkr
-} 
 
-var cfwrkr = work("js/created.js")
+var cfwrkr = new Worker("js/created.js")
+cfwrkr.addEventListener("message", e => {
+      filterTag(e.data,"new");
+})
 function getNew () {
   cfwrkr.postMessage(hive.api)
 }
-cfwrkr.addEventListener("message", e => {
-      filterTag(e.data,"new");
-});
 
 document.querySelectorAll('a[href="#home"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
@@ -570,7 +566,7 @@ function getProfileInfo(u) {
   })
 }
 
-var notifywrkr = work("js/notify.js");
+var notifywrkr = new Worker("js/notify.js");
 
 notifywrkr.addEventListener("message",function(e){
   document.getElementById("notify-body").innerHTML += e.data;
