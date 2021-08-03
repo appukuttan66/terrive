@@ -527,7 +527,7 @@ function getFeed () {
   });
 }
 
-const cfwrkr = work("js/created.js")
+var cfwrkr = work("js/created.js")
 function getNew () {
   cfwrkr.postMessage(hive.api)
 }
@@ -565,7 +565,7 @@ function getProfileInfo(u) {
   })
 }
 
-const notifywrkr = work("js/notify.js");
+var notifywrkr = work("js/notify.js");
 
 notifywrkr.addEventListener("message",function(e){
   document.getElementById("notify-body").innerHTML += e.data;
