@@ -527,6 +527,11 @@ function getFeed () {
   });
 }
 
+function work(me) {
+  var wrkr = new Worker(me);
+  return wrkr
+} 
+
 var cfwrkr = work("js/created.js")
 function getNew () {
   cfwrkr.postMessage(hive.api)
@@ -576,12 +581,6 @@ function getNotifications() {
   document.getElementById("notify-body").innerHTML = "";
   notifywrkr.postMessage([rpc,username])
 }
-
-
-function work(me) {
-  var wrkr = new Worker(me);
-  return wrkr
-} 
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
