@@ -432,7 +432,7 @@ function getReplies(u,p){
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow satisfy alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark">reply</a></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none satisfy" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div>';
         counter = counter + 1;
       }
     }else{console.log(e);}
