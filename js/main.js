@@ -54,7 +54,16 @@ function keychainLogin(){
     }
   );
 }
-  
+
+var cfwrkr = new Worker("js/created.js")
+
+cfwrkr.addEventListener("message", function(e) {
+      filterTag(e.data,"new");
+})
+function getNew () {
+  cfwrkr.postMessage(hive.api)
+}
+
 function postTypeSelector(type) {
   if (type == 'image') {
     document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br>'; 
@@ -525,15 +534,6 @@ function getFeed () {
           filterTag(res,"feed");
       } else{console.log(err);}
   });
-}
-
-
-var cfwrkr = new Worker("js/created.js")
-cfwrkr.addEventListener("message", e => {
-      filterTag(e.data,"new");
-})
-function getNew () {
-  cfwrkr.postMessage(hive.api)
 }
 
 document.querySelectorAll('a[href="#home"]').forEach(function(ele){
