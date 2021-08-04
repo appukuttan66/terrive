@@ -58,7 +58,7 @@ function keychainLogin(){
 
 function postTypeSelector(type) {
   if (type == 'image') {
-    document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br>'; 
+    document.getElementById("upload-input-wrap").innerHTML = '<input id="input-image" type="file" accept="image/*" hidden><label class="position-absolute end-0 m-1" for="input-image"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="var(--bs-primary)" class="bi bi-plus-square-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/></svg></label><div class="position-relative"><input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br></div>'; 
   } else if (type == 'video') {
     document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-video-url" onchange="loadPostPreview(this.value,this.id)" type="text" class="form-control" placeholder="URL of Video"><br><input id="upload-video-url-cover" type="text" class="form-control" placeholder="URL of Cover Image"><br>';
   }
@@ -117,6 +117,7 @@ fi.addEventListener("change", function(e){
       r.json().then(function(d){
         console.log(d)
         txt.value += x + "https://ipfs.infura.io/ipfs/" + d.Hash;
+        window.setTimeout(loadPostPreview(txt.value),500);
       }).catch(function(err){console.log(err);})
     }).catch(function(er){console.log(er);})
   });
