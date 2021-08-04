@@ -58,7 +58,7 @@ function keychainLogin(){
 
 function postTypeSelector(type) {
   if (type == 'image') {
-    document.getElementById("upload-input-wrap").innerHTML = '<input id="input-image" type="file" accept="image/*" hidden><label class="position-absolute end-0 m-1" for="input-image"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="var(--bs-primary)" class="bi bi-plus-square-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/></svg></label><div class="position-relative"><input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br></div>'; 
+    document.getElementById("upload-input-wrap").innerHTML = '<input id="input-image-ele" type="file" accept="image/*" hidden><div class="position-relative"><label class="position-absolute end-0 m-1" for="input-image-ele"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="var(--bs-primary)" class="bi bi-plus-square-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/></svg></label><input id="upload-image-url" onchange="loadPostPreview(this.value)" type="text" class="form-control" placeholder="URLs ( Seperated by Space )"><br></div>'; 
   } else if (type == 'video') {
     document.getElementById("upload-input-wrap").innerHTML = '<input id="upload-video-url" onchange="loadPostPreview(this.value,this.id)" type="text" class="form-control" placeholder="URL of Video"><br><input id="upload-video-url-cover" type="text" class="form-control" placeholder="URL of Cover Image"><br>';
   }
@@ -132,14 +132,14 @@ function submitPost(){
   
   if(document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
-    var body = "![]("+imagelink[0]+") <br><br> **See this Image on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+")** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var body = "[![]("+imagelink[0]+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
     broadcastPost(username,permlink,body,jsonMetadata,'trhome')
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
     var coverV = document.getElementById('upload-video-url-cover').value;
-    var bodyVC = "![]("+coverV+") <br><br> **See this Video on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video)** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var bodyVC = "[![]("+coverV+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
     broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo')
@@ -147,17 +147,22 @@ function submitPost(){
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
     var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
-    var bodyV = "![]("+alt+") <br><br> **See this Video on [Terrive](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video)** <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var bodyV = "[![]("+alt+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo')
   }
   
 }
+function reg(s, n) {
+  //Thank you StackOverflow !!
+  var a = s.match(new RegExp('[\\w\\.]+' + '(?:[\\s-]*[\\w\\.]+){0,' + (n - 1) + '}')); 
+  return  (a === undefined || a === null) ? '' : a[0];
+}
 
 function broadcastPost(u,permlink,body,jsonMetadata,type){
   if (accessToken) {
-    client.comment('',type,u,permlink,permlink,body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,permlink,reg(body,2),body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
@@ -168,7 +173,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type){
   } else if (loginType == "keychain") {
     hive_keychain.requestPost(
     u,
-    permlink,
+    reg(body,2),
     body,
     type,
     '',
@@ -218,7 +223,6 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           json,
           'Reblog a Post',
           function (response) {
-            console.log("reblogging ...");
             console.log(response);
           }
        );
