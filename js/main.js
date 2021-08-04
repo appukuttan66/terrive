@@ -116,7 +116,7 @@ fi.addEventListener("change", function(e){
     }).then(function(r){
       r.json().then(function(d){
         console.log(d)
-        txt.value += x + d.Hash
+        txt.value += x + "https://ipfs.infura.io/ipfs/" + d.Hash;
       }).catch(function(err){console.log(err);})
     }).catch(function(er){console.log(er);})
   });
