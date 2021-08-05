@@ -130,6 +130,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
 
     console.log(f.size)
     if (f.size < 15000000) {
+      document.getElementById('upload-post-preview').innerHTML = '<div class="spinner-grow text-primary" role="status"></div>'
       f.arrayBuffer().then(function (arrayBuffer) {
         var b = new Blob([new Uint8Array(arrayBuffer)], {type: "application/octet-stream" });
         var fd = new FormData();
@@ -142,7 +143,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
           r.json().then(function(d){
             var uvuin = document.getElementById("upload-video-url") 
             uvuin.value = "https://ipfs.infura.io/ipfs/" + d.Hash;
-            window.setTimeout(loadPostPreview(uvuin.value,'upload-post-preview'),500)
+            window.setTimeout(loadPostPreview(uvuin.value,'upload-video-url'),500)
           }).catch(function(e){console.log(e);})
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
