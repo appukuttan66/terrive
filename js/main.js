@@ -126,6 +126,7 @@ fi.addEventListener("change", function(e){
 function submitPost(){
   var permlink = Math.random().toString(36).substring(2)
   var descBody = document.getElementById('textbox').value
+  var title = reg(descBody,2);
   var eleTags = document.getElementsByClassName('tag-wrap')
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
@@ -134,7 +135,7 @@ function submitPost(){
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "[![]("+imagelink[0]+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
-    broadcastPost(username,permlink,body,jsonMetadata,'trhome')
+    broadcastPost(username,permlink,body,jsonMetadata,'trhome',title)
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
@@ -142,7 +143,7 @@ function submitPost(){
     var bodyVC = "[![]("+coverV+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
-    broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo')
+    broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo',title)
   }
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
@@ -150,7 +151,7 @@ function submitPost(){
     var bodyV = "[![]("+alt+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
-    broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo')
+    broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo',title)
   }
   
 }
@@ -160,9 +161,9 @@ function reg(s, n) {
   return  (a === undefined || a === null) ? '' : a[0];
 }
 
-function broadcastPost(u,permlink,body,jsonMetadata,type){
+function broadcastPost(u,permlink,body,jsonMetadata,type,title){
   if (accessToken) {
-    client.comment('',type,u,permlink,reg(body,2),body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,permlink,title,body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
@@ -173,7 +174,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type){
   } else if (loginType == "keychain") {
     hive_keychain.requestPost(
     u,
-    reg(body,2),
+    title,
     body,
     type,
     '',
