@@ -59,7 +59,7 @@ html{
     text-align: center !important;
   }
 }
-@media (min-width: 320px) {
+@media (min-width: 320px){
   iframe {
     width: auto;
   }

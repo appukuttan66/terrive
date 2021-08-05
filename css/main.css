@@ -2,12 +2,15 @@
 .list-group-item {
   max-width: 42em;
 }
-nav, .card-body, .card-title, .dropdown-item, .text-muted, .satisfy {
+nav, .card-title, .dropdown-item, .text-muted, .satisfy {
  font-family: 'Satisfy', cursive;
 }
 .offline-notify{
   transition: transform 0.3s;
   transform: translateY(-150%);
+}
+.m-1-5 {
+  margin: 0.375rem;
 }
 .newtag {
   height: 10px;
