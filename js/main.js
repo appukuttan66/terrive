@@ -140,9 +140,9 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
           mode: 'cors'
         }).then(function(r){
           r.json().then(function(d){
-            var uvuin = document.getElementById("upload-video-url").value 
-            uvuin = "https://ipfs.infura.io/ipfs/"+d.Hash;
-            window.setTimeout(loadPostPreview(uvuin),500)
+            var uvuin = document.getElementById("upload-video-url") 
+            uvuin.value = "https://ipfs.infura.io/ipfs/" + d.Hash;
+            window.setTimeout(loadPostPreview(uvuin.value,'upload-post-preview'),500)
           }).catch(function(e){console.log(e);})
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
@@ -374,10 +374,10 @@ function postComment(){
   var parentAuthor = rTarg.getAttribute("data-tr-author")
   var parentPermlink = rTarg.getAttribute("data-tr-permlink")
   var permlink = Math.random().toString(36).substring(2);
-  var body = document.querySelector("#post-tray .modal-footer input").value
+  var body = document.querySelector("#post-tray .modal-footer input")
   var json = JSON.stringify({app: "terrive/0.0.0"})
   if(accessToken){
-    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, json, function (err, res) {
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', body.value, json, function (err, res) {
       if ( err === null ){
         console.log(res)
         body = "";
@@ -387,7 +387,7 @@ function postComment(){
         hive_keychain.requestPost(
           username,
           '',
-          body,
+          body.value,
           parentPermlink,
           parentAuthor,
           json,
@@ -397,7 +397,7 @@ function postComment(){
             console.log("commenting ...");
             console.log(response);
             if (response.success == true){
-              body = "";
+              body.value = "";
             }
           }
         );
