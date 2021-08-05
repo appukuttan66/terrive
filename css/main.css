@@ -9,6 +9,9 @@ nav, .card-title, .dropdown-item, .text-muted, .satisfy {
   transition: transform 0.3s;
   transform: translateY(-150%);
 }
+.m-1-5 {
+  margin: 0.375rem;
+}
 .newtag {
   height: 10px;
   width: 10px;
