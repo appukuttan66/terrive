@@ -123,6 +123,63 @@ fi.addEventListener("change", function(e){
   });
 });
 
+var fv = document.getElementById("input-image-ele")
+
+fv.addEventListener("change", function(e){
+  
+  var f = e.target.files[0]
+  
+  console.log(f.size)
+  if (f.size < 15000000) {
+    f.arrayBuffer().then(function (arrayBuffer) {
+      var b = new Blob([new Uint8Array(arrayBuffer)], {type: "application/octet-stream" });
+      var fd = new FormData();
+      fd.append('file', b, f.name);
+      fetch('https://ipfs.infura.io:5001/api/v0/add', {
+        method: 'POST',
+        body: fd,
+        mode: 'cors'
+      }).then(function(r){
+        r.json().then(function(d){
+          console.log(d)
+          txt.value += x + d.Hash
+          document.querySelector("#").src = "https://ipfs.infura.io/ipfs/"+d.Hash;
+        }).catch(function(e){console.log(e);})
+      }).catch(function(er){console.log(er);})
+    }).then(function(){ 
+      var videoele = document.createElement("video")
+      videoele.src = URL.createObjectURL(f)
+      
+      videoele.onloadedmetadata = window.setTimeout(function() {
+        document.body.appendChild(videoele)
+        var canvas = document.createElement("canvas")
+        var ctx = canvas.getContext("2d")
+        canvas.height = videoele.videoHeight;
+        canvas.width = videoele.videoWidth;
+        ctx.drawImage(videoele, 0, 0, canvas.width, canvas.height)
+        document.body.appendChild(canvas)
+        canvas.toBlob(function(blob){
+          console.log(blob)
+          var bfd = new FormData();
+          bfd.append('file',blob, "terrive.jpeg")
+          fetch('https://ipfs.infura.io:5001/api/v0/add', {
+            method: 'POST',
+            body: bfd,
+            mode: 'cors'
+          }).then(function(br){
+            br.json().then(function(bd){
+              console.log(bd)
+            })
+          })
+        },'image/jpeg')
+      }, 500)
+    })
+  } else {
+    alert("File Size is too Big !!")
+  }
+})
+
+
 function submitPost(){
   var permlink = Math.random().toString(36).substring(2)
   var descBody = document.getElementById('textbox').value
