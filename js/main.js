@@ -130,7 +130,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
 
     console.log(f.size)
     if (f.size < 15000000) {
-      document.getElementById('upload-preview').innerHTML = '<div class="spinner-grow text-primary" role="status"></div>'
+      document.getElementById('upload-preview').innerHTML = '<div class="text-center"><div class="spinner-grow text-primary" role="status"></div></div>'
       f.arrayBuffer().then(function (arrayBuffer) {
         var b = new Blob([new Uint8Array(arrayBuffer)], {type: "application/octet-stream" });
         var fd = new FormData();
@@ -168,8 +168,8 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
                 document.getElementById("upload-video-url-cover").value = "https://ipfs.infura.io/ipfs/" + bd.Hash
               })
             })
-          },'image/jpeg',)
-        }, 500)
+          },'image/jpeg')
+        }, 1000)
       })
     } else {
       alert("File Size is too Big !! Try to make it less than 15mb !!")
