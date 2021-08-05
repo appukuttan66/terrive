@@ -123,7 +123,7 @@ fi.addEventListener("change", function(e){
   });
 });
 
-document.querySelector('input[type="radio][value="video"]').addEventListener("click", function(){
+document.querySelector('input[type="radio"][value="video"]').addEventListener("click", function(){
   var fv = document.getElementById("input-video-ele")
   fv.onchange = function (e) {
     var f = e.target.files[0]
