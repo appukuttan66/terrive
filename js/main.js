@@ -1,7 +1,7 @@
 
 var client = new hivesigner.Client({
   app: 'terrive',
-  callbackURL: 'https://terrive.on.fleek.co/auth.html',
+  callbackURL: 'https://terrive.one/auth.html',
 });
 var loginType = localStorage.getItem('type')
 var accessToken = localStorage.getItem('token')
