@@ -130,7 +130,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
 
     console.log(f.size)
     if (f.size < 15000000) {
-      document.getElementById('upload-post-preview').innerHTML = '<div class="spinner-grow text-primary" role="status"></div>'
+      document.getElementById('upload-preview').innerHTML = '<div class="spinner-grow text-primary" role="status"></div>'
       f.arrayBuffer().then(function (arrayBuffer) {
         var b = new Blob([new Uint8Array(arrayBuffer)], {type: "application/octet-stream" });
         var fd = new FormData();
