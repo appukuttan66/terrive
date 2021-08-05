@@ -142,7 +142,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
           r.json().then(function(d){
             var uvuin = document.getElementById("upload-video-url").value 
             uvuin = "https://ipfs.infura.io/ipfs/"+d.Hash;
-            window.setTimeout(loadPostPreview(uvun),500)
+            window.setTimeout(loadPostPreview(uvuin),500)
           }).catch(function(e){console.log(e);})
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
