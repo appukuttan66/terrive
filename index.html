@@ -32,12 +32,13 @@
   <!--Registering Service Worker-->
   <script>
     if ('serviceWorker' in navigator ) {
-      navigator.serviceWorker.register('sw.js')
+      navigator.serviceWorker.register('sw.js').then(function(v) {
+        v.update();
+      }
     }
   </script>
   <!--Preconnects, DNS prefetch and Preload-->
   <link rel="preload" href="fonts/satisfy-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="dns-prefetch" href="https://rpc.ecency.com">
   <link rel="preconnect" href="https://images.hive.blog">
   <link rel="dns-prefetch" href="https://images.hive.blog">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
