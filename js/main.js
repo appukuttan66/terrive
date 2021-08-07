@@ -203,7 +203,7 @@ function submitPost(){
   }
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
-    var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
+    var alt = imgHoster + "/u/" + username + "/avatar/large"
     var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
@@ -511,7 +511,7 @@ function getSearch(id) {
   hive.api.callAsync('condenser_api.lookup_accounts',[val,10]).then(function(res){
     var counter = 0;
     while(counter < res.length){
-     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="https://terrive.one/?u='+res[counter]+'"><img class="rounded-circle float-start" src="'+imgHoster+res[counter]+'/avatar" height="48" width="48"><p class="fs-5 fw-bold float-start satisfy mt-2 ms-3">'+res[counter]+'</p></a>';
+     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="https://terrive.one/?u='+res[counter]+'"><img class="rounded-circle float-start" src="'+imgHoster+'/u/'+res[counter]+'/avatar/small" height="48" width="48"><p class="fs-5 fw-bold float-start satisfy mt-2 ms-3">'+res[counter]+'</p></a>';
      counter = counter + 1;
     }
   })
