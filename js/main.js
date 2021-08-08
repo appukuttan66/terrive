@@ -18,12 +18,19 @@ var eleProfileGrid = document.querySelector("#profile-grid .row");
 var eleProfileVideo = document.querySelector("#profile-video .row");
 var md = new remarkable.Remarkable({html: true,})
 
-toolip()
 function toolip () {
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
+}
+
+var toastEl = document.querySelector('.toast');
+var toast = new bootstrap.Toast(toastEl)
+
+function notify(body) {
+  document.querySelector("#update-notify-body").innerHTML = body;
+  toast.show()
 }
 
 function keychainLogin(){
@@ -223,8 +230,9 @@ function broadcastPost(u,permlink,body,jsonMetadata,type,title){
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
+        notify("Successfully Posted")
       }else {
-        alert(err.error_description)
+        notify(err.error_description)
       }
     })
   } else if (loginType == "keychain") {
@@ -240,6 +248,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type,title){
     function (response) {
       if(response.success == true) {
         clearUploadTray();
+        notify("Successfully Posted")
       }
     }
   );
@@ -352,7 +361,7 @@ function postLike(){
           document.querySelector('#post-like').style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
         }
-        else {alert(err.error_description);}
+        else {notify(err.error_description);}
       })
     } else if (loginType == "keychain"){
       hive_keychain.requestVote(
@@ -365,7 +374,8 @@ function postLike(){
             document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
             document.querySelector('#post-like').style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
-          }
+            notify("Successfully Voted")
+          } else {notify("Error while Voting")}
         }
       );
     }
@@ -383,7 +393,8 @@ function postComment(){
       if ( err === null ){
         console.log(res)
         body = "";
-      }else {alert(err.error_description);}
+        notify("Successfully Commented")
+      }else {notify(err.error_description);}
     });
   } else if (loginType == "keychain") {
         hive_keychain.requestPost(
@@ -400,7 +411,8 @@ function postComment(){
             console.log(response);
             if (response.success == true){
               body.value = "";
-            }
+              notify("Successfully Commented")
+            }else {notify("Error while commenting")}
           }
         );
   }
@@ -428,6 +440,7 @@ function calcURL(){
   if (params.has("p") && params.has("u") && params.has("reply")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -436,6 +449,7 @@ function calcURL(){
   else if (params.has("p") && params.has("u") && params.has("video")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -444,6 +458,7 @@ function calcURL(){
   else if (params.has("p") && params.has("u")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -451,6 +466,7 @@ function calcURL(){
   }
   else if (params.has("u")) {
     var u = params.get('u')
+    document.title = u + "'s Posts on Terrive"
     var ele = document.querySelector('a[href="#profile"]')
     var tab = new bootstrap.Tab(ele)
     tab.show()
@@ -665,6 +681,8 @@ function getNotifications() {
   notifywrkr.postMessage([rpc,username])
 }
 
+window.setInterval(getNotifications(),60000)
+
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
   getNew();
@@ -781,7 +799,8 @@ function push (res,type) {
 
 window.addEventListener("load",function(){
   document.getElementById("loader").classList.replace("visible","invisible");
-  getNew()
+  getNew();
+  toolip();
   window.addEventListener("offline",function(){
     document.querySelector(".offline-notify").classList.add("offline");
   })
