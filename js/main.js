@@ -152,6 +152,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             var uvuin = document.getElementById("upload-video-url") 
             uvuin.value = "https://ipfs.infura.io/ipfs/" + d.Hash;
             window.setTimeout(loadPostPreview(uvuin.value,'upload-video-url'),500)
+            notify("Uploaded video !!")
           }).catch(function(e){console.log(e);})
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
@@ -174,7 +175,6 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             }).then(function(br){
               br.json().then(function(bd){
                 document.getElementById("upload-video-url-cover").value = "https://ipfs.infura.io/ipfs/" + bd.Hash
-                notify("Uploaded video !!")
               })
             })
           },'image/jpeg')
@@ -679,6 +679,7 @@ var notifywrkr = new Worker("js/notify.js");
 
 notifywrkr.addEventListener("message",function(e){
   document.getElementById("notify-body").innerHTML += e.data;
+  notify("hello world !")
 });
 
 getNotifications();
