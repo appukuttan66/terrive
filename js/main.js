@@ -697,9 +697,13 @@ getNotifications();
 function getNotifications() {
   document.getElementById("notify-body").innerHTML = "";
   notifywrkr.postMessage([rpc,username])
+  notify("updated notifications")
 }
 
-window.setInterval(getNotifications(),3000)
+setInterval(function(){
+  document.getElementById("notify-body").innerHTML = "";
+  notifywrkr.postMessage([rpc,username])
+},6000)
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
