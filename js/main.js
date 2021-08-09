@@ -28,7 +28,10 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 var toastEl = document.querySelector('.toast');
 var toast = new bootstrap.Toast(toastEl)
 
-function notify(body) {
+function notify(body,fill) {
+  if (fill) {
+    document.querySelector(".bi-info").fill = fill
+  }
   document.querySelector("#update-notify-body").innerHTML = body;
   toast.show()
 }
@@ -55,7 +58,7 @@ function keychainLogin(){
             localStorage.setItem("username",keychainUser);
             localStorage.setItem("type","keychain");
             window.setTimeout(location.reload(),500);
-          } else { notify("error while login") }
+          } else { notify("error while login","var(--bs-danger)") }
         }
         );
       }
@@ -81,7 +84,7 @@ function loadPostPreview(src,id){
       if (d > 60) {
         document.getElementById("upload-video-url").value = "";
         document.getElementById("upload-preview").innerHTML = "";
-        notify("Video should be less than 60sec ...")
+        notify("Video should be less than 60sec","var(--bs-danger)")
       }
     } ,500)
   }
@@ -126,8 +129,14 @@ fi.addEventListener("change", function(e){
         console.log(d)
         txt.value += x + "https://ipfs.infura.io/ipfs/" + d.Hash;
         window.setTimeout(loadPostPreview(txt.value),500);
-      }).catch(function(err){console.log(err);})
-    }).catch(function(er){console.log(er);})
+      }).catch(function(err){
+        console.log(err);
+        notify("Error while uploading","var(--bs-danger)")
+      })
+    }).catch(function(er){
+      console.log(er);
+      notify("Error while uploading","var(--bs-danger)")
+    })
   });
 });
 
@@ -153,7 +162,10 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             uvuin.value = "https://ipfs.infura.io/ipfs/" + d.Hash;
             window.setTimeout(loadPostPreview(uvuin.value,'upload-video-url'),500)
             notify("Uploaded video !!")
-          }).catch(function(e){console.log(e);})
+          }).catch(function(e){
+            console.log(e);
+            notify("Error while uploading","var(--bs-danger)")
+          })
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
         var videoele = document.createElement("video")
@@ -181,7 +193,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
         }, 500)
       })
     } else {
-      alert("File Size is too Big !! Try to make it less than 15mb !!")
+      notify("File Size is too Big","var(--bs-danger)")
     }
   }
 })
@@ -232,7 +244,7 @@ function broadcastPost(u,body,jsonMetadata,type,title){
         clearUploadTray();
         notify("Successfully Posted")
       }else {
-        notify(err.error_description)
+        notify(err.error_description,"var(--bs-danger)")
       }
     })
   } else if (loginType == "keychain") {
@@ -378,7 +390,7 @@ function postLike(){
             document.querySelector('#post-like').style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
             notify("Successfully Voted")
-          } else {notify("Error while Voting")}
+          } else {notify("Error while Voting","var(--bs-danger)")}
         }
       );
     }
@@ -397,7 +409,7 @@ function postComment(){
         console.log(res)
         body.value = "";
         notify("Successfully Commented")
-      }else {notify(err.error_description);}
+      }else {notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain") {
         hive_keychain.requestPost(
@@ -415,7 +427,7 @@ function postComment(){
             if (response.success == true){
               body.value = "";
               notify("Successfully Commented")
-            }else {notify("Error while commenting")}
+            }else {notify("Error while commenting","var(--bs-danger)")}
           }
         );
   }
@@ -501,7 +513,7 @@ function getContent(u,p,type) {
         var json = JSON.parse(r.json_metadata)
         pushPost(u,p,json.description,json.image.toString(),lc,children)
       }
-    }else{alert(e)}
+    }else{notify(e,,"var(--bs-danger)")}
   })
 }
 
@@ -545,7 +557,7 @@ function getReplies(u,p){
         document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none satisfy" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div>';
         counter = counter + 1;
       }
-    }else{console.log(e);}
+    }else{notify(e,"var(--bs-danger)");}
   })
 }
 
@@ -564,7 +576,7 @@ function like(id) {
         ele.style.fill = "#ff0000";
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
         notify("Successfully Voted")
-      }else{alert(err.error_description);}
+      }else{alert(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain"){
       hive_keychain.requestVote(
@@ -580,7 +592,7 @@ function like(id) {
             ele.style.fill = "#ff0000";
             eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
             notify("Successfully Voted")
-          }
+          } else { notify("Error while Voting","var(--bs-danger)") }
         }
       );
     }
@@ -590,7 +602,7 @@ function like(id) {
 function followToggle(ele) {
   var account = document.getElementById("profile-info-username").innerHTML.replace("@","")
   if(account == username) {
-    alert("Ehh!! Why do you want to follow yourself!!");
+    notify("Ehh!! Why do you want to follow yourself!!","var(--bs-danger)");
   }
   else {
     if (accessToken) {
@@ -599,7 +611,7 @@ function followToggle(ele) {
           console.log(res);
           ele.innerHTML = "Followed";
           ele.classList.replace("btn-primary","btn-outline-primary")
-        }else{alert(err.error_description);}
+        }else{notify(err.error_description,"var(--bs-danger)");}
       });
     }else if (loginType == "keychain") {
       var json = JSON.stringify([
@@ -624,7 +636,7 @@ function followToggle(ele) {
               ele.innerHTML = "Followed";
               ele.classList.replace("btn-primary","btn-outline-primary")
               notify("Successfully Followed")
-            }
+            } else { notify("Error while following","var(--bs-danger)") }
           }
        );
     }
@@ -635,7 +647,7 @@ function getFeed () {
   hive.api.getDiscussionsByFeed({ tag: username, limit: 100, truncate_body: 1,} , function(err,res){
     if ( err === null ) {
           filterTag(res,"feed");
-      } else{console.log(err);}
+      } else{console.log(err); notify("Failed to get Feed","var(--bs-danger)")}
   });
 }
 function getNew() {
@@ -679,7 +691,6 @@ var notifywrkr = new Worker("js/notify.js");
 
 notifywrkr.addEventListener("message",function(e){
   document.getElementById("notify-body").innerHTML += e.data;
-  notify("hello world !")
 });
 
 getNotifications();
@@ -688,7 +699,7 @@ function getNotifications() {
   notifywrkr.postMessage([rpc,username])
 }
 
-window.setInterval(getNotifications(),60000)
+window.setInterval(getNotifications(),3000)
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
@@ -746,9 +757,8 @@ function getFollowers(u) {
     if(err === null) {
       piFollowing.innerHTML = result.following_count+' following';
       piFollowers.innerHTML = result.follower_count+' followers';
-      console.log(result);
     }
-    else{console.log(err);}
+    else{notify(err,"var(--bs-danger)");}
   });
 
 }
