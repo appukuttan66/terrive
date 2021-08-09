@@ -55,7 +55,7 @@ function keychainLogin(){
             localStorage.setItem("username",keychainUser);
             localStorage.setItem("type","keychain");
             window.setTimeout(location.reload(),500);
-          }
+          } else { notify("error while login") }
         }
         );
       }
@@ -73,7 +73,7 @@ function postTypeSelector(type) {
 }
 
 function loadPostPreview(src,id){
-  document.getElementById("upload-preview").innerHTML = "";
+  document.getElementById("upload-preview").innerHTML = '<div class="text-center"><div class="spinner-grow text-primary" role="status"></div></div>';
   if (id == 'upload-video-url') {
     document.getElementById("upload-preview").innerHTML = '<video id="upload-video-preview" src="'+src+'" class="w-100" preload="metadata" controls></video>';
     window.setTimeout(function(){
@@ -81,7 +81,7 @@ function loadPostPreview(src,id){
       if (d > 60) {
         document.getElementById("upload-video-url").value = "";
         document.getElementById("upload-preview").innerHTML = "";
-        alert("Video should be less than 60sec ...")
+        notify("Video should be less than 60sec ...")
       }
     } ,500)
   }
@@ -174,6 +174,7 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             }).then(function(br){
               br.json().then(function(bd){
                 document.getElementById("upload-video-url-cover").value = "https://ipfs.infura.io/ipfs/" + bd.Hash
+                notify("Uploaded video !!")
               })
             })
           },'image/jpeg')
@@ -187,9 +188,8 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
 
 
 function submitPost(){
-  var permlink = Math.random().toString(36).substring(2)
   var descBody = document.getElementById('textbox').value
-  var title = reg(descBody,2);
+  var title = reg(descBody,3);
   var eleTags = document.getElementsByClassName('tag-wrap')
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
@@ -198,7 +198,7 @@ function submitPost(){
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
-    broadcastPost(username,permlink,body,jsonMetadata,'trhome',title)
+    broadcastPost(username,body,jsonMetadata,'trhome',title)
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
@@ -206,7 +206,7 @@ function submitPost(){
     var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
-    broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo',title)
+    broadcastPost(username,bodyVC,jsonMetadataVC,'trvideo',title)
   }
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
@@ -214,7 +214,7 @@ function submitPost(){
     var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
-    broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo',title)
+    broadcastPost(username,bodyV,jsonMetadataV,'trvideo',title)
   }
   
 }
@@ -224,9 +224,9 @@ function reg(s, n) {
   return  (a === undefined || a === null) ? '' : a[0];
 }
 
-function broadcastPost(u,permlink,body,jsonMetadata,type,title){
+function broadcastPost(u,body,jsonMetadata,type,title){
   if (accessToken) {
-    client.comment('',type,u,permlink,title,body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,title,title,body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
@@ -243,7 +243,7 @@ function broadcastPost(u,permlink,body,jsonMetadata,type,title){
     type,
     '',
     jsonMetadata,
-    permlink,
+    title,
     '',
     function (response) {
       if(response.success == true) {
@@ -271,7 +271,8 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
       client.reblog( username, author, permlink, function(err,res) {
         if (err === null) {
           console.log(res);
-       }else{alert(err.error_description);}
+          notify("Reblogged")
+       }else{notify(err.error_description);}
       });
     } else if (loginType == "keychain"){
       var json = JSON.stringify([
@@ -290,6 +291,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           'Reblog a Post',
           function (response) {
             console.log(response);
+            notify("Reblogged")
           }
        );
     }
@@ -360,6 +362,7 @@ function postLike(){
           document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
           document.querySelector('#post-like').style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
+          notify("Successfully Voted")
         }
         else {notify(err.error_description);}
       })
@@ -392,7 +395,7 @@ function postComment(){
     client.comment(parentAuthor, parentPermlink, username, permlink, '', body.value, json, function (err, res) {
       if ( err === null ){
         console.log(res)
-        body = "";
+        body.value = "";
         notify("Successfully Commented")
       }else {notify(err.error_description);}
     });
@@ -429,7 +432,7 @@ document.getElementById('sharePop').addEventListener('show.bs.modal',function(ev
     txtbx.select();
     txtbx.setSelectionRange(0,99999);
     document.execCommand("copy");
-    alert(txtbx.value)
+    notify("Successfully copied")
   })
 })
 
@@ -560,6 +563,7 @@ function like(id) {
         ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
         ele.style.fill = "#ff0000";
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
+        notify("Successfully Voted")
       }else{alert(err.error_description);}
     });
   } else if (loginType == "keychain"){
@@ -575,6 +579,7 @@ function like(id) {
             ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
             ele.style.fill = "#ff0000";
             eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
+            notify("Successfully Voted")
           }
         }
       );
@@ -618,6 +623,7 @@ function followToggle(ele) {
             if (response.success == true){
               ele.innerHTML = "Followed";
               ele.classList.replace("btn-primary","btn-outline-primary")
+              notify("Successfully Followed")
             }
           }
        );
