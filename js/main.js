@@ -513,7 +513,7 @@ function getContent(u,p,type) {
         var json = JSON.parse(r.json_metadata)
         pushPost(u,p,json.description,json.image.toString(),lc,children)
       }
-    }else{notify(e,,"var(--bs-danger)")}
+    }else{notify(e,"var(--bs-danger)")}
   })
 }
 
