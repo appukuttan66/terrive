@@ -1,6 +1,6 @@
 
 html, body {
-  overflow-x: hidden;
+  overflow-y: hidden;
 }
 .list-group-item {
   max-width: 42em;
