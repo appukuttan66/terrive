@@ -37,6 +37,7 @@ function notify(body,fill) {
   }
   document.querySelector("#update-notify-body").innerHTML = body;
   toast.show()
+  setTimeout(toast.hide(),3000)
 }
 
 function keychainLogin(){
