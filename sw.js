@@ -1,18 +1,24 @@
+cacheNAME = "tr-cache";
+cacheURLS = [
+  '/',
+  'index.html',
+  'js/main.js',
+  'js/b58.js',
+  'css/main.css'
+];
+
 self.addEventListener("install",function(installEvent){
   installEvent.waitUntil(
-    caches.open("sw-cache").then(function(cache){
-      return cache.add('index.html');
-      return cache.add('auth.html');
-      return cache.add('js/main.js');
-      return cache.add('css/main.css');
+    caches.open(cacheNAME).then(function(cache){
+      return cache.addAll(cacheURLS);
     })
   );
 });
 
-self.addEventListener("fetch",function(fetchEvent){
-  fetchEvent.respondWith(
-    caches.match(fetchEvent.request).then(function(r){
-      return r || fetch(fetchEvent.request);
+self.addEventListener("fetch",function(e){
+  e.respondWith(
+    caches.match(e.request).then(function(r){
+      return r || fetch(e.request);
     })
   );
 });

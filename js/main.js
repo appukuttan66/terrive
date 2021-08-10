@@ -1,4 +1,3 @@
-
 var client = new hivesigner.Client({
   app: 'terrive',
   callbackURL: 'https://terrive.one/auth.html',
@@ -6,6 +5,9 @@ var client = new hivesigner.Client({
 var loginType = localStorage.getItem('type')
 var accessToken = localStorage.getItem('token')
 var rpc = "https://api.hive.blog"
+
+var imgHoster = "https://images.hive.blog"
+
 client.setAccessToken(accessToken)
 
 hive.api.setOptions({ url: rpc });
@@ -17,12 +19,26 @@ var eleProfileGrid = document.querySelector("#profile-grid .row");
 var eleProfileVideo = document.querySelector("#profile-video .row");
 var md = new remarkable.Remarkable({html: true,})
 
-toolip()
 function toolip () {
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
+}
+
+var toastEl = document.querySelector('.toast');
+var toast = new bootstrap.Toast(toastEl)
+
+function notify(body,fill) {
+  var biInfo = document.querySelector(".bi-info")
+  if (fill) {
+    biInfo.setAttribute("fill",fill)
+  } else {
+    biInfo.setAttribute("fill","var(--bs-success)"); 
+  }
+  document.querySelector("#update-notify-body").innerHTML = body;
+  toast.show()
+  setTimeout(toast.hide(),3000)
 }
 
 function keychainLogin(){
@@ -47,7 +63,7 @@ function keychainLogin(){
             localStorage.setItem("username",keychainUser);
             localStorage.setItem("type","keychain");
             window.setTimeout(location.reload(),500);
-          }
+          } else { notify("error while login","var(--bs-danger)") }
         }
         );
       }
@@ -65,7 +81,7 @@ function postTypeSelector(type) {
 }
 
 function loadPostPreview(src,id){
-  document.getElementById("upload-preview").innerHTML = "";
+  document.getElementById("upload-preview").innerHTML = '<div class="text-center"><div class="spinner-grow text-primary" role="status"></div></div>';
   if (id == 'upload-video-url') {
     document.getElementById("upload-preview").innerHTML = '<video id="upload-video-preview" src="'+src+'" class="w-100" preload="metadata" controls></video>';
     window.setTimeout(function(){
@@ -73,7 +89,7 @@ function loadPostPreview(src,id){
       if (d > 60) {
         document.getElementById("upload-video-url").value = "";
         document.getElementById("upload-preview").innerHTML = "";
-        alert("Video should be less than 60sec ...")
+        notify("Video should be less than 60sec","var(--bs-danger)")
       }
     } ,500)
   }
@@ -118,8 +134,14 @@ fi.addEventListener("change", function(e){
         console.log(d)
         txt.value += x + "https://ipfs.infura.io/ipfs/" + d.Hash;
         window.setTimeout(loadPostPreview(txt.value),500);
-      }).catch(function(err){console.log(err);})
-    }).catch(function(er){console.log(er);})
+      }).catch(function(err){
+        console.log(err);
+        notify("Error while uploading","var(--bs-danger)")
+      })
+    }).catch(function(er){
+      console.log(er);
+      notify("Error while uploading","var(--bs-danger)")
+    })
   });
 });
 
@@ -144,7 +166,11 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             var uvuin = document.getElementById("upload-video-url") 
             uvuin.value = "https://ipfs.infura.io/ipfs/" + d.Hash;
             window.setTimeout(loadPostPreview(uvuin.value,'upload-video-url'),500)
-          }).catch(function(e){console.log(e);})
+            notify("Uploaded video !!")
+          }).catch(function(e){
+            console.log(e);
+            notify("Error while uploading","var(--bs-danger)")
+          })
         }).catch(function(er){console.log(er);})
       }).then(function(){ 
         var videoele = document.createElement("video")
@@ -169,44 +195,43 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
               })
             })
           },'image/jpeg')
-        }, 1000)
+        }, 500)
       })
     } else {
-      alert("File Size is too Big !! Try to make it less than 15mb !!")
+      notify("File Size is too Big","var(--bs-danger)")
     }
   }
 })
 
 
 function submitPost(){
-  var permlink = Math.random().toString(36).substring(2)
   var descBody = document.getElementById('textbox').value
-  var title = reg(descBody,2);
+  var title = reg(descBody,3);
   var eleTags = document.getElementsByClassName('tag-wrap')
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
   
   if(document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
-    var body = "[![]("+imagelink[0]+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
-    broadcastPost(username,permlink,body,jsonMetadata,'trhome',title)
+    broadcastPost(username,body,jsonMetadata,'trhome',title)
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
     var coverV = document.getElementById('upload-video-url-cover').value;
-    var bodyVC = "[![]("+coverV+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
-    broadcastPost(username,permlink,bodyVC,jsonMetadataVC,'trvideo',title)
+    broadcastPost(username,bodyVC,jsonMetadataVC,'trvideo',title)
   }
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
-    var alt = 'https://siasky.net/fAHaiIPffem8Qv1XOG08zzOwga8iwqJUhgyOAHfb86FRzg'
-    var bodyV = "[![]("+alt+")](https://terrive.on.fleek.co/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.on.fleek.co)";
+    var alt = imgHoster + "/u/" + username + "/avatar/large"
+    var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
-    broadcastPost(username,permlink,bodyV,jsonMetadataV,'trvideo',title)
+    broadcastPost(username,bodyV,jsonMetadataV,'trvideo',title)
   }
   
 }
@@ -216,14 +241,15 @@ function reg(s, n) {
   return  (a === undefined || a === null) ? '' : a[0];
 }
 
-function broadcastPost(u,permlink,body,jsonMetadata,type,title){
+function broadcastPost(u,body,jsonMetadata,type,title){
   if (accessToken) {
-    client.comment('',type,u,permlink,title,body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,title,title,body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
+        notify("Successfully Posted")
       }else {
-        alert(err.error_description)
+        notify(err.error_description,"var(--bs-danger)")
       }
     })
   } else if (loginType == "keychain") {
@@ -234,11 +260,12 @@ function broadcastPost(u,permlink,body,jsonMetadata,type,title){
     type,
     '',
     jsonMetadata,
-    permlink,
+    title,
     '',
     function (response) {
       if(response.success == true) {
         clearUploadTray();
+        notify("Successfully Posted")
       }
     }
   );
@@ -261,7 +288,8 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
       client.reblog( username, author, permlink, function(err,res) {
         if (err === null) {
           console.log(res);
-       }else{alert(err.error_description);}
+          notify("Reblogged")
+       }else{notify(err.error_description);}
       });
     } else if (loginType == "keychain"){
       var json = JSON.stringify([
@@ -280,6 +308,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           'Reblog a Post',
           function (response) {
             console.log(response);
+            notify("Reblogged")
           }
        );
     }
@@ -322,19 +351,22 @@ function pushPost(author,permlink,body,image,lc,children) {
   var imgTray = document.querySelector("#post-tray .modal-body .post-img")
   imgTray.innerHTML = "";
   if (images.length == 1) {
-    imgTray.innerHTML += '<img src="https://images.hive.blog/p/'+b58(images[0])+'?format=webp" class="w-100 mb-3">'
+    imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp" class="w-100 mb-3">'
+
   } 
   else if (images.length > 1) {
     imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
     var i = 0;
     while ( i < images.length ) {
-      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="https://images.ecency.com/p/'+b58(images[i])+'?format=webp" class="d-block w-100" alt="ERROR: Image Not Found !!!"></div>'
+      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp" class="d-block w-100" alt="ERROR: Image Not Found !!!"></div>'
       i = i + 1;
     }
     document.querySelector("#carouselPostControls .carousel-inner .carousel-item:first-child").classList.add("active")
   }
   
-  document.querySelector("#post-tray .modal-header img").setAttribute("src","https://images.hive.blog/u/"+author+"/avatar/small");
+
+  document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
+
   getReplies(author,permlink);
 }
 
@@ -343,17 +375,19 @@ function postLike(){
   var author = rTarg.getAttribute("data-tr-author")
   var permlink = rTarg.getAttribute("data-tr-permlink")
   var likeCountPost = document.getElementById('like-count-post')
-    if (accessToken) {
+  var postLikeEle = document.querySelector('#post-like');
+    if (accessToken && postLikeEle.style.fill !== "#ff0000" ) {
       client.vote(username,author,permlink,10000,function(err,res){
         if(err === null){ 
           console.log(res);
           document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
-          document.querySelector('#post-like').style.fill = "#ff0000";
+          postLikeEle.style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
+          notify("Successfully Voted")
         }
-        else {alert(err.error_description);}
+        else {notify(err.error_description);}
       })
-    } else if (loginType == "keychain"){
+    } else if (loginType == "keychain" && postLikeEle.style.fill !== "#ff0000" ){
       hive_keychain.requestVote(
         username,
         permlink,
@@ -362,12 +396,13 @@ function postLike(){
         function (response) {
           if (response.success == true){
             document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
-            document.querySelector('#post-like').style.fill = "#ff0000";
+            postLikeEle.style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
-          }
+            notify("Successfully Voted")
+          } else {notify("Error while Voting","var(--bs-danger)")}
         }
       );
-    }
+    } else { notify("Failed to vote","var(--bs-danger)") }
   }
 
 function postComment(){
@@ -381,8 +416,9 @@ function postComment(){
     client.comment(parentAuthor, parentPermlink, username, permlink, '', body.value, json, function (err, res) {
       if ( err === null ){
         console.log(res)
-        body = "";
-      }else {alert(err.error_description);}
+        body.value = "";
+        notify("Successfully Commented")
+      }else {notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain") {
         hive_keychain.requestPost(
@@ -399,7 +435,8 @@ function postComment(){
             console.log(response);
             if (response.success == true){
               body.value = "";
-            }
+              notify("Successfully Commented")
+            }else {notify("Error while commenting","var(--bs-danger)")}
           }
         );
   }
@@ -407,16 +444,16 @@ function postComment(){
 
 document.getElementById('sharePop').addEventListener('show.bs.modal',function(event){
   var url = event.relatedTarget.getAttribute('data-tr-url');
-  document.getElementById("share-facebook").setAttribute("href","https://facebook.com/sharer.php?u=https://terrive.on.fleek.co"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
-  document.getElementById("share-twitter").setAttribute("href","https://twitter.com/intent/tweet?url=https://terrive.on.fleek.co"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
-  document.getElementById("share-reddit").setAttribute("href",'https://reddit.com/submit?url=https://terrive.on.fleek.co'+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
+  document.getElementById("share-facebook").setAttribute("href","https://facebook.com/sharer.php?u=https://terrive.one"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
+  document.getElementById("share-twitter").setAttribute("href","https://twitter.com/intent/tweet?url=https://terrive.one"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
+  document.getElementById("share-reddit").setAttribute("href",'https://reddit.com/submit?url=https://terrive.one'+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
   var txtbx = document.getElementById("share-copy-txtbx")
-  txtbx.setAttribute("value", "https://terrive.on.fleek.co"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
+  txtbx.setAttribute("value", "https://terrive.one"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
   document.getElementById("share-link").addEventListener("click",function(){
     txtbx.select();
     txtbx.setSelectionRange(0,99999);
     document.execCommand("copy");
-    alert(txtbx.value)
+    notify("Successfully copied")
   })
 })
 
@@ -427,6 +464,7 @@ function calcURL(){
   if (params.has("p") && params.has("u") && params.has("reply")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -435,6 +473,7 @@ function calcURL(){
   else if (params.has("p") && params.has("u") && params.has("video")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -443,6 +482,7 @@ function calcURL(){
   else if (params.has("p") && params.has("u")) {
     var p = params.get("p")
     var u = params.get("u")
+    document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
     var tab = new bootstrap.Modal(ele)
     tab.show()
@@ -450,6 +490,7 @@ function calcURL(){
   }
   else if (params.has("u")) {
     var u = params.get('u')
+    document.title = u + "'s Posts on Terrive"
     var ele = document.querySelector('a[href="#profile"]')
     var tab = new bootstrap.Tab(ele)
     tab.show()
@@ -481,7 +522,7 @@ function getContent(u,p,type) {
         var json = JSON.parse(r.json_metadata)
         pushPost(u,p,json.description,json.image.toString(),lc,children)
       }
-    }else{alert(e)}
+    }else{notify(e,"var(--bs-danger)")}
   })
 }
 
@@ -510,7 +551,7 @@ function getSearch(id) {
   hive.api.callAsync('condenser_api.lookup_accounts',[val,10]).then(function(res){
     var counter = 0;
     while(counter < res.length){
-     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="/?u='+res[counter]+'"><img class="rounded-circle float-start" src="https://images.hive.blog/u/'+res[counter]+'/avatar" height="48" width="48"><p class="fs-5 fw-bold float-start satisfy mt-2 ms-3">'+res[counter]+'</p></a>';
+     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="/?u='+res[counter]+'"><img class="rounded-circle float-start" src="'+imgHoster+'/u/'+res[counter]+'/avatar/small" height="48" width="48"><p class="fs-5 fw-bold float-start mt-2 ms-3">'+res[counter]+'</p></a>';
      counter = counter + 1;
     }
   })
@@ -522,10 +563,10 @@ function getReplies(u,p){
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none satisfy" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div><div class="child-replies" data-tr-permlink="'+r[counter].permlink+'" data-tr-author="'+r[counter].author+'"></div>';
         counter = counter + 1;
       }
-    }else{console.log(e);}
+    }else{notify(e,"var(--bs-danger)");}
   })
 }
 
@@ -536,16 +577,17 @@ function like(id) {
   var eleAuthor = document.getElementById("author-"+counter);
   var author = eleAuthor.innerHTML;
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
-   if (accessToken) {
+   if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
       if(err === null) {
         console.log(res)
         ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
         ele.style.fill = "#ff0000";
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
-      }else{alert(err.error_description);}
+        notify("Successfully Voted")
+      }else{alert(err.error_description,"var(--bs-danger)");}
     });
-  } else if (loginType == "keychain"){
+  } else if (loginType == "keychain" && ele.style.fill !== "#ff0000" ){
       hive_keychain.requestVote(
         username,
         permlink,
@@ -558,17 +600,18 @@ function like(id) {
             ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
             ele.style.fill = "#ff0000";
             eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
-          }
+            notify("Successfully Voted")
+          } else { notify("Error while Voting","var(--bs-danger)") }
         }
       );
-    }
+   } else { notify("Failed to vote","var(--bs-danger)") }
   
 }
 
 function followToggle(ele) {
   var account = document.getElementById("profile-info-username").innerHTML.replace("@","")
   if(account == username) {
-    alert("Ehh!! Why do you want to follow yourself!!");
+    notify("Ehh!! Why do you want to follow yourself!!","var(--bs-danger)");
   }
   else {
     if (accessToken) {
@@ -577,7 +620,7 @@ function followToggle(ele) {
           console.log(res);
           ele.innerHTML = "Followed";
           ele.classList.replace("btn-primary","btn-outline-primary")
-        }else{alert(err.error_description);}
+        }else{notify(err.error_description,"var(--bs-danger)");}
       });
     }else if (loginType == "keychain") {
       var json = JSON.stringify([
@@ -601,7 +644,8 @@ function followToggle(ele) {
             if (response.success == true){
               ele.innerHTML = "Followed";
               ele.classList.replace("btn-primary","btn-outline-primary")
-            }
+              notify("Successfully Followed")
+            } else { notify("Error while following","var(--bs-danger)") }
           }
        );
     }
@@ -612,7 +656,7 @@ function getFeed () {
   hive.api.getDiscussionsByFeed({ tag: username, limit: 100, truncate_body: 1,} , function(err,res){
     if ( err === null ) {
           filterTag(res,"feed");
-      } else{console.log(err);}
+      } else{console.log(err); notify("Failed to get Feed","var(--bs-danger)")}
   });
 }
 function getNew() {
@@ -664,6 +708,11 @@ function getNotifications() {
   notifywrkr.postMessage([rpc,username])
 }
 
+setInterval(function(){
+  document.getElementById("notify-body").innerHTML = "";
+  notifywrkr.postMessage([rpc,username])
+},180000)
+
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
   getNew();
@@ -708,32 +757,31 @@ function getFollowers(u) {
     if (err === null) {
       piFollowers.setAttribute("title","@"+result.map(function(item){return item.follower;}).toString().replaceAll(","," @"));
       toolip();
-    }else{console.log(err);}
+    }else{notify(err,"var(--bs-danger)");}
   });
   hive.api.getFollowing( u, '', 'blog', 10, function(err, result) {
     if (err === null) {
       piFollowing.setAttribute("title","@"+result.map(function(item){return item.following;}).toString().replaceAll(","," @"));
       toolip();
-    }else{console.log(err);}
+    }else{notify(err,"var(--bs-danger)");}
   });
   hive.api.getFollowCount( u, function(err, result) {
     if(err === null) {
-      piFollowing.innerHTML = result.following_count+' following';
-      piFollowers.innerHTML = result.follower_count+' followers';
-      console.log(result);
+      piFollowing.querySelector('span').innerHTML = result.following_count;
+      piFollowers.querySelector('span').innerHTML = result.follower_count;
     }
-    else{console.log(err);}
+    else{notify(err,"var(--bs-danger)");}
   });
 
 }
 
 function pushProfileInfo (res) {
   var json = JSON.parse(res[0].posting_json_metadata);
-  document.getElementById("profile-info-username").innerHTML = '@'+res[0].name;
+  document.getElementById("profile-info-username").innerHTML = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
-  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + json.profile.profile_image +'")';
-  document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" href="'+json.profile.website+'">'+json.profile.website+'</a>';
+  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/u/' + res[0].name + '/avatar/medium' +'")';
+  document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
   document.getElementById("profile-info-created").innerHTML = res[0].created.replace("T"," | ");
   document.getElementById("profile-info-pst-count").innerHTML = res[0].post_count;
   document.getElementById("profile-info-last-up").innerHTML = res[0].last_account_update.replace("T"," | ");
@@ -753,12 +801,12 @@ function pushProfile (res) {
     if (img === undefined) {console.log(counter);}
     else if (res[counter].category == 'trhome') {
       eleProfileGrid.innerHTML += '<div id="trImg'+counter+'" class="col tr-profile-img" data-bs-toggle="modal" data-bs-target="#post-tray" data-tr-src="'+img.toString()+'" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-children="'+res[counter].children+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-body="'+json.description+'"></div>';
-      document.querySelector('#trImg'+counter).style.backgroundImage = 'url("https://images.hive.blog/p/'+b58(img[0])+'")';
+      document.querySelector('#trImg'+counter).style.backgroundImage = 'url("'+imgHoster+'/p/'+b58(img[0])+'")';
     }
     else if (res[counter].category === 'trvideo') {
       console.log(json.video)
       eleProfileVideo.innerHTML += '<div id="trVid'+counter+'" class="col bg-secondary rounded tr-profile-img tr-profile-video-gra" data-bs-toggle="modal" data-bs-target="#post-tray" data-tr-author="'+res[counter].author+'" data-tr-src="'+json.video[0]+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-children="'+res[counter].children+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-body="'+json.description+'" data-tr-type="vid"></div>';
-      document.querySelector('#trVid'+counter).style.backgroundImage = 'url("https://images.hive.blog/p/'+b58(img[0])+'")';
+      document.querySelector('#trVid'+counter).style.backgroundImage = 'url("'+imgHoster+'/p/'+b58(img[0])+'")';
     }
     document.getElementById("loader").classList.replace("visible","invisible")
     counter = counter + 1;
@@ -775,12 +823,13 @@ function push (res,type) {
   } else {
     src = json.image.toString()
   }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="https://images.hive.blog/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title satisfy fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="https://images.hive.blog/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated on ' + res[counter].last_update.replace("T", " ") + ' utc</small></p></div></div>' ;
+  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated on ' + res[counter].last_update.replace("T", " ") + ' utc</small></p></div></div>' ;
 }
 
 window.addEventListener("load",function(){
   document.getElementById("loader").classList.replace("visible","invisible");
-  getNew()
+  getNew();
+  toolip();
   window.addEventListener("offline",function(){
     document.querySelector(".offline-notify").classList.add("offline");
   })
