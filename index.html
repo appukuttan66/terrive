@@ -44,7 +44,6 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <!--CSS-->
-  <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="css/main.css" rel="stylesheet">
   <link href="css/satisfy.css" rel="stylesheet">
@@ -366,9 +365,9 @@
         <p class="float-start fs-3 mt-4 ms-4"><span id="profile-info-username">@username</span><br>
           <button class="btn btn-primary mt-3 shadow" onclick="followToggle(this);">Follow</button>
         </p>
-        <div class="float-end mt-5 fw-bold tr-follow">
-            <p id="profile-info-followers" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No followers"><span class="count"></span> followers</p>
-            <p id="profile-info-following" class="satisfy mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No following"><span class="count"><span> following</p>
+        <div class="float-end mt-5 ftr-follow">
+            <p id="profile-info-followers" class="mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No followers"><span class="count fw-bold">0</span> followers</p>
+            <p id="profile-info-following" class="mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No following"><span class="count fw-bold">0</span> following</p>
         </div>
       </div>
       <br>
@@ -404,7 +403,7 @@
             <div class="row w-100 row-cols-3 p-0 m-0 mx-auto mb-3 pb-3">
             </div>
           </div>
-          <div class="container text-center pt-3 satisfy tab-pane fade" id="profile-info" style="font-size: 20px;">
+          <div class="container text-center pt-3 tab-pane fade" id="profile-info" style="font-size: 20px;">
             <span class="text-secondary" style="font-size: 12px;">Power</span>
             <div class="progress w-max-42 mx-auto">
               <div id="profile-info-vp" class="progress-bar bg-secondary" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
