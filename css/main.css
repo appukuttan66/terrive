@@ -1,8 +1,11 @@
 
+html, body {
+  overflow-x: hidden;
+}
 .list-group-item {
   max-width: 42em;
 }
-nav, .card-title, .dropdown-item, .text-muted, .satisfy {
+nav, .dropdown-item, .text-muted, .satisfy {
  font-family: 'Satisfy', cursive;
 }
 .offline-notify{
@@ -63,6 +66,10 @@ svg:hover {
 .btn-terrive {
   background: linear-gradient;
 }
+.reply-body img {
+  width: 100%;
+  height: auto;
+}
 ul {
  background: #fff;
 }
@@ -92,6 +99,9 @@ ul {
   .tr-follow {
     width: 100%;
     padding-left: 20%;
+  }
+  .toast {
+    width: 75vw;
   }
 }
 
