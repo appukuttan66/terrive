@@ -1,4 +1,3 @@
-
 var client = new hivesigner.Client({
   app: 'terrive',
   callbackURL: 'https://terrive.one/auth.html',
@@ -371,18 +370,19 @@ function postLike(){
   var author = rTarg.getAttribute("data-tr-author")
   var permlink = rTarg.getAttribute("data-tr-permlink")
   var likeCountPost = document.getElementById('like-count-post')
-    if (accessToken) {
+  var postLikeEle = document.querySelector('#post-like');
+    if (accessToken && postLikeEle.style.fill !== "#ff0000" ) {
       client.vote(username,author,permlink,10000,function(err,res){
         if(err === null){ 
           console.log(res);
           document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
-          document.querySelector('#post-like').style.fill = "#ff0000";
+          postLikeEle.style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
           notify("Successfully Voted")
         }
         else {notify(err.error_description);}
       })
-    } else if (loginType == "keychain"){
+    } else if (loginType == "keychain" && postLikeEle.style.fill !== "#ff0000" ){
       hive_keychain.requestVote(
         username,
         permlink,
@@ -391,13 +391,13 @@ function postLike(){
         function (response) {
           if (response.success == true){
             document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
-            document.querySelector('#post-like').style.fill = "#ff0000";
+            postLikeEle.style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
             notify("Successfully Voted")
           } else {notify("Error while Voting","var(--bs-danger)")}
         }
       );
-    }
+    } else { notify("Failed to vote","var(--bs-danger)") }
   }
 
 function postComment(){
@@ -572,7 +572,7 @@ function like(id) {
   var eleAuthor = document.getElementById("author-"+counter);
   var author = eleAuthor.innerHTML;
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
-   if (accessToken) {
+   if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
       if(err === null) {
         console.log(res)
@@ -582,7 +582,7 @@ function like(id) {
         notify("Successfully Voted")
       }else{alert(err.error_description,"var(--bs-danger)");}
     });
-  } else if (loginType == "keychain"){
+  } else if (loginType == "keychain" && ele.style.fill !== "#ff0000" ){
       hive_keychain.requestVote(
         username,
         permlink,
@@ -599,7 +599,7 @@ function like(id) {
           } else { notify("Error while Voting","var(--bs-danger)") }
         }
       );
-    }
+   } else { notify("Failed to vote","var(--bs-danger)") }
   
 }
 
