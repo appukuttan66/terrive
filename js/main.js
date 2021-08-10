@@ -31,9 +31,9 @@ var toast = new bootstrap.Toast(toastEl)
 function notify(body,fill) {
   var biInfo = document.querySelector(".bi-info")
   if (fill) {
-    biInfo.fill = fill
+    biInfo.setAttribute("fill",fill)
   } else {
-    biInfo.fill = "var(--bs-success)"; 
+    biInfo.setAttribute("fill","var(--bs-success)"); 
   }
   document.querySelector("#update-notify-body").innerHTML = body;
   toast.show()
@@ -557,7 +557,7 @@ function getReplies(u,p){
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none satisfy" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div><div class="child-replies" data-tr-permlink="'+r[counter].permlink+'" data-tr-author="'+r[counter].author+'"></div>';
         counter = counter + 1;
       }
     }else{notify(e,"var(--bs-danger)");}
@@ -775,7 +775,7 @@ function pushProfileInfo (res) {
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
   document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + json.profile.profile_image +'")';
-  document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" href="'+json.profile.website+'">'+json.profile.website+'</a>';
+  document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
   document.getElementById("profile-info-created").innerHTML = res[0].created.replace("T"," | ");
   document.getElementById("profile-info-pst-count").innerHTML = res[0].post_count;
   document.getElementById("profile-info-last-up").innerHTML = res[0].last_account_update.replace("T"," | ");
