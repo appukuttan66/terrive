@@ -5,7 +5,9 @@ var client = new hivesigner.Client({
 var loginType = localStorage.getItem('type')
 var accessToken = localStorage.getItem('token')
 var rpc = "https://api.hive.blog"
+
 var imgHoster = "https://images.hive.blog"
+
 client.setAccessToken(accessToken)
 
 hive.api.setOptions({ url: rpc });
@@ -350,6 +352,7 @@ function pushPost(author,permlink,body,image,lc,children) {
   imgTray.innerHTML = "";
   if (images.length == 1) {
     imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp" class="w-100 mb-3">'
+
   } 
   else if (images.length > 1) {
     imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
@@ -361,7 +364,9 @@ function pushPost(author,permlink,body,image,lc,children) {
     document.querySelector("#carouselPostControls .carousel-inner .carousel-item:first-child").classList.add("active")
   }
   
+
   document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
+
   getReplies(author,permlink);
 }
 
