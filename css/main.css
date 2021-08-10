@@ -1,7 +1,4 @@
 
-html, body {
-  overflow-y: hidden;
-}
 .list-group-item {
   max-width: 42em;
 }
@@ -86,6 +83,9 @@ ul {
 @media only screen and (min-width: 42em) {
   .fixed-bottom { 
     display: none;
+  }
+  .card {
+    width: 100%;
   }
 }
 @media only screen and (max-width: 42em) {
