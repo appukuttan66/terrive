@@ -557,7 +557,7 @@ function getReplies(u,p){
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span>'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div><div class="child-replies" data-tr-permlink="'+r[counter].permlink+'" data-tr-author="'+r[counter].author+'"></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div><div class="child-replies" data-tr-permlink="'+r[counter].permlink+'" data-tr-author="'+r[counter].author+'"></div>';
         counter = counter + 1;
       }
     }else{notify(e,"var(--bs-danger)");}
@@ -751,18 +751,18 @@ function getFollowers(u) {
     if (err === null) {
       piFollowers.setAttribute("title","@"+result.map(function(item){return item.follower;}).toString().replaceAll(","," @"));
       toolip();
-    }else{console.log(err);}
+    }else{notify(err,"var(--bs-danger)");}
   });
   hive.api.getFollowing( u, '', 'blog', 10, function(err, result) {
     if (err === null) {
       piFollowing.setAttribute("title","@"+result.map(function(item){return item.following;}).toString().replaceAll(","," @"));
       toolip();
-    }else{console.log(err);}
+    }else{notify(err,"var(--bs-danger)");}
   });
   hive.api.getFollowCount( u, function(err, result) {
     if(err === null) {
-      piFollowing.innerHTML = result.following_count+' following';
-      piFollowers.innerHTML = result.follower_count+' followers';
+      piFollowing.querySelector('span').innerHTML = result.following_count;
+      piFollowers.querySelector('span').innerHTML = result.follower_count;
     }
     else{notify(err,"var(--bs-danger)");}
   });
@@ -771,10 +771,10 @@ function getFollowers(u) {
 
 function pushProfileInfo (res) {
   var json = JSON.parse(res[0].posting_json_metadata);
-  document.getElementById("profile-info-username").innerHTML = '@'+res[0].name;
+  document.getElementById("profile-info-username").innerHTML = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
-  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + json.profile.profile_image +'")';
+  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/u/' + res[0].name + '/avatar/medium' +'")';
   document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
   document.getElementById("profile-info-created").innerHTML = res[0].created.replace("T"," | ");
   document.getElementById("profile-info-pst-count").innerHTML = res[0].post_count;
