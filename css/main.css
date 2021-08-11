@@ -119,3 +119,10 @@ ul {
     padding-top: 30%;
   }
 }
+@media (prefers-color-scheme: dark) {
+  .bg-light { background: var(--bs-dark) !important; }
+  .bg-white { background: var(--bs-dark) !important; }
+  svg path { fill: var(--bs-secondary) }
+  .navbar-brand { color: var(--bs-secondary) !important; }
+  .border-bottom { border-color: var(--bs-secondary) !important; }
+}
