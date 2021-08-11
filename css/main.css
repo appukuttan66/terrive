@@ -124,7 +124,7 @@ ul {
   .bg-white, .offcanvas { background: var(--bs-dark) !important; }
   svg path { fill: var(--bs-secondary) }
   .bi-heart-fill path { fill: var(--bs-danger) }
-  .navbar-brand, h1, h6 .lead { color: var(--bs-secondary) !important; }
+  .navbar-brand, h1, h6, .lead, span, p { color: var(--bs-secondary) !important; }
   .border-bottom { border-color: var(--bs-secondary) !important; }
   .btn-dark { background: #000 }
 }
