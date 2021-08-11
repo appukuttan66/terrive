@@ -126,4 +126,5 @@ ul {
   .bi-heart-fill path { fill: var(--bs-danger) }
   .navbar-brand, h1, .lead { color: var(--bs-secondary) !important; }
   .border-bottom { border-color: var(--bs-secondary) !important; }
+  .btn-dark { background: #000 }
 }
