@@ -120,12 +120,13 @@ ul {
   }
 }
 @media (prefers-color-scheme: dark) {
-  .bg-light { background: var(--bs-gray-dark) !important; }
+  .bg-light, .tr-top-nav { background: var(--bs-gray-dark) !important; }
   .bg-white, .offcanvas, .alert-light, .modal-content { background: var(--bs-dark) !important; }
-  svg path { fill: var(--bs-secondary) }
+  .nav svg path, .navbar svg path { fill: var(--bs-secondary) }
   .bi-heart-fill path { fill: var(--bs-danger) }
   .navbar-brand, h1, h6, .lead, span, p, .alert-light, .modal-content { color: #9e9e9e !important; }
   .border-bottom, .border-top { border-color: var(--bs-secondary) !important; }
-  .modal-header, .modal-footer  { border: none; }
+  .modal-header, .modal-footer, .tr-top-nav li:hover, .dot:hover  { border: none; }
   .btn-dark { background: #000 }
+  .btn-close {  filter: invert(1) grayscale(100%) brightness(200%); }
 }
