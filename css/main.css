@@ -123,6 +123,7 @@ ul {
   .bg-light { background: var(--bs-dark) !important; }
   .bg-white { background: var(--bs-dark) !important; }
   svg path { fill: var(--bs-secondary) }
+  .bi-heart-fill { fill: var(--bs-danger) }
   .navbar-brand, h1, .lead { color: var(--bs-secondary) !important; }
   .border-bottom { border-color: var(--bs-secondary) !important; }
 }
