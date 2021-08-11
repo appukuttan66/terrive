@@ -120,11 +120,11 @@ ul {
   }
 }
 @media (prefers-color-scheme: dark) {
-  .bg-light, .alert-light { background: var(--bs-gray-dark) !important; }
-  .bg-white, .offcanvas { background: var(--bs-dark) !important; }
+  .bg-light { background: var(--bs-gray-dark) !important; }
+  .bg-white, .offcanvas, .alert-light, .modal-content { background: var(--bs-dark) !important; }
   svg path { fill: var(--bs-secondary) }
   .bi-heart-fill path { fill: var(--bs-danger) }
-  .navbar-brand, h1, h6, .lead, span, p, .alert-light { color: var(--bs-secondary) !important; }
+  .navbar-brand, h1, h6, .lead, span, p, .alert-light, .modal-content { color: var(--bs-secondary) !important; }
   .border-bottom { border-color: var(--bs-secondary) !important; }
   .btn-dark { background: #000 }
 }
