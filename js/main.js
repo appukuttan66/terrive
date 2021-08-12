@@ -506,7 +506,7 @@ function dark() {
   var pref = window.matchMedia("(prefer-color-scheme: dark)")
   
   if (!pref.matches)
-    document.body.classList.toggle("dark-theme")
+    document.body.classList.toggle("dark")
   }
 }
 
