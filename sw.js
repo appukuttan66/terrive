@@ -1,10 +1,7 @@
 cacheNAME = "tr-cache";
 cacheURLS = [
-  '/',
-  'index.html',
-  'js/main.js',
   'js/b58.js',
-  'css/main.css'
+  'css/satisfy.css'
 ];
 
 self.addEventListener("install",function(installEvent){
