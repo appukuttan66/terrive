@@ -505,7 +505,7 @@ function getContent(u,p,type) {
 function dark() {
   var pref = window.matchMedia("(prefer-color-scheme: dark)")
   
-  if (!pref.matches)
+  if (!pref.matches) {
     document.body.classList.toggle("dark")
   }
 }
