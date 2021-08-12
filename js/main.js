@@ -71,6 +71,10 @@ function keychainLogin(){
   );
 }
 
+function logOut () {
+  localStorage.clear()
+}
+
 
 function postTypeSelector(type) {
   if (type == 'image') {
@@ -502,11 +506,23 @@ function getContent(u,p,type) {
   })
 }
 
+darken()
+function darken () {
+  if (localStorage.getItem("theme") == "dark") {
+    document.body.classList.add("dark")
+  }
+}
 function dark() {
   var pref = window.matchMedia("(prefer-color-scheme: dark)")
   
   if (!pref.matches) {
     document.body.classList.toggle("dark")
+    
+    if (document.body.classList.contains("dark")) {
+      localStorage.setItem("theme","dark")
+    } else {
+      localStorage.removeItem("theme")
+    }
   }
 }
 
