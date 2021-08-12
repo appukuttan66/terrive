@@ -67,7 +67,7 @@ svg:hover {
   background: linear-gradient;
 }
 .reply-body img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 ul {
