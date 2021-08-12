@@ -61,6 +61,8 @@ svg:hover {
 }
 .dot:hover {
   background: #e8e8e8;
+}
+.dropdown-menu {
   opacity: 90%;
 }
 .btn-terrive {
@@ -124,8 +126,8 @@ ul {
 }
 
 .dark { --tr-color: #e8e8e8; }
-.dark .bg-light, .dark, .dark .modal-content { background: #17191c !important; }
-.dark .bg-white, .dark .tr-top-nav,.dark .offcanvas, .dark .alert-light, .dark .list-group-item, .dark .dropdown-menu { background: var(--bs-dark) !important; }
+.dark .bg-light, .dark, .dark .modal-content { background: var(--bs-dark) !important; }
+.dark .bg-white, .dark .tr-top-nav,.dark .offcanvas, .dark .alert-light, .dark .list-group-item, .dark .dropdown-menu { background: #17191c !important; }
 .dark .nav svg path, .dark .navbar svg path, .dark .card svg path { fill: #e8e8e8; }
 .dark .navbar-brand, .dark h1, .dark h6, .dark .alert-light .link-dark, .dark .lead, .dark span, .dark p, .dark .alert-light, .dark .modal-content, .dark .card a, .dark .dropdown-menu  { color: #e8e8e8 !important; }
 .dark .border-bottom, .dark .border-top { border-color: #e8e8e8 !important; }
@@ -133,13 +135,13 @@ ul {
 .dark .btn-dark { background: #000; }
 .dark .btn-close {  filter: invert(1) grayscale(100%) brightness(200%); }
 .dark .list-group-item { border: 1px solid var(--bs-primary)}
-.dark .dot:hover { background: #17191c}
+.dark .dot:hover { background: var(--bs-dark)}
 
 
 @media (prefers-color-scheme: dark) {
   body { --tr-color: #e8e8e8; }
-  .bg-light { background: #17191c !important; }
-  .bg-white, .tr-top-nav, .offcanvas, .alert-light, .modal-content, .list-group-item, .dropdown-menu { background: var(--bs-dark) !important; }
+  .bg-light, .modal-content { background: var(--bs-dark) !important; }
+  .bg-white, .tr-top-nav, .offcanvas, .alert-light, .list-group-item, .dropdown-menu { background: #17191c !important; }
   .nav svg path, .navbar svg path, .card svg path { fill: #e8e8e8; }
   .navbar-brand, h1, h6, .lead, span, p, .alert-light, .modal-content, .card a, .dropdown-menu  { color: #e8e8e8 !important; }
   .border-bottom, .border-top { border-color: #e8e8e8 !important; }
@@ -147,5 +149,5 @@ ul {
   .btn-dark { background: #000; }
   .btn-close {  filter: invert(1) grayscale(100%) brightness(200%); }
   .list-group-item { border: 1px solid var(--bs-primary)}
-  .dot:hover { background: #17191c}
+  .dot:hover { background: var(--bs-dark)}
 }
