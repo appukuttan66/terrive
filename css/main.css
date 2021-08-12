@@ -124,10 +124,10 @@ ul {
 }
 
 .dark { --tr-color: #e8e8e8; }
-.dark .bg-light, .dark { background: #17191c !important; }
-.dark .bg-white, .dark .tr-top-nav,.dark .offcanvas, .dark .alert-light, .dark .modal-content, .dark .list-group-item, .dark .dropdown-menu { background: var(--bs-dark) !important; }
+.dark .bg-light, .dark, .dark .modal-content { background: #17191c !important; }
+.dark .bg-white, .dark .tr-top-nav,.dark .offcanvas, .dark .alert-light, .dark .list-group-item, .dark .dropdown-menu { background: var(--bs-dark) !important; }
 .dark .nav svg path, .dark .navbar svg path, .dark .card svg path { fill: #e8e8e8; }
-.dark .navbar-brand, .dark h1, .dark h6, .dark .lead, .dark span, .dark p, .dark .alert-light, .dark .modal-content, .dark .card a, .dark .dropdown-menu  { color: #e8e8e8 !important; }
+.dark .navbar-brand, .dark h1, .dark h6, .dark .alert-light .link-dark, .dark .lead, .dark span, .dark p, .dark .alert-light, .dark .modal-content, .dark .card a, .dark .dropdown-menu  { color: #e8e8e8 !important; }
 .dark .border-bottom, .dark .border-top { border-color: #e8e8e8 !important; }
 .dark .modal-header, .dark .modal-footer, .dark .tr-top-nav li:hover, .dark .tr-top-nav li:hover, .dark .list-group-item  { border: none; }
 .dark .btn-dark { background: #000; }
