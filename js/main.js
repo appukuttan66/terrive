@@ -171,32 +171,8 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             console.log(e);
             notify("Error while uploading","var(--bs-danger)")
           })
-        }).catch(function(er){console.log(er);})
-      }).then(function(){ 
-        var videoele = document.createElement("video")
-        videoele.src = URL.createObjectURL(f)
-
-        videoele.onloadedmetadata = window.setTimeout(function() {
-          var canvas = document.createElement("canvas")
-          var ctx = canvas.getContext("2d")
-          canvas.height = videoele.videoHeight;
-          canvas.width = videoele.videoWidth;
-          ctx.drawImage(videoele, 0, 0, canvas.width, canvas.height)
-          canvas.toBlob(function(blob){
-            var bfd = new FormData();
-            bfd.append('file',blob, "terrive.jpeg")
-            fetch('https://ipfs.infura.io:5001/api/v0/add', {
-              method: 'POST',
-              body: bfd,
-              mode: 'cors'
-            }).then(function(br){
-              br.json().then(function(bd){
-                document.getElementById("upload-video-url-cover").value = "https://ipfs.infura.io/ipfs/" + bd.Hash
-              })
-            })
-          },'image/jpeg')
-        }, 500)
-      })
+        }).catch(function(er){notify(er,"var(--bs-danger)");})
+      }).catch(function(err){notify(err,"var(--bs-danger)");})
     } else {
       notify("File Size is too Big","var(--bs-danger)")
     }
@@ -319,7 +295,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
 document.getElementById('post-tray').addEventListener('show.bs.modal',function(event){
   this.addEventListener('hide.bs.modal', function(){
     document.querySelector('#post-like path').setAttribute("d","m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z")
-    document.querySelector('#post-like').style.fill = "#000000";
+    document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
   var rTarg = event.relatedTarget;
   var author = rTarg.getAttribute("data-tr-author")
@@ -378,7 +354,7 @@ function postLike(){
   var postLikeEle = document.querySelector('#post-like');
     if (accessToken && postLikeEle.style.fill !== "#ff0000" ) {
       client.vote(username,author,permlink,10000,function(err,res){
-        if(err === null){ 
+        if(err === null && postLikeEle.style.fill !== "#ff0000"){ 
           console.log(res);
           document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
           postLikeEle.style.fill = "#ff0000";
@@ -526,6 +502,14 @@ function getContent(u,p,type) {
   })
 }
 
+function dark() {
+  var pref = window.matchMedia("(prefer-color-scheme: dark)")
+  
+  if (!pref.matches)
+    document.body.classList.toggle("dark-theme")
+  }
+}
+
 function calcLength () {
   var txtL = document.getElementById("text-length");
   var txtBx = document.getElementById("textbox");
@@ -540,7 +524,7 @@ function calcLength () {
 function calcTag(e) {
   if (e.keyCode == 13 || e.keyCode == 32) {
     var newtag = document.getElementById("tag");
-    document.getElementById("tagTray").innerHTML += '<span class="alert d-inline alert-primary ms-3 p-1"><span class="d-inline tag-wrap me-1">'+newtag.value+'</span><button type="button" class="d-inline btn-close p-0 m-0 align-middle newtag" data-bs-dismiss="alert" aria-label="Close"></button></span>'
+    document.getElementById("tagTray").innerHTML += '<span class="alert d-inline alert-primary ms-3 p-1"><span class="d-inline tag-wrap me-1">'+newtag.value.replace(" ","")+'</span><button type="button" class="d-inline btn-close p-0 m-0 align-middle newtag" data-bs-dismiss="alert" aria-label="Close"></button></span>'
     newtag.value = "";
   }
 }
@@ -579,7 +563,7 @@ function like(id) {
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
    if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
-      if(err === null) {
+      if(err === null ele.style.fill !== "#ff0000") {
         console.log(res)
         ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
         ele.style.fill = "#ff0000";
