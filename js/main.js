@@ -563,7 +563,7 @@ function like(id) {
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
    if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
-      if(err === null ele.style.fill !== "#ff0000") {
+      if(err === null && ele.style.fill !== "#ff0000") {
         console.log(res)
         ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
         ele.style.fill = "#ff0000";
