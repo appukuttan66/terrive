@@ -571,8 +571,8 @@ function getReplies(u,p){
   })
 }
 function getChildReplies(ev) {
-  var u = ev.target.getAttribute("data-tr-author")
-  var p = ev.target.getAttribute("data-tr-permlink")
+  var u = ev.getAttribute("data-tr-author")
+  var p = ev.getAttribute("data-tr-permlink")
   var el = document.getElementById("child-replies-"+p);
   hive.api.getContentReplies(u,p,function(e,r){
     if (e === null){
