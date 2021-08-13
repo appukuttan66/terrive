@@ -6,7 +6,7 @@ var loginType = localStorage.getItem('type')
 var accessToken = localStorage.getItem('token')
 var rpc = "https://api.hive.blog"
 
-var imgHoster = "https://images.hive.blog"
+var imgHoster = "https://images.ecency.com"
 
 client.setAccessToken(accessToken)
 
