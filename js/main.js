@@ -195,14 +195,14 @@ function submitPost(){
   
   if(document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
-    var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-").toLowerCase()+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
     broadcastPost(username,body,jsonMetadata,'trhome',title)
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
     var coverV = document.getElementById('upload-video-url-cover').value;
-    var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-").toLowerCase()+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
     broadcastPost(username,bodyVC,jsonMetadataVC,'trvideo',title)
@@ -210,7 +210,7 @@ function submitPost(){
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
     var alt = imgHoster + "/u/" + username + "/avatar/large"
-    var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-").toLowerCase()+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,bodyV,jsonMetadataV,'trvideo',title)
@@ -225,7 +225,7 @@ function reg(s, n) {
 
 function broadcastPost(u,body,jsonMetadata,type,title){
   if (accessToken) {
-    client.comment('',type,u,title,title,body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,title.replace(" ","-").toLowerCase(),title,body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
@@ -242,13 +242,13 @@ function broadcastPost(u,body,jsonMetadata,type,title){
     type,
     '',
     jsonMetadata,
-    title,
+    title.replace(" ","-").toLowerCase(),
     '',
     function (response) {
       if(response.success == true) {
         clearUploadTray();
         notify("Successfully Posted")
-      }
+      } else {notify("Failed to Post","var(--bs-danger)"); } 
     }
   );
   }
@@ -840,7 +840,7 @@ function push (res,type) {
   } else {
     src = json.image.toString()
   }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated on ' + res[counter].last_update.replace("T", " ") + ' utc</small></p></div></div>' ;
+  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
 }
 
 window.addEventListener("load",function(){
