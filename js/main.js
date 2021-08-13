@@ -193,7 +193,7 @@ function submitPost(){
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
   
-  if(document.getElementById('upload-image-url').value) {
+  if(document.getElementById('upload-image-url') && document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-").toLowerCase()+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
