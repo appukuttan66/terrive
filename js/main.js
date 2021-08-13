@@ -213,14 +213,14 @@ function submitPost(){
   
   if(document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
-    var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+permlink+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-")+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
     broadcastPost(username,body,jsonMetadata,'trhome',title)
   }
   else if (document.getElementById('upload-video-url').value && document.getElementById('upload-video-url-cover').value ) {
     taglist.push("trhome")
     var coverV = document.getElementById('upload-video-url-cover').value;
-    var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var bodyVC = "[![]("+coverV+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-")+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolinkC = document.getElementById('upload-video-url').value;
     var jsonMetadataVC = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [coverV], video: [videolinkC],})
     broadcastPost(username,bodyVC,jsonMetadataVC,'trvideo',title)
@@ -228,7 +228,7 @@ function submitPost(){
   else if (document.getElementById('upload-video-url').value) {
     taglist.push("trhome")
     var alt = imgHoster + "/u/" + username + "/avatar/large"
-    var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+permlink+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
+    var bodyV = "[![]("+alt+")](https://terrive.one/?u="+username+"&p="+title.replace(" ","-")+"&video) <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var videolink = document.getElementById('upload-video-url').value;
     var jsonMetadataV = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: [alt], video: [videolink],})
     broadcastPost(username,bodyV,jsonMetadataV,'trvideo',title)
@@ -243,7 +243,7 @@ function reg(s, n) {
 
 function broadcastPost(u,body,jsonMetadata,type,title){
   if (accessToken) {
-    client.comment('',type,u,title,title,body,jsonMetadata, function (err,res) {
+    client.comment('',type,u,title.replace(" ","-"),title,body,jsonMetadata, function (err,res) {
       if (err === null || err.error_description === undefined){
         console.log(res)
         clearUploadTray();
@@ -260,7 +260,7 @@ function broadcastPost(u,body,jsonMetadata,type,title){
     type,
     '',
     jsonMetadata,
-    title,
+    title.replace(" ","-"),
     '',
     function (response) {
       if(response.success == true) {
