@@ -18,6 +18,7 @@ var eleDiscover= document.getElementById("discover");
 var eleProfileGrid = document.querySelector("#profile-grid .row");
 var eleProfileVideo = document.querySelector("#profile-video .row");
 var md = new remarkable.Remarkable({html: true,})
+md.use(remarkable.linkify)
 
 function toolip () {
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
