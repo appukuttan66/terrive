@@ -805,10 +805,15 @@ function getFollowers(u) {
 function pushProfileInfo (res) {
   var json = JSON.parse(res[0].posting_json_metadata);
   document.getElementById("profile-info-username").innerHTML = res[0].name;
+  document.querySelector('#profile-edit input[placeholder="Name"]').value = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
+  document.querySelector('#profile-edit textarea').value = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
+  document.querySelector('#profile-edit input[placeholder="Location"]').value = json.profile.location;
   document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/u/' + res[0].name + '/avatar/medium' +'")';
+  document.querySelector('#profile-edit input[placeholder="Profile Image"]').value = json.profile.profile_image;
   document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
+  document.querySelector('#profile-edit input[placeholder="Website"]').value = json.profile.website;
   document.getElementById("profile-info-created").innerHTML = res[0].created.replace("T"," | ");
   document.getElementById("profile-info-pst-count").innerHTML = res[0].post_count;
   document.getElementById("profile-info-last-up").innerHTML = res[0].last_account_update.replace("T"," | ");
