@@ -370,6 +370,32 @@
         </div>
       </div>
     </div>
+    
+    <div class="modal fade" id="profile-edit" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Update Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" placeholder="Name">
+            <br>
+            <textarea class="form-control" placeholder="About"></textarea>
+            <br>
+            <input type="text" class="form-control" placeholder="Profile Image">
+            <br>
+            <input type="text" class="form-control" placeholder="Website">
+            <br>
+            <input type="text" class="form-control" placeholder="Location">
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-primary" onclick="logOut()">Log Out</button>
+            <button type="button" class="btn btn-primary" onclick="saveProfile()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   
 <div class="tab-content">
