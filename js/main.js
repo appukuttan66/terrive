@@ -599,7 +599,7 @@ function likeReplies(ev) {
   } else if (loginType == "keychain") {
     hive_keychain.requestVote( username, perm, auth, 10000, function(res) {
       if (res.success == true) {
-        ev.querySelector("path").style.fill = "#ff0000"
+        ev.querySelector("use").style.fill = "#ff0000"
       } else { notify("Error Voting","var(--bs-danger)") }
     })
   }
