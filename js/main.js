@@ -593,7 +593,7 @@ function likeReplies(ev) {
   if(accessToken) {
     client.vote(username, auth, perm, 10000, function (e,r) {
       if(e === null) {
-        ev.querySelector("path").style.fill = "#ff0000"
+        ev.querySelector("use").style.fill = "#ff0000"
       } else { notify(e,"var(--bs-danger)"); }
     })
   } else if (loginType == "keychain") {
@@ -755,7 +755,7 @@ function filterTag(res,type) {
           eleHome.innerHTML = "";
      }
      else if ( type === "new") { 
-       eleDiscover.innerHTML = '<div class="text-center"><div class="spinner-grow text-primary"></div></div>';
+       eleDiscover.innerHTML = '';
      }
     
     while( counter < res.length ) {
