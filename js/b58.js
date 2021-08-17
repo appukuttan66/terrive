@@ -42,3 +42,34 @@ function b58 (input) {
   const res = binary_to_base58(enc.encode(input))
   return res
 }
+
+
+// I'm gonna leave this guy right here, i don't wan't to fill up the main.js anymore.
+function timeDiff(inp) {
+  var date = new Date(inp+"Z")
+  var diff = new Date() - date
+  var time = diff / 1000;
+  var unit = " seconds ago";
+  if (time > (24 * 3600)) {
+    time = Math.round(time / ( 3600 * 24 ))
+    unit = " days ago."
+  }
+  else if (time > 3600) {
+    time = Math.round(time / 3600);
+    unit = " hours ago."
+  }
+  else if (time > 60) {
+    time = Math.round(time / 60)
+    unit = " minutes ago."
+  }
+  else {
+    time = Math.round(time)
+  }
+  
+  if(time == 1) {
+    unit = unit.replace("s "," ")
+  }
+  
+  var result = time + unit
+  return result;
+}

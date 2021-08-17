@@ -1,4 +1,4 @@
-const cacheNAME = "tr-cache-v1";
+const cacheNAME = "tr-cache-v2";
 const cacheURLS = [
   'fonts/satisfy-v11-latin-regular.woff2',
   'js/b58.js',

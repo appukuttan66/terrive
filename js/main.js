@@ -18,6 +18,7 @@ var eleDiscover= document.getElementById("discover");
 var eleProfileGrid = document.querySelector("#profile-grid .row");
 var eleProfileVideo = document.querySelector("#profile-video .row");
 var md = new remarkable.Remarkable({html: true,})
+md.use(remarkable.linkify)
 
 function toolip () {
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -69,6 +70,11 @@ function keychainLogin(){
       }
     }
   );
+}
+
+function logOut () {
+  localStorage.clear()
+  setTimeout(location.reload(),500)
 }
 
 
@@ -171,32 +177,8 @@ document.querySelector('input[type="radio"][value="video"]').addEventListener("c
             console.log(e);
             notify("Error while uploading","var(--bs-danger)")
           })
-        }).catch(function(er){console.log(er);})
-      }).then(function(){ 
-        var videoele = document.createElement("video")
-        videoele.src = URL.createObjectURL(f)
-
-        videoele.onloadedmetadata = window.setTimeout(function() {
-          var canvas = document.createElement("canvas")
-          var ctx = canvas.getContext("2d")
-          canvas.height = videoele.videoHeight;
-          canvas.width = videoele.videoWidth;
-          ctx.drawImage(videoele, 0, 0, canvas.width, canvas.height)
-          canvas.toBlob(function(blob){
-            var bfd = new FormData();
-            bfd.append('file',blob, "terrive.jpeg")
-            fetch('https://ipfs.infura.io:5001/api/v0/add', {
-              method: 'POST',
-              body: bfd,
-              mode: 'cors'
-            }).then(function(br){
-              br.json().then(function(bd){
-                document.getElementById("upload-video-url-cover").value = "https://ipfs.infura.io/ipfs/" + bd.Hash
-              })
-            })
-          },'image/jpeg')
-        }, 500)
-      })
+        }).catch(function(er){notify(er,"var(--bs-danger)");})
+      }).catch(function(err){notify(err,"var(--bs-danger)");})
     } else {
       notify("File Size is too Big","var(--bs-danger)")
     }
@@ -211,7 +193,7 @@ function submitPost(){
   var taglist = Array.prototype.slice.call(eleTags).map(function(tag){return tag.innerHTML;});
   
   
-  if(document.getElementById('upload-image-url').value) {
+  if(document.getElementById('upload-image-url') && document.getElementById('upload-image-url').value) {
     var imagelink = document.getElementById('upload-image-url').value.split(" ");
     var body = "[![]("+imagelink[0]+")](https://terrive.one/?u="+username+"&p="+title.replaceAll(" ","-").toLowerCase()+") <br><br>"+descBody+" <br><br> Posted using [Terrive](https://terrive.one)";
     var jsonMetadata = JSON.stringify({app: "terrive/0.0.0", format: "markdown", description: descBody, tags: taglist, image: imagelink})
@@ -266,7 +248,7 @@ function broadcastPost(u,body,jsonMetadata,type,title){
       if(response.success == true) {
         clearUploadTray();
         notify("Successfully Posted")
-      }
+      } else {notify("Failed to Post","var(--bs-danger)"); } 
     }
   );
   }
@@ -318,8 +300,8 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
 
 document.getElementById('post-tray').addEventListener('show.bs.modal',function(event){
   this.addEventListener('hide.bs.modal', function(){
-    document.querySelector('#post-like path').setAttribute("d","m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z")
-    document.querySelector('#post-like').style.fill = "#000000";
+    document.querySelector('#post-like use').setAttribute("href","#bi-heart")
+    document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
   var rTarg = event.relatedTarget;
   var author = rTarg.getAttribute("data-tr-author")
@@ -378,9 +360,9 @@ function postLike(){
   var postLikeEle = document.querySelector('#post-like');
     if (accessToken && postLikeEle.style.fill !== "#ff0000" ) {
       client.vote(username,author,permlink,10000,function(err,res){
-        if(err === null){ 
+        if(err === null && postLikeEle.style.fill !== "#ff0000"){ 
           console.log(res);
-          document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+          document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
           postLikeEle.style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
           notify("Successfully Voted")
@@ -395,7 +377,7 @@ function postLike(){
         10000,
         function (response) {
           if (response.success == true){
-            document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
             postLikeEle.style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
             notify("Successfully Voted")
@@ -526,6 +508,26 @@ function getContent(u,p,type) {
   })
 }
 
+darken()
+function darken () {
+  if (localStorage.getItem("theme") == "dark") {
+    document.body.classList.add("dark")
+  }
+}
+function dark() {
+  var pref = window.matchMedia("(prefer-color-scheme: dark)")
+  
+  if (!pref.matches) {
+    document.body.classList.toggle("dark")
+    
+    if (document.body.classList.contains("dark")) {
+      localStorage.setItem("theme","dark")
+    } else {
+      localStorage.removeItem("theme")
+    }
+  }
+}
+
 function calcLength () {
   var txtL = document.getElementById("text-length");
   var txtBx = document.getElementById("textbox");
@@ -540,7 +542,7 @@ function calcLength () {
 function calcTag(e) {
   if (e.keyCode == 13 || e.keyCode == 32) {
     var newtag = document.getElementById("tag");
-    document.getElementById("tagTray").innerHTML += '<span class="alert d-inline alert-primary ms-3 p-1"><span class="d-inline tag-wrap me-1">'+newtag.value+'</span><button type="button" class="d-inline btn-close p-0 m-0 align-middle newtag" data-bs-dismiss="alert" aria-label="Close"></button></span>'
+    document.getElementById("tagTray").innerHTML += '<span class="alert d-inline alert-primary ms-3 p-1"><span class="d-inline tag-wrap me-1">'+newtag.value.replace(" ","")+'</span><button type="button" class="d-inline btn-close p-0 m-0 align-middle newtag" data-bs-dismiss="alert" aria-label="Close"></button></span>'
     newtag.value = "";
   }
 }
@@ -559,19 +561,52 @@ function getSearch(id) {
 
 function getReplies(u,p){
   document.querySelector("#post-tray .modal-body p").innerHTML = "";
-  hive.api.getContentReplies(u,p,function(e,r){
+  hive.api.getContentReplies(u,p,function(e,r) {
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto" style="max-width: 36em;"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a></div><div class="child-replies" data-tr-permlink="'+r[counter].permlink+'" data-tr-author="'+r[counter].author+'"></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
         counter = counter + 1;
       }
     }else{notify(e,"var(--bs-danger)");}
   })
 }
+function getChildReplies(ev) {
+  var u = ev.getAttribute("data-tr-author")
+  var p = ev.getAttribute("data-tr-permlink")
+  var el = document.getElementById("child-replies-"+p);
+  hive.api.getContentReplies(u,p,function(e,r){
+    if (e === null){
+      var c = 0;
+      while (c < r.length) {
+        el.innerHTML += '<div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 32em;"><img src="'+imgHoster+'/u/'+r[c].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[c].author+'">'+r[c].author+'</a><br><span class="reply-body">'+md.render(r[c].body)+ '</span><a href="?u='+r[c].author+'&p='+r[c].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><svg data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="getChildReplies(this)" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></div><div id="child-replies-'+r[c].permlink+'"></div><br>';
+        c = c + 1;
+      }
+      if(r.length = 0){ notify("No Replies","var(--bs-danger)") }
+    } else { notify(e, "var(--bs-danger)") }
+  })
+}
+
+function likeReplies(ev) {
+  var auth = ev.getAttribute("data-tr-author")
+  var perm = ev.getAttribute("data-tr-permlink")
+  if(accessToken) {
+    client.vote(username, auth, perm, 10000, function (e,r) {
+      if(e === null) {
+        ev.querySelector("use").style.fill = "#ff0000"
+      } else { notify(e,"var(--bs-danger)"); }
+    })
+  } else if (loginType == "keychain") {
+    hive_keychain.requestVote( username, perm, auth, 10000, function(res) {
+      if (res.success == true) {
+        ev.querySelector("use").style.fill = "#ff0000"
+      } else { notify("Error Voting","var(--bs-danger)") }
+    })
+  }
+}
 
 function like(id) {
-  var ele = document.getElementById(id).querySelector(".heartPath");
+  var ele = document.getElementById(id).querySelector("use");
   var counter = id.replace("like-","");
   var eleLikeCount = document.getElementById("like-count-"+counter);
   var eleAuthor = document.getElementById("author-"+counter);
@@ -579,25 +614,17 @@ function like(id) {
   var permlink = eleAuthor.getAttribute("data-tr-permlink");
    if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
-      if(err === null) {
-        console.log(res)
-        ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+      if(err === null && ele.style.fill !== "#ff0000") {
+        ele.setAttribute("href","#bi-heart-fill");
         ele.style.fill = "#ff0000";
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
         notify("Successfully Voted")
-      }else{alert(err.error_description,"var(--bs-danger)");}
+      }else{notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain" && ele.style.fill !== "#ff0000" ){
-      hive_keychain.requestVote(
-        username,
-        permlink,
-        author,
-        10000,
-        function (response) {
-          console.log("voting ...");
-          console.log(response);
+      hive_keychain.requestVote( username, permlink, author, 10000, function (response) {
           if (response.success == true){
-            ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            ele.setAttribute("href","#bi-heart-fill");
             ele.style.fill = "#ff0000";
             eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
             notify("Successfully Voted")
@@ -728,7 +755,7 @@ function filterTag(res,type) {
           eleHome.innerHTML = "";
      }
      else if ( type === "new") { 
-       eleDiscover.innerHTML = "";
+       eleDiscover.innerHTML = '';
      }
     
     while( counter < res.length ) {
@@ -823,7 +850,7 @@ function push (res,type) {
   } else {
     src = json.image.toString()
   }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated on ' + res[counter].last_update.replace("T", " ") + ' utc</small></p></div></div>' ;
+  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg width="36" height="26" fill="dark" style="margin-top: 5px"><use href="#bi-three-dots"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg width="22" height="22" fill="currentColor" class="bi bi-heart" id="like-'+ counter +type.id+'" onclick="like(this.id)"><use href="#bi-heart"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg  width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3"><use href="#bi-chat-square"/></svg><span class="ms-2">' + res[counter].children +'</span><svg width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3"><use href="#bi-arrow-return-right"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
 }
 
 window.addEventListener("load",function(){
