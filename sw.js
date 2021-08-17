@@ -8,7 +8,9 @@ const cacheURLS = [
 self.addEventListener("install",function(installEvent){
   installEvent.waitUntil(
     caches.open(cacheNAME).then(function(cache){
-      return cache.addAll(cacheURLS);
+      return cache.add(cacheURLS[1]);
+      return cache.add(cacheURLS[2]);
+      return cache.add(cacheURLS[3]);
     })
   );
 });
