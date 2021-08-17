@@ -126,7 +126,7 @@ ul {
 }
 
 .dark { --tr-color: #e8e8e8; }
-.dark .bg-light, .dark, .dark .modal-content { background: var(--bs-dark) !important; }
+.dark .bg-light, .dark, .dark .modal-content, .dark .dropdown-item:focus, .dark .dropdown-item:hover { background: var(--bs-dark) !important; }
 .dark .bg-white, .dark .tr-top-nav,.dark .offcanvas, .dark .alert-light, .dark .list-group-item, .dark .dropdown-menu { background: #17191c !important; }
 .dark .nav svg use, .dark .navbar svg use, .dark .card svg use { fill: #e8e8e8; }
 .dark .navbar-brand, .dark h1, .dark h6, .dark .alert-light .link-dark, .dark .lead, .dark span, .dark p, .dark .alert-light, .dark .modal-content, .dark .card a, .dark .dropdown-menu  { color: #e8e8e8 !important; }
@@ -141,7 +141,7 @@ ul {
 
 @media (prefers-color-scheme: dark) {
   body { --tr-color: #e8e8e8; }
-  .bg-light, .modal-content { background: var(--bs-dark) !important; }
+  .bg-light, .modal-content, .dropdown-item:focus, .dropdown-item:hover { background: var(--bs-dark) !important; }
   .bg-white, .tr-top-nav, .offcanvas, .alert-light, .list-group-item, .dropdown-menu { background: #17191c !important; }
   .nav svg use, .navbar svg use, .card svg use { fill: #e8e8e8; }
   .navbar-brand, h1, h6, .alert-light .link-dark, .lead, span, p, .alert-light, .modal-content, .card a, .dropdown-menu  { color: #e8e8e8 !important; }
