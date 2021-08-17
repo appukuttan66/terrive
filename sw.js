@@ -1,5 +1,6 @@
-cacheNAME = "tr-cache";
-cacheURLS = [
+const cacheNAME = "tr-cache-v2";
+const cacheURLS = [
+  'fonts/satisfy-v11-latin-regular.woff2',
   'js/b58.js',
   'css/satisfy.css'
 ];
@@ -14,7 +15,7 @@ self.addEventListener("install",function(installEvent){
 
 self.addEventListener("fetch",function(e){
   e.respondWith(
-    caches.match(e.request).then(function(r){
+    caches.match(e.request).then(function(r) {
       return r || fetch(e.request);
     })
   );
