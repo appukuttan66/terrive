@@ -74,7 +74,7 @@ function keychainLogin(){
 
 function logOut () {
   localStorage.clear()
-  setTimeout(window.reload(),500)
+  setTimeout(location.reload(),500)
 }
 
 
@@ -300,7 +300,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
 
 document.getElementById('post-tray').addEventListener('show.bs.modal',function(event){
   this.addEventListener('hide.bs.modal', function(){
-    document.querySelector('#post-like path').setAttribute("d","m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z")
+    document.querySelector('#post-like use').setAttribute("href","#bi-heart")
     document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
   var rTarg = event.relatedTarget;
@@ -362,7 +362,7 @@ function postLike(){
       client.vote(username,author,permlink,10000,function(err,res){
         if(err === null && postLikeEle.style.fill !== "#ff0000"){ 
           console.log(res);
-          document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+          document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
           postLikeEle.style.fill = "#ff0000";
           likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
           notify("Successfully Voted")
@@ -377,7 +377,7 @@ function postLike(){
         10000,
         function (response) {
           if (response.success == true){
-            document.querySelector('#post-like path').setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
             postLikeEle.style.fill = "#ff0000";
             likeCountPost.innerHTML = +likeCountPost.innerHTML + 1;
             notify("Successfully Voted")
@@ -565,7 +565,7 @@ function getReplies(u,p){
     if(e === null){
       var counter = 0;
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" viewBox="0 0 16 16" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3" viewBox="0 0 16 16"><path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
+        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
         counter = counter + 1;
       }
     }else{notify(e,"var(--bs-danger)");}
@@ -579,7 +579,7 @@ function getChildReplies(ev) {
     if (e === null){
       var c = 0;
       while (c < r.length) {
-        el.innerHTML += '<div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 32em;"><img src="'+imgHoster+'/u/'+r[c].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[c].author+'">'+r[c].author+'</a><br><span class="reply-body">'+md.render(r[c].body)+ '</span><a href="?u='+r[c].author+'&p='+r[c].permlink+'&reply" class="link-dark satisfy">reply</a><svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" viewBox="0 0 16 16" data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="likeReplies(this)"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="getChildReplies(this)" xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3" viewBox="0 0 16 16"><path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg></div><div id="child-replies-'+r[c].permlink+'"></div><br>';
+        el.innerHTML += '<div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 32em;"><img src="'+imgHoster+'/u/'+r[c].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[c].author+'">'+r[c].author+'</a><br><span class="reply-body">'+md.render(r[c].body)+ '</span><a href="?u='+r[c].author+'&p='+r[c].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><svg data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="getChildReplies(this)" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></div><div id="child-replies-'+r[c].permlink+'"></div><br>';
         c = c + 1;
       }
       if(r.length = 0){ notify("No Replies","var(--bs-danger)") }
@@ -606,7 +606,7 @@ function likeReplies(ev) {
 }
 
 function like(id) {
-  var ele = document.getElementById(id).querySelector(".heartPath");
+  var ele = document.getElementById(id).querySelector("use");
   var counter = id.replace("like-","");
   var eleLikeCount = document.getElementById("like-count-"+counter);
   var eleAuthor = document.getElementById("author-"+counter);
@@ -615,7 +615,7 @@ function like(id) {
    if (accessToken && ele.style.fill !== "#ff0000" ) {
     client.vote(username, author, permlink, 10000, function (err, res) {
       if(err === null && ele.style.fill !== "#ff0000") {
-        ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+        ele.setAttribute("href","#bi-heart-fill");
         ele.style.fill = "#ff0000";
         eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
         notify("Successfully Voted")
@@ -624,7 +624,7 @@ function like(id) {
   } else if (loginType == "keychain" && ele.style.fill !== "#ff0000" ){
       hive_keychain.requestVote( username, permlink, author, 10000, function (response) {
           if (response.success == true){
-            ele.setAttribute("d","M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z");
+            ele.setAttribute("href","#bi-heart-fill");
             ele.style.fill = "#ff0000";
             eleLikeCount.innerHTML = +eleLikeCount.innerHTML + 1;
             notify("Successfully Voted")
@@ -755,7 +755,7 @@ function filterTag(res,type) {
           eleHome.innerHTML = "";
      }
      else if ( type === "new") { 
-       eleDiscover.innerHTML = "";
+       eleDiscover.innerHTML = '<div class="text-center"><div class="spinner-grow text-primary"></div></div>';
      }
     
     while( counter < res.length ) {
@@ -850,7 +850,7 @@ function push (res,type) {
   } else {
     src = json.image.toString()
   }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="26" fill="dark" viewBox="0 0 16 16" style="margin-top: 5px"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" id="like-'+ counter +type.id+'" onclick="like(this.id)"><path class="heartPath" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg><span class="ms-2">' + res[counter].children +'</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
+  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg width="36" height="26" fill="dark" style="margin-top: 5px"><use href="#bi-three-dots"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg width="22" height="22" fill="currentColor" class="bi bi-heart" id="like-'+ counter +type.id+'" onclick="like(this.id)"><use href="#bi-heart"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg  width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3"><use href="#bi-chat-square"/></svg><span class="ms-2">' + res[counter].children +'</span><svg width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3"><use href="#bi-arrow-return-right"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
 }
 
 window.addEventListener("load",function(){
