@@ -1,16 +1,10 @@
 const cacheNAME = "tr-cache-v2";
-const cacheURLS = [
-  'fonts/satisfy-v11-latin-regular.woff2',
-  'js/b58.js',
-  'css/satisfy.css'
-];
+const cacheURL = 'ipfs-404.html'
 
 self.addEventListener("install",function(installEvent){
   installEvent.waitUntil(
     caches.open(cacheNAME).then(function(cache){
-      return cache.add(cacheURLS[1]);
-      return cache.add(cacheURLS[2]);
-      return cache.add(cacheURLS[3]);
+      return cache.add(cacheURL);
     })
   );
 });
