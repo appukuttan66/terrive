@@ -738,7 +738,7 @@ function getNotifications() {
 setInterval(function(){
   document.getElementById("notify-body").innerHTML = "";
   notifywrkr.postMessage([rpc,username])
-},180000)
+},120000)
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
