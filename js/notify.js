@@ -28,7 +28,7 @@ addEventListener("message", event => {
        }
      }
  }; 
-  var data = '{"jsonrpc":"2.0", "method":"bridge.account_notifications", "params":{"account": "'+username+'","limit":10}, "id":1}';
+  var data = '{"jsonrpc":"2.0", "method":"bridge.account_notifications", "params":{"account": "'+username+'","limit":20}, "id":1}';
 
   xhr.send(data);
 });
