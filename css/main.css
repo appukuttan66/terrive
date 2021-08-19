@@ -153,5 +153,5 @@ blockquote {
   .list-group-item { border: 1px solid var(--bs-primary)}
   .dot:hover { background: var(--bs-dark)}
   #upload-tray .alert-primary { background-color: #0d6efd66 !important; border-color: #0d6efd66 !important; }
-  blockquote { border-color: var(--tr-color) !important; color: var(--tr-color) !important;}
+  blockquote { border-left: var(--tr-color) solid 3px; color: var(--tr-color) !important;}
 }
