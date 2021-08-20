@@ -1,5 +1,6 @@
 importScripts('b58.js')
 
+const imgHoster = "https://images.ecency.com"
 addEventListener("message",function(e){
   const [r,t] = e.data;
   filter(r,t)
