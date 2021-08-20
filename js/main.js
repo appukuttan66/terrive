@@ -740,6 +740,29 @@ setInterval(function(){
   notifywrkr.postMessage([rpc,username])
 },120000)
 
+var filterwrkr = new Worker('js/filter.js')
+
+filterwrkr.addEventListener("message",function(e){
+  var [r,t] = e.data;
+  push(r,t)
+  
+  var loader = document.getElementById("loader")
+  
+  if(loader.classList.contains("visible")) {
+    loader.classList.replace("visible","invisible")
+  }
+})
+
+function filterTag(r,type){
+  if (type === "feed") {
+    eleHome.innerHTML = "";
+  }
+  else if ( type === "new") { 
+    eleDiscover.innerHTML = '';
+  }
+  filterwrkr.postMessage([r,type])
+}
+
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
   getNew();
@@ -748,34 +771,6 @@ document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
       document.getElementById("login").classList.replace("invisible","visible")
     }
 });});
-
-function filterTag(res,type) {
-    counter = 0 ;
-     if (type === "feed") {
-          eleHome.innerHTML = "";
-     }
-     else if ( type === "new") { 
-       eleDiscover.innerHTML = '';
-     }
-    
-    while( counter < res.length ) {
-      if(res[counter] === undefined || JSON.parse(res[counter].json_metadata).image === undefined){
-        
-      }
-      else if (type === "feed" && res[counter].category == "trhome" || res[counter].category == "trvideo") {
-          push(res,eleHome);
-        }
-      else if ( type === "new") { 
-          push(res,eleDiscover);
-        }
-      else { console.log(counter); }
-
-        document.getElementById("loader").classList.replace("visible","invisible")
-
-        counter = counter + 1;
-    }
- 
-}
 
 function getFollowers(u) {
   var piFollowers = document.getElementById("profile-info-followers");
@@ -845,17 +840,8 @@ function pushProfile (res) {
   }
 }
 
-function push (res,type) {
-  var json = JSON.parse(res[counter].json_metadata);
-  var x ;
-  var src ;
-  if (json.video) {
-    src = json.video[0]
-    x = 'vid'
-  } else {
-    src = json.image.toString()
-  }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg width="36" height="26" fill="dark" style="margin-top: 5px"><use href="#bi-three-dots"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg width="22" height="22" fill="currentColor" class="bi bi-heart" id="like-'+ counter +type.id+'" onclick="like(this.id)"><use href="#bi-heart"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg  width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3"><use href="#bi-chat-square"/></svg><span class="ms-2">' + res[counter].children +'</span><svg width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3"><use href="#bi-arrow-return-right"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
+function push(r,type) {
+  document.getElementId(type).innerHTML += r
 }
 
 window.addEventListener("load",function(){
