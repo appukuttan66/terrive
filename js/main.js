@@ -760,7 +760,7 @@ function filterTag(r,type){
   else if ( type === "new") { 
     eleDiscover.innerHTML = '';
   }
-  filterwrkr.postMessage([r,type,md])
+  filterwrkr.postMessage([r,type])
 }
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
