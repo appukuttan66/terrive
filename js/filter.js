@@ -1,12 +1,13 @@
 importScripts('b58.js')
 
 const imgHoster = "https://images.ecency.com"
+
 addEventListener("message",function(e){
-  const [r,t] = e.data;
-  filter(r,t)
+  const [r,t,m] = e.data;
+  filter(r,t,m)
 })
 
-function filter(res,type) {
+function filter(res,type,md) {
     counter = 0 ;
     
     while( counter < res.length ) {
@@ -14,10 +15,10 @@ function filter(res,type) {
         console.log("undefined at filter:filter.js")
       }
       else if (type === "feed" && res[counter].category == "trhome" || res[counter].category == "trvideo") {
-          pushy(res,"home");
+          pushy(res,"home",md);
         }
       else if ( type === "new" ) { 
-          pushy(res,"discover");
+          pushy(res,"discover",md);
         }
       else { console.log(counter); }
 
@@ -26,7 +27,7 @@ function filter(res,type) {
 }
 
 
-function pushy (res,type) {
+function pushy (res,type,md) {
   var json = JSON.parse(res[counter].json_metadata);
   var x ;
   var src ;
