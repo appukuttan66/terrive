@@ -1,4 +1,4 @@
-inmportScripts('b58.js')
+importScripts('b58.js')
 
 addEventListener("message",function(e){
   const [r,t] = e.data;
