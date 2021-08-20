@@ -1,6 +1,8 @@
-importScripts('b58.js')
+importScripts('b58.js',"//cdn.jsdelivr.net/npm/remarkable@2.0.1/dist/remarkable.min.js")
 
-const imgHoster = "https://images.ecency.com"
+const imgHoster = "https://images.ecency.com";
+var md = new remarkable.Remarkable({html: true,})
+md.use(remarkable.linkify)
 
 addEventListener("message",function(e){
   const [r,t,m] = e.data;
