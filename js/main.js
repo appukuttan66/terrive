@@ -841,7 +841,7 @@ function pushProfile (res) {
 }
 
 function push(r,type) {
-  document.getElementId(type).innerHTML += r
+  document.getElementById(type).innerHTML += r
 }
 
 window.addEventListener("load",function(){
