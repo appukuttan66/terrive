@@ -13,10 +13,10 @@ function filter(res,type) {
         console.log("undefined at filter:filter.js")
       }
       else if (type === "feed" && res[counter].category == "trhome" || res[counter].category == "trvideo") {
-          pushy(res,"eleHome");
+          pushy(res,"home");
         }
       else if ( type === "new" ) { 
-          pushy(res,"eleDiscover");
+          pushy(res,"discover");
         }
       else { console.log(counter); }
 
