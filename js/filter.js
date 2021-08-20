@@ -5,11 +5,11 @@ var md = new remarkable.Remarkable({html: true,})
 md.use(remarkable.linkify)
 
 addEventListener("message",function(e){
-  const [r,t,m] = e.data;
-  filter(r,t,m)
+  const [r,t] = e.data;
+  filter(r,t)
 })
 
-function filter(res,type,md) {
+function filter(res,type) {
     counter = 0 ;
     
     while( counter < res.length ) {
@@ -17,10 +17,10 @@ function filter(res,type,md) {
         console.log("undefined at filter:filter.js")
       }
       else if (type === "feed" && res[counter].category == "trhome" || res[counter].category == "trvideo") {
-          pushy(res,"home",md);
+          pushy(res,"home");
         }
       else if ( type === "new" ) { 
-          pushy(res,"discover",md);
+          pushy(res,"discover");
         }
       else { console.log(counter); }
 
@@ -29,7 +29,7 @@ function filter(res,type,md) {
 }
 
 
-function pushy (res,type,md) {
+function pushy (res,type) {
   var json = JSON.parse(res[counter].json_metadata);
   var x ;
   var src ;
