@@ -25,7 +25,7 @@ function filter(res,type) {
 }
 
 
-function push (res,type) {
+function pushy (res,type) {
   var json = JSON.parse(res[counter].json_metadata);
   var x ;
   var src ;
