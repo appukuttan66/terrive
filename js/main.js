@@ -817,7 +817,7 @@ function pushProfileInfo (res) {
   document.getElementById("profile-info-vp").style.width = res[0].voting_power / 100 + '%';
   document.getElementById("profile-info-vp").innerHTML = res[0].voting_power / 100 + '%';
   if (res[0].name == username) {
-    document.getElementById("profile-info").innerHTML += '<button class="btn btn-outline-primary p-3" data-bs-target="#profile-edit" data-bs-toggle="modal">Edit Profile</button><button class="btn btn-outline-danger p-3" onclick="logOut()">Logout</button>'
+    document.getElementById("profile-info").innerHTML += '<button class="btn btn-outline-primary m-3" data-bs-target="#profile-edit" data-bs-toggle="modal">Edit Profile</button><button class="btn btn-outline-danger m-3" onclick="logOut()">Logout</button>'
   }
 }
 
