@@ -315,6 +315,11 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
     pushPost(author,permlink,body,'',lc,children);
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
   }
+  else if (type == "re") {
+    var body = r.body;
+    pushPost(author,permlink,body,'',lc,children)
+    document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
+  }
   else {
     pushPost(author,permlink,body,images,lc,children);
   }
@@ -424,6 +429,31 @@ function postComment(){
   }
 }
 
+function addReaction (reaction) {
+  const ele = document.getElementById("post-tray"),
+        parentAuthor = ele.getAttribute("data-tr-author"),
+        parentPermlink = ele.getAttribute("data-tr-permlink"),
+        permlink = "re-" + parentAuthor + '-' + parentPermlink + "-" + Math.random().toString(36).substring(2),
+        meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"});
+  
+  if(accessToken){
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', reaction, meta, function (err, res) {
+      if ( err === null ){
+        console.log(res)
+        notify("Successfully Added Reaction")
+      }else {notify(err.error_description,"var(--bs-danger)");}
+    });
+  } else if (loginType == "keychain") {
+        hive_keychain.requestPost(username,'',reaction, parentPermlink, parentAuthor, meta, permlink, '', function (response) {
+            console.log(response);
+            if (response.success == true){
+              notify("Successfully Added Reaction")
+            }else {notify("Error adding Reaction","var(--bs-danger)")}
+          }
+        );
+  }
+}
+
 document.getElementById('sharePop').addEventListener('show.bs.modal',function(event){
   var url = event.relatedTarget.getAttribute('data-tr-url');
   document.getElementById("share-facebook").setAttribute("href","https://facebook.com/sharer.php?u=https://terrive.one"+url.replace("/","").replace("trhome","").replace("trtestvid","").replace("/@","?u=").replace("/","&p="))
@@ -448,27 +478,32 @@ function calcURL(){
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
+    ele.setAttribute("data-tr-type","re")
     var tab = new bootstrap.Modal(ele)
     tab.show()
-    getContent(u,p,"reply")
   }
   else if (params.has("p") && params.has("u") && params.has("video")) {
     var p = params.get("p")
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
+    ele.setAttribute("data-tr-type","vid")
     var tab = new bootstrap.Modal(ele)
     tab.show()
-    getContent(u,p,"video")
   }
   else if (params.has("p") && params.has("u")) {
     var p = params.get("p")
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
-    var ele = document.querySelector('#post-tray')
+    var ele = document.getElementById('post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
     var tab = new bootstrap.Modal(ele)
     tab.show()
-    getContent(u,p)
   }
   else if (params.has("u")) {
     var u = params.get('u')
@@ -483,29 +518,6 @@ function calcURL(){
   else if (username === null) {
     document.getElementById("login").classList.replace("invisible","visible")
   }
-}
-
-function getContent(u,p,type) {
-  hive.api.getContent(u,p,function(e,r){
-    if( e === null ){
-      var lc = r.active_votes.length
-      var children = r.children
-      if (type == "reply") {
-        var body = r.body;
-        pushPost(u,p,body,'',lc,children)
-        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
-      }
-      else if (type == "video") {
-        var video = JSON.parse(r.json_metadata).video[0]
-        pushPost(u,p,body,'',lc,children)
-        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" class="w-100" preload="metadata" controls></video>'
-      }
-      else {
-        var json = JSON.parse(r.json_metadata)
-        pushPost(u,p,json.description,json.image.toString(),lc,children)
-      }
-    }else{notify(e,"var(--bs-danger)")}
-  })
 }
 
 darken()
@@ -797,10 +809,35 @@ function getFollowers(u) {
 
 }
 
+function saveProfile() {
+  const ele = document.getElementById("profile-edit"),
+        op = ['account_update2', {
+          'account': username,
+          'posting_json_metadata': {
+            "profile": {
+              'name': username,
+              'about': ele.querySelector('input[placeholder="About"]').value,
+              'profile_image': ele.querySelector('input[placeholder="Profile Image"]').value,
+              'website': ele.querySelector('input[placeholder="Website"]').value,
+              'location': ele.querySelector('input[placeholder="Location"]').value
+            }
+          }
+        }
+      ];
+  if (accessToken) {
+    client.sendOperation(op, { 'callback': window.location.href }, function(e,r){
+      console.log(e,r)
+    })
+  } else if (loginType == "keychain") {
+    hive_keychain.requestBroadcast(username, op, 'Posting', function(r){
+      console.log(r)
+    })
+  }
+}
+
 function pushProfileInfo (res) {
   var json = JSON.parse(res[0].posting_json_metadata);
   document.getElementById("profile-info-username").innerHTML = res[0].name;
-  document.querySelector('#profile-edit input[placeholder="Name"]').value = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
   document.querySelector('#profile-edit textarea').value = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
