@@ -816,7 +816,7 @@ function saveProfile() {
           'posting_json_metadata': {
             "profile": {
               'name': username,
-              'about': ele.querySelector('input[placeholder="About"]').value,
+              'about': ele.querySelector('textarea[placeholder="About"]').value,
               'profile_image': ele.querySelector('input[placeholder="Profile Image"]').value,
               'website': ele.querySelector('input[placeholder="Website"]').value,
               'location': ele.querySelector('input[placeholder="Location"]').value
