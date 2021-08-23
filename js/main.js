@@ -825,7 +825,7 @@ function saveProfile() {
         }
       ];
   if (accessToken) {
-    client.sendOperation(op, { 'callback': window.location.href }, function(e,r){
+    hivesigner.sendOperation(op, { 'callback': window.location.href }, function(e,r){
       console.log(e,r)
     })
   } else if (loginType == "keychain") {
