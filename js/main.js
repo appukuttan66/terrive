@@ -813,7 +813,8 @@ function saveProfile() {
   const ele = document.getElementById("profile-edit"),
         op = ['account_update2', {
           'account': username,
-          'posting_json_metadata': {
+          'json_metadata': '',
+          'posting_json_metadata': JSON.stringify({
             "profile": {
               'name': username,
               'about': ele.querySelector('textarea[placeholder="About"]').value,
@@ -821,7 +822,7 @@ function saveProfile() {
               'website': ele.querySelector('input[placeholder="Website"]').value,
               'location': ele.querySelector('input[placeholder="Location"]').value
             }
-          }
+          })
         }
       ];
   if (accessToken) {
