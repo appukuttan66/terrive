@@ -809,22 +809,21 @@ function getFollowers(u) {
 
 }
 
+var ProfileJsonMeta = "" , JsonMeta = "";
+
 function saveProfile() {
+  ProfileJsonMeta.profile.about = document.querySelector("#profile-edit textarea").value;
+  ProfileJsonMeta.profile.location = document.querySelector('#profile-edit input[placeholder="Location"]').value;
+  ProfileJsonMeta.profile.profile_image = document.querySelector('#profile-edit input[placeholder="Profile Image"]').value
+  ProfilejsonMeta.profile.website = document.querySelector('#profile-edit input[placeholder="Website"]').value
+  
   const ele = document.getElementById("profile-edit"),
         op = [
           [
             'account_update2', {
             'account': username,
-            'json_metadata': '',
-            'posting_json_metadata': JSON.stringify({
-              "profile": {
-                'name': username,
-                'about': ele.querySelector('textarea[placeholder="About"]').value,
-                'profile_image': ele.querySelector('input[placeholder="Profile Image"]').value,
-                'website': ele.querySelector('input[placeholder="Website"]').value,
-                'location': ele.querySelector('input[placeholder="Location"]').value
-              }
-            })
+            'json_metadata': JsonMeta,
+            'posting_json_metadata': JSON.stringify({ ProfileJsonMeta })
           }
         ]
        ];
@@ -840,7 +839,9 @@ function saveProfile() {
 }
 
 function pushProfileInfo (res) {
-  var json = JSON.parse(res[0].posting_json_metadata);
+  ProfileJsonMeta = JSON.parse(res[0].posting_json_metadata);
+  JsonMeta = res[0].json_metadata;
+  var json = ProfileJsonMeta;
   document.getElementById("profile-info-username").innerHTML = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
   document.querySelector('#profile-edit textarea').value = json.profile.about;
