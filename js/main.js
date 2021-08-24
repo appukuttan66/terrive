@@ -823,7 +823,7 @@ function saveProfile() {
             'account_update2', {
             'account': username,
             'json_metadata': JsonMeta,
-            'posting_json_metadata': JSON.stringify({ ProfileJsonMeta })
+            'posting_json_metadata': JSON.stringify({ ProfileJsonMeta.profile })
           }
         ]
        ];
