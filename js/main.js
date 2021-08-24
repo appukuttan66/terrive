@@ -815,7 +815,7 @@ function saveProfile() {
   ProfileJsonMeta.profile.about = document.querySelector("#profile-edit textarea").value;
   ProfileJsonMeta.profile.location = document.querySelector('#profile-edit input[placeholder="Location"]').value;
   ProfileJsonMeta.profile.profile_image = document.querySelector('#profile-edit input[placeholder="Profile Image"]').value
-  ProfilejsonMeta.profile.website = document.querySelector('#profile-edit input[placeholder="Website"]').value
+  ProfileJsonMeta.profile.website = document.querySelector('#profile-edit input[placeholder="Website"]').value
   
   const ele = document.getElementById("profile-edit"),
         op = [
