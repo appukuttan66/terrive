@@ -811,20 +811,23 @@ function getFollowers(u) {
 
 function saveProfile() {
   const ele = document.getElementById("profile-edit"),
-        op = ['account_update2', {
-          'account': username,
-          'json_metadata': '',
-          'posting_json_metadata': JSON.stringify({
-            "profile": {
-              'name': username,
-              'about': ele.querySelector('textarea[placeholder="About"]').value,
-              'profile_image': ele.querySelector('input[placeholder="Profile Image"]').value,
-              'website': ele.querySelector('input[placeholder="Website"]').value,
-              'location': ele.querySelector('input[placeholder="Location"]').value
-            }
-          })
-        }
-      ];
+        op = [
+          [
+            'account_update2', {
+            'account': username,
+            'json_metadata': '',
+            'posting_json_metadata': JSON.stringify({
+              "profile": {
+                'name': username,
+                'about': ele.querySelector('textarea[placeholder="About"]').value,
+                'profile_image': ele.querySelector('input[placeholder="Profile Image"]').value,
+                'website': ele.querySelector('input[placeholder="Website"]').value,
+                'location': ele.querySelector('input[placeholder="Location"]').value
+              }
+            })
+          }
+        ]
+       ];
   if (accessToken) {
     hivesigner.sendOperation(op, { 'callback': window.location.href }, function(e,r){
       console.log(e,r)
