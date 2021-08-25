@@ -351,6 +351,11 @@ function pushPost(author,permlink,body,image,lc,children) {
     document.querySelector("#carouselPostControls .carousel-inner .carousel-item:first-child").classList.add("active")
   }
   
+  if (author == username) {
+    document.querySelector("#post-tray .bi-pencil").classList.replace("invisible","visible")
+  } else {
+    document.querySelector("#post-tray .bi-pencil").classList.replace("visible","invisible")
+  }
 
   document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
 
