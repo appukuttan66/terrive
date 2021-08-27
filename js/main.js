@@ -448,7 +448,7 @@ function addReaction (reaction) {
         parentPermlink = ele.getAttribute("data-tr-permlink"),
         permlink = "re-" + parentAuthor + '-' + parentPermlink + "-" + Math.random().toString(36).substring(2),
         meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"}),
-        body = 'Hey ' + parentAuthor + ', you were just given some ' + reaction + ' by ' + username + '<br> '+ sticker +' using [Terrive](https://terrive.one)';
+        body = 'Hey ' + parentAuthor + ', here is some ' + reaction + '<br> '+ sticker +'<br> Reactions added using [Terrive](https://terrive.one)';
   
   if(accessToken){
     client.comment(parentAuthor, parentPermlink, username, permlink, '', body, meta, function (err, res) {
