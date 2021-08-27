@@ -435,14 +435,23 @@ function postComment(){
 }
 
 function addReaction (reaction) {
+  let sticker;
+  
+  if (reaction == '!LUV') {
+    sticker = "![love.webp](https://images.ecency.com/p/5bEGgqZEHBMe6s3wiPgGFTi3naqHERgdwJew6rJYRaB3RR7sSAdZKnpM5EfB7haZJRqrK9eHDfaxfKmryUDHQ7jC7FQfWdCH.webp)";
+  } else if (reaction == '!PIZZA') {
+    sticker = "![pizza.webp](https://images.ecency.com/p/7DceLgR4szFwuz7CAHs19JsfqtMKwxDmgzo1nicPT5tDgv48VYtNCWLUEcb9kRvnGVoVv5qmQZFm7yFHMa6NA.webp)";
+  }
+  
   const ele = document.getElementById("post-tray"),
         parentAuthor = ele.getAttribute("data-tr-author"),
         parentPermlink = ele.getAttribute("data-tr-permlink"),
         permlink = "re-" + parentAuthor + '-' + parentPermlink + "-" + Math.random().toString(36).substring(2),
-        meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"});
+        meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"}),
+        body = 'Hey ' + parentAuthor + ', you were just given some ' + reaction + ' by ' + username + '<br> '+ sticker +' using [Terrive](https://terrive.one)';
   
   if(accessToken){
-    client.comment(parentAuthor, parentPermlink, username, permlink, '', reaction, meta, function (err, res) {
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, meta, function (err, res) {
       if ( err === null ){
         console.log(res)
         notify("Successfully Added Reaction")
