@@ -1,6 +1,11 @@
 <html>
   <head></head>
   <body>
-    <button onclick="window.reload()"></button>
+    <button onclick="window.location.reload()">Reload</button>
   </body>
+  <script>
+    window.addEventListener("online",function(){
+      window.location.reload();
+    })
+  </script>
 </html>
