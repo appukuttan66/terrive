@@ -458,7 +458,7 @@ function addReaction (reaction) {
       }else {notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain") {
-        hive_keychain.requestPost(username,'',reaction, parentPermlink, parentAuthor, meta, permlink, '', function (response) {
+        hive_keychain.requestPost(username,'', body, parentPermlink, parentAuthor, meta, permlink, '', function (response) {
             console.log(response);
             if (response.success == true){
               notify("Successfully Added Reaction")
