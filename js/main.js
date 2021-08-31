@@ -602,9 +602,9 @@ function getReplies(u,p){
         counter = counter + 1;
       }
       
-      document.querySelector("#post-body .modal-body .luv").innerHTML = reactions.LUV;
-      document.querySelector("#post-body .modal-body .pizza").innerHTML = reactions.PIZZA;
-      document.querySelector("#post-body .modal-body .beer").innerHTML = reactions.BEER;
+      document.querySelector("#post-tray .modal-body .luv").innerHTML = reactions.LUV;
+      document.querySelector("#post-tray .modal-body .pizza").innerHTML = reactions.PIZZA;
+      document.querySelector("#post-tray .modal-body .beer").innerHTML = reactions.BEER;
       
     }else{notify(e,"var(--bs-danger)");}
   })
