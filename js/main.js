@@ -594,7 +594,7 @@ function getReplies(u,p){
       
       while (counter < r.length){
         if (JSON.Parse(r[counter].json_metadata).reaction) {
-          const react = JSON.Parse(r[counter].json_metadata).reaction.replace("!","")
+          const react = JSON.parse(r[counter].json_metadata).reaction.replace("!","")
           reactions[react] = reactions[react] + 1;
         } else {
           document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
