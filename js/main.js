@@ -590,7 +590,7 @@ function getReplies(u,p){
   hive.api.getContentReplies(u,p,function(e,r) {
     if(e === null){
       let counter = 0,
-          reactions = {"LUV": 0,"PIZZA": 0,"BEER", 0};
+          reactions = {"LUV": 0,"PIZZA": 0,"BEER": 0};
       
       while (counter < r.length){
         if (JSON.Parse(r[counter].json_metadata).reaction) {
