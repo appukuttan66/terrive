@@ -235,15 +235,7 @@ function broadcastPost(u,body,jsonMetadata,type,title){
       }
     })
   } else if (loginType == "keychain") {
-    hive_keychain.requestPost(
-    u,
-    title,
-    body,
-    type,
-    '',
-    jsonMetadata,
-    title.replaceAll(" ","-").toLowerCase(),
-    '',
+    hive_keychain.requestPost(u, title, body, type, '', jsonMetadata, title.replaceAll(" ","-").toLowerCase(), '',
     function (response) {
       if(response.success == true) {
         clearUploadTray();
@@ -282,12 +274,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           permlink: permlink,
         },
       ]);
-      hive_keychain.requestCustomJson(
-          username,
-          'follow',
-          'Posting',
-          json,
-          'Reblog a Post',
+      hive_keychain.requestCustomJson( username, 'follow', 'Posting', json, 'Reblog a Post',
           function (response) {
             console.log(response);
             notify("Reblogged")
@@ -303,14 +290,16 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
     document.querySelector('#post-like use').setAttribute("href","#bi-heart")
     document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
-  var rTarg = event.relatedTarget;
-  var author = rTarg.getAttribute("data-tr-author")
-  var permlink = rTarg.getAttribute("data-tr-permlink")
-  var body = rTarg.getAttribute("data-tr-body");
-  var images = rTarg.getAttribute("data-tr-src")
-  var lc = rTarg.getAttribute('data-tr-vote')
-  var children = rTarg.getAttribute("data-tr-children")
-  var type = rTarg.getAttribute("data-tr-type")
+  
+  const rTarg = event.relatedTarget,
+        author = rTarg.getAttribute("data-tr-author"),
+        permlink = rTarg.getAttribute("data-tr-permlink"),
+        body = rTarg.getAttribute("data-tr-body"),
+        images = rTarg.getAttribute("data-tr-src"),
+        lc = rTarg.getAttribute('data-tr-vote'),
+        children = rTarg.getAttribute("data-tr-children"),
+        type = rTarg.getAttribute("data-tr-type");
+  
   if (type == "vid") {
     pushPost(author,permlink,body,'',lc,children);
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
@@ -380,11 +369,7 @@ function postLike(){
         else {notify(err.error_description);}
       })
     } else if (loginType == "keychain" && postLikeEle.style.fill !== "#ff0000" ){
-      hive_keychain.requestVote(
-        username,
-        permlink,
-        author,
-        10000,
+      hive_keychain.requestVote( username, permlink, author, 10000,
         function (response) {
           if (response.success == true){
             document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
@@ -397,13 +382,20 @@ function postLike(){
     } else { notify("Failed to vote","var(--bs-danger)") }
   }
 
+function editPost() {
+  const rTarg = document.getElementById('post-tray'),
+        pa = rTarg.getAtrribute("data-tr-author"),
+        pp = rTarg.getAtrribute("data-tr-permlink"),
+        body = document.querySelector("#edit-tray .modal-body textarea");
+}
 function postComment(){
-  var rTarg = document.getElementById('post-tray');
-  var parentAuthor = rTarg.getAttribute("data-tr-author")
-  var parentPermlink = rTarg.getAttribute("data-tr-permlink")
-  var permlink = Math.random().toString(36).substring(2);
-  var body = document.querySelector("#post-tray .modal-footer input")
-  var json = JSON.stringify({app: "terrive/0.0.0"})
+  const rTarg = document.getElementById('post-tray'),
+        parentAuthor = rTarg.getAttribute("data-tr-author"),
+        parentPermlink = rTarg.getAttribute("data-tr-permlink"),
+        permlink = Math.random().toString(36).substring(2),
+        body = document.querySelector("#post-tray .modal-footer input"),
+        json = JSON.stringify({app: "terrive/0.0.0"})
+  
   if(accessToken){
     client.comment(parentAuthor, parentPermlink, username, permlink, '', body.value, json, function (err, res) {
       if ( err === null ){
@@ -413,17 +405,8 @@ function postComment(){
       }else {notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain") {
-        hive_keychain.requestPost(
-          username,
-          '',
-          body.value,
-          parentPermlink,
-          parentAuthor,
-          json,
-          permlink,
-          '',
+        hive_keychain.requestPost( username, '', body.value, parentPermlink, parentAuthor, json, permlink, '',
           function (response) {
-            console.log("commenting ...");
             console.log(response);
             if (response.success == true){
               body.value = "";
@@ -606,6 +589,28 @@ function getReplies(u,p){
       document.querySelector("#post-tray .modal-body .pizza-count").innerHTML = reactions.PIZZA;
       document.querySelector("#post-tray .modal-body .beer-count").innerHTML = reactions.BEER;
       
+      const luv = document.querySelector("#post-tray .modal-body .luv"),
+            pizza = document.querySelector("#post-tray .modal-body .pizza"),
+            beer = document.querySelector("#post-tray .modal-body .beer");
+      
+      if (reactions.LUV !== 0) {
+        luv.classList.replace("invisible","visible")
+      } else {
+        luv.classList.replace("visible","invisible")
+      }
+      
+      if (reactions.PIZZA !== 0) {
+        pizza.classList.replace("invisible","visible")
+      } else {
+        pizza.classList.replace("visible","invisible")
+      }
+      
+      if (reactions.BEER !== 0) {
+        beer.classList.replace("invisible","visible")
+      } else {
+        beer.classList.replace("visible","invisible")
+      }
+    
     }else{notify(e,"var(--bs-danger)");}
   })
 }
