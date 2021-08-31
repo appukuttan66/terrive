@@ -593,7 +593,7 @@ function getReplies(u,p){
           reactions = {"LUV": 0,"PIZZA": 0,"BEER": 0};
       
       while (counter < r.length){
-        if (JSON.Parse(r[counter].json_metadata).reaction) {
+        if (JSON.parse(r[counter].json_metadata).reaction) {
           const react = JSON.parse(r[counter].json_metadata).reaction.replace("!","")
           reactions[react] = reactions[react] + 1;
         } else {
