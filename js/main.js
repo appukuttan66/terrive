@@ -291,8 +291,15 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
     document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
   
-  const rTarg = event.relatedTarget,
-        author = rTarg.getAttribute("data-tr-author"),
+  let rTarg;
+  
+  if (event.relatedTarget) {
+    rTarg = event.relatedTarget;
+  } else {
+    rTarg = document.getElementById("post-tray")
+  }
+  
+  const author = rTarg.getAttribute("data-tr-author"),
         permlink = rTarg.getAttribute("data-tr-permlink"),
         body = rTarg.getAttribute("data-tr-body"),
         images = rTarg.getAttribute("data-tr-src"),
