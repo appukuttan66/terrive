@@ -64,7 +64,7 @@ svg:hover {
 .btn-terrive {
   background: linear-gradient;
 }
-.reply-body img, #post-img img {
+.reply-body img, .post-img img {
   max-width: 100%;
   height: auto;
 }
