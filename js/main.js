@@ -306,10 +306,7 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   if (!event.relatedTarget) {
     hive.api.getContent(author,permlink,function(err,res){
       if (err !== null){
-        rTarg.setAttribute("data-tr-vote",res.active_votes.length)
-        rTarg.setAttribute("data-tr-children",res.children)
-        
-        filterType()
+        filterType(res,type)
       }
     })
   }
@@ -332,8 +329,12 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   }
 })
 
-function filterType (res) {
-  let rTarg = document.querySelector("post-tray")
+function filterType (res,type) {
+  let rTarg = document.getElementById("post-tray");
+  
+  rTarg.setAttribute("data-tr-vote",res.active_votes.length);
+  rTarg.setAttribute("data-tr-children",res.children);
+  
   if (type == "re") {
     rTarg.setAttribute("data-tr-body",res.body)
   } else if (type == "vid") {
