@@ -68,6 +68,12 @@ svg:hover {
   max-width: 100%;
   height: auto;
 }
+.luv-count, .pizza-count, .beer-count {
+  font-size: 12px !important;
+}
+.post-img {
+  background: #000 !important;
+}
 .post-img img {
   max-width: 100%;
   max-height: 70vh;
