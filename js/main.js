@@ -301,11 +301,31 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   
   const author = rTarg.getAttribute("data-tr-author"),
         permlink = rTarg.getAttribute("data-tr-permlink"),
-        body = rTarg.getAttribute("data-tr-body"),
+        type = rTarg.getAttribute("data-tr-type");
+  
+  if (!event.relatedTarget) {
+    hive.api.getContent(author,permlink,function(err,res){
+      if (err !== null){
+        rTarg.setAttribute("data-tr-vote",res.active_votes.length)
+        rTarg.setAttribute("data-tr-children",res.children)
+        
+        if (type == "re") {
+          rTarg.setAttribute("data-tr-body",res.body)
+        } else if (type == "vid") (
+          rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+          rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).video[0])
+        ) else {
+          rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+          rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).image.toString())
+        }
+      }
+    })
+  }
+  
+  const body = rTarg.getAttribute("data-tr-body"),
         images = rTarg.getAttribute("data-tr-src"),
         lc = rTarg.getAttribute('data-tr-vote'),
-        children = rTarg.getAttribute("data-tr-children"),
-        type = rTarg.getAttribute("data-tr-type");
+        children = rTarg.getAttribute("data-tr-children");
   
   if (type == "vid") {
     pushPost(author,permlink,body,'',lc,children);
