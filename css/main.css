@@ -1,4 +1,3 @@
-
 body {
   --tr-color: #000;
 }
@@ -65,7 +64,7 @@ svg:hover {
 .btn-terrive {
   background: linear-gradient;
 }
-.reply-body img {
+.reply-body img, #post-img img {
   max-width: 100%;
   height: auto;
 }
