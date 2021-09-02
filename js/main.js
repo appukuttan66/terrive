@@ -329,14 +329,14 @@ function pushPost(author,permlink,body,image,lc,children) {
   var imgTray = document.querySelector("#post-tray .modal-body .post-img")
   imgTray.innerHTML = "";
   if (images.length == 1) {
-    imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp&mode=fit" class="w-100 mb-3">'
+    imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp&mode=fit">'
 
   } 
   else if (images.length > 1) {
     imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
     var i = 0;
     while ( i < images.length ) {
-      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp&mode=fit" class="d-block w-100" alt="ERROR: Image Not Found !!!"></div>'
+      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp&mode=fit" class="d-block" alt="ERROR: Image Not Found !!!"></div>'
       i = i + 1;
     }
     document.querySelector("#carouselPostControls .carousel-inner .carousel-item:first-child").classList.add("active")
@@ -535,7 +535,7 @@ function getContent(u,p,type) {
       else if (type == "video") {
         var video = JSON.parse(r.json_metadata).video[0]
         pushPost(u,p,body,'',lc,children)
-        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" class="w-100" preload="metadata" controls></video>'
+        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" preload="metadata" controls></video>'
       }
       else {
         var json = JSON.parse(r.json_metadata)
