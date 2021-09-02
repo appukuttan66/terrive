@@ -305,7 +305,7 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   
   if (!event.relatedTarget) {
     hive.api.getContent(author,permlink,function(err,res){
-      if (err !== null){
+      if (err === null){
         filterType(res,type)
       }
     })
