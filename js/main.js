@@ -529,7 +529,7 @@ function getContent(u,p,type) {
       var children = r.children
       if (type == "reply") {
         var body = r.body;
-        pushPost(u,p,body,'',lc,children)
+        pushPost(u,p,'','',lc,children)
         document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
       }
       else if (type == "video") {
@@ -730,12 +730,7 @@ function followToggle(ele) {
         },
       ]);
 
-       hive_keychain.requestCustomJson(
-          username,
-          'follow',
-          'Posting',
-          json,
-          'Follow a User',
+       hive_keychain.requestCustomJson( username, 'follow', 'Posting', json, 'Follow a User',
           function (response) {
             console.log("following ...");
             console.log(response);
