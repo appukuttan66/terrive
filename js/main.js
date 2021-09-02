@@ -311,10 +311,10 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
         
         if (type == "re") {
           rTarg.setAttribute("data-tr-body",res.body)
-        } else if (type == "vid") (
+        } else if (type == "vid") {
           rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
           rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).video[0])
-        ) else {
+        } else {
           rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
           rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).image.toString())
         }
