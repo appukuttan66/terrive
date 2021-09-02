@@ -4,7 +4,7 @@
 
 ![terrive-logo](https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit)
 
-[Terrive](https://terrive.on.fleek.co) is a decetralized social media platform that supports images, albums and videos. The UI/UX was made using [Bootstrap](https://getbootstrap.com) 5. It uses the [Hive](https://hive.io) Blockchain as an immutable database while leaving the image & video hosting to be independently hosted by the user. The website is hosted on [IPFS](https://ipfs.io) by [Fleek](https://fleek.co)
+[Terrive](https://terrive.on.fleek.co) is a decetralized social media platform that supports images, albums and videos. The UI/UX was made using [Bootstrap](https://getbootstrap.com) 5. It uses the [Hive](https://hive.io) Blockchain as an immutable database while leaving the image & video hosting to be independently hosted by the user or upload them to [IPFS](https://ipfs.io) using the integrated uploader. The website is also hosted on [IPFS](https://ipfs.io) by [Fleek](https://fleek.co)
 
 ## Blog
 
