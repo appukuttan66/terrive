@@ -299,43 +299,18 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
     document.querySelector('#post-like use').setAttribute("href","#bi-heart")
     document.querySelector('#post-like').style.fill = "var(--tr-color)";
   })
-  
-  let rTarg;
-  
-  if (event.relatedTarget) {
-    rTarg = event.relatedTarget;
-  } else {
-    rTarg = document.getElementById("post-tray")
-  }
-  
-  const author = rTarg.getAttribute("data-tr-author"),
+  const rTarg = event.relatedTarget,
+        author = rTarg.getAttribute("data-tr-author"),
         permlink = rTarg.getAttribute("data-tr-permlink"),
-        type = rTarg.getAttribute("data-tr-type");
-  
-  let body = rTarg.getAttribute("data-tr-body"),
-      images = rTarg.getAttribute("data-tr-src"),
-      lc = rTarg.getAttribute('data-tr-vote'),
-      children = rTarg.getAttribute("data-tr-children");
-  
-  if (!event.relatedTarget) {
-    hive.api.getContent(author,permlink,function(err,res){
-      if (err === null){
-        filterType(res,type);
-        body = rTarg.getAttribute("data-tr-body");
-        images = rTarg.getAttribute("data-tr-src");
-        lc = rTarg.getAttribute('data-tr-vote');
+        type = rTarg.getAttribute("data-tr-type"),
+        body = rTarg.getAttribute("data-tr-body"),
+        images = rTarg.getAttribute("data-tr-src"),
+        lc = rTarg.getAttribute('data-tr-vote'),
         children = rTarg.getAttribute("data-tr-children");
-      }
-    })
-  }
   
   if (type == "vid") {
     pushPost(author,permlink,body,"",lc,children);
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
-  }
-  else if (type == "re") {
-    pushPost(author,permlink,body,"",lc,children)
-    document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
   }
   else {
     pushPost(author,permlink,body,images,lc,children);
@@ -507,6 +482,7 @@ function calcURL(){
     ele.setAttribute("data-tr-type","re")
     var tab = new bootstrap.Modal(ele)
     tab.show()
+    getContent(u,p,"reply")
   }
   else if (params.has("p") && params.has("u") && params.has("video")) {
     var p = params.get("p")
@@ -518,6 +494,7 @@ function calcURL(){
     ele.setAttribute("data-tr-type","vid")
     var tab = new bootstrap.Modal(ele)
     tab.show()
+    getContent(u,p,"video")
   }
   else if (params.has("p") && params.has("u")) {
     var p = params.get("p")
@@ -528,6 +505,7 @@ function calcURL(){
     ele.setAttribute("data-tr-permlink",p)
     var tab = new bootstrap.Modal(ele)
     tab.show()
+    getContent(u,p)
   }
   else if (params.has("u")) {
     var u = params.get('u')
@@ -542,6 +520,29 @@ function calcURL(){
   else if (username === null) {
     document.getElementById("login").classList.replace("invisible","visible")
   }
+}
+
+function getContent(u,p,type) {
+  hive.api.getContent(u,p,function(e,r){
+    if( e === null ){
+      var lc = r.active_votes.length
+      var children = r.children
+      if (type == "reply") {
+        var body = r.body;
+        pushPost(u,p,body,'',lc,children)
+        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
+      }
+      else if (type == "video") {
+        var video = JSON.parse(r.json_metadata).video[0]
+        pushPost(u,p,body,'',lc,children)
+        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" class="w-100" preload="metadata" controls></video>'
+      }
+      else {
+        var json = JSON.parse(r.json_metadata)
+        pushPost(u,p,json.description,json.image.toString(),lc,children)
+      }
+    }else{notify(e,"var(--bs-danger)")}
+  })
 }
 
 darken()
