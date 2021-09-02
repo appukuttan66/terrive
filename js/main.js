@@ -328,11 +328,11 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
         children = rTarg.getAttribute("data-tr-children");
   
   if (type == "vid") {
-    pushPost(author,permlink,body,'',lc,children);
+    pushPost(author,permlink,body,"",lc,children);
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
   }
   else if (type == "re") {
-    pushPost(author,permlink,body,'',lc,children)
+    pushPost(author,permlink,body,"",lc,children)
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
   }
   else {
