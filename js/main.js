@@ -309,15 +309,7 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
         rTarg.setAttribute("data-tr-vote",res.active_votes.length)
         rTarg.setAttribute("data-tr-children",res.children)
         
-        if (type == "re") {
-          rTarg.setAttribute("data-tr-body",res.body)
-        } else if (type == "vid") {
-          rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
-          rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).video[0])
-        } else {
-          rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
-          rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).image.toString())
-        }
+        filterType()
       }
     })
   }
@@ -340,6 +332,18 @@ document.getElementById('post-tray').addEventListener('show.bs.modal',function(e
   }
 })
 
+function filterType (res) {
+  let rTarg = document.querySelector("post-tray")
+  if (type == "re") {
+    rTarg.setAttribute("data-tr-body",res.body)
+  } else if (type == "vid") {
+    rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+    rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).video[0])
+  } else {
+    rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+    rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).image.toString())
+   }
+}
 function pushPost(author,permlink,body,image,lc,children) {
   var images = image.split(",")
   var likeCountPost = document.getElementById('like-count-post')
