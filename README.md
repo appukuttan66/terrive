@@ -19,7 +19,7 @@
 
 - Matrix 
   - [Terrive's room](https://matrix.to/#/@terrive:matrix.org)
-  - [Contact me](https://matrix.to/#/@appukuttan66:matrix.org)
+  - [Contact me](https://matrix.to/#/#appukuttan66:matrix.org)
 
 ## License
 
