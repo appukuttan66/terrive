@@ -395,7 +395,7 @@ function editPost() {
   
   hive.api.getContent(pa,pp,function(e,r){
     if (e === null) {
-    let json = JSON.parse(r.json_metadata);
+    var json = JSON.parse(r.json_metadata);
     
       json.description = body.value;
       
