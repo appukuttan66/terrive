@@ -294,11 +294,12 @@ function filterType (res,type) {
    }
 }
 
+document.getElementById('post-tray').addEventListener('hide.bs.modal', function(){
+  document.querySelector('#post-like use').setAttribute("href","#bi-heart")
+  document.querySelector('#post-like').style.fill = "var(--tr-color)";
+})
+
 document.getElementById('post-tray').addEventListener('show.bs.modal',function(event){
-  this.addEventListener('hide.bs.modal', function(){
-    document.querySelector('#post-like use').setAttribute("href","#bi-heart")
-    document.querySelector('#post-like').style.fill = "var(--tr-color)";
-  })
   const rTarg = event.relatedTarget,
         author = rTarg.getAttribute("data-tr-author"),
         permlink = rTarg.getAttribute("data-tr-permlink"),
@@ -351,6 +352,7 @@ function pushPost(author,permlink,body,image,lc,children) {
   document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
 
   getReplies(author,permlink);
+  document.querySelector('#edit-post textarea').value = body;
 }
 
 function postLike(){
@@ -389,7 +391,33 @@ function editPost() {
         pa = rTarg.getAtrribute("data-tr-author"),
         pp = rTarg.getAtrribute("data-tr-permlink"),
         body = document.querySelector("#edit-tray .modal-body textarea");
+  
+  hive.api.getContent(pa,pp,function(e,r){
+    if (e === null) {
+    r.json_metadata.description = body;
+      
+      if(accessToken) {
+        client.comment('',r.category,r.author,r.permlink,r.title,body,r.json_metadata,function(err,res){
+          if (err === null) {
+            new bootstrap.Modal(document.getElementById("edit-post")).hide();
+            notify("Successfully edited !")
+          } else {
+            notify(err)
+          }
+        })
+      }else if (loginType = "keychain"){
+        hive_keychain.requestPost( r.author, r.title, body, r.category, '', r.jon.description, r.permlink, '', function(er,rs){
+          
+        })
+      } else {
+        notify("not logged in","var(--bs-danger)")
+      }
+    } else {
+      notify(e,"var(--bs-danger)")
+    }
+  })
 }
+                     
 function postComment(){
   const rTarg = document.getElementById('post-tray'),
         parentAuthor = rTarg.getAttribute("data-tr-author"),
