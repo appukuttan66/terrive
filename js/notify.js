@@ -4,7 +4,7 @@ addEventListener("message", event => {
   var lastRead = "";
   
   bridge(username,url,"unread_notificatins",function(r) {
-    const lastRead = new Date(JSON.parse(r).result.lastread.replace(" ","T"))
+    lastRead = new Date(JSON.parse(r).result.lastread.replace(" ","T"))
   })
   
   bridge(username,url,"account_notifications",function(res){
