@@ -4,10 +4,10 @@ addEventListener("message", event => {
   var lastRead = "";
   
   bridge(username,url,'',"unread_notifications",function(r) {
-    lastRead = new Date(JSON.parse(r).result.lastread.replace(" ","T"))
+    lastRead = new Date(JSON.parse(r).result.lastread)
   })
   
-  bridge(username,url, '"limit": 20',"account_notifications",function(res){
+  bridge(username,url, ',"limit": 20',"account_notifications",function(res){
    
     var json = JSON.parse(res);
     while (counter < json.result.length) {
@@ -46,7 +46,7 @@ function bridge(username,url,params,type,callback) {
        callback(xhr.responseText)
      }
  }; 
-  var data = '{"jsonrpc":"2.0", "method":"bridge.'+type+'", "params":{"account": "'+username+'",'+params+'}, "id":1}';
+  var data = '{"jsonrpc":"2.0", "method":"bridge.'+type+'", "params":{"account": "'+username+'"'+params+'}, "id":1}';
 
   xhr.send(data);
 }
