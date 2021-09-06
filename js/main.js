@@ -390,7 +390,7 @@ function editPost() {
   const rTarg = document.getElementById('post-tray'),
         pa = rTarg.getAttribute("data-tr-author"),
         pp = rTarg.getAttribute("data-tr-permlink"),
-        body = document.querySelector("#edit-tray .modal-body textarea"),
+        body = document.querySelector("#edit-post .modal-body textarea"),
         editele = new bootstrap.Modal(document.getElementById("edit-post"));
   
   hive.api.getContent(pa,pp,function(e,r){
