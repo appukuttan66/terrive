@@ -407,12 +407,12 @@ function editPost() {
           }
         })
       }else if (loginType = "keychain"){
-        hive_keychain.requestPost( r.author, r.title, body, r.category, '', r.json_description, r.permlink, '', function(er,rs){
+        hive_keychain.requestPost( r.author, r.title, body, r.category, '', r.json_description, r.permlink, '', function(rs){
           if ( rs.success == true ) {
             editele.hide("Successfully edited !");
-            notify()
+            notify("Successfully edited !")
           } else {
-            notify(er,"var(--bs-danger)")
+            notify("Could not edit","var(--bs-danger)")
           }
         })
       } else {
