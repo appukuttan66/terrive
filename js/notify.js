@@ -14,7 +14,7 @@ addEventListener("message", event => {
     var not = json.result[counter];
     if(not !== undefined) {
        let x, alert;
-       if ( not.type == "reply" || not.type = "reply_comment" ) {
+       if ( not.type == "reply" || not.type == "reply_comment" ) {
         x = "&reply";
        } else {
         x = "";
