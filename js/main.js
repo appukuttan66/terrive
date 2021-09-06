@@ -395,10 +395,10 @@ function editPost() {
   
   hive.api.getContent(pa,pp,function(e,r){
     if (e === null) {
-    r.json_metadata.description = body;
+    r.json_metadata.description = body.value;
       
       if(accessToken) {
-        client.comment('',r.category,r.author,r.permlink,r.title,body,r.json_metadata,function(err,res){
+        client.comment('',r.category,r.author,r.permlink,r.title,body.value,r.json_metadata,function(err,res){
           if (err === null) {
             editele.hide();
             notify("Successfully edited !")
@@ -408,7 +408,7 @@ function editPost() {
           }
         })
       }else if (loginType = "keychain"){
-        hive_keychain.requestPost( r.author, r.title, body, r.category, '', r.json_description, r.permlink, '', function(rs){
+        hive_keychain.requestPost( r.author, r.title, body.value, r.category, '', r.json_description, r.permlink, '', function(rs){
           if ( rs.success == true ) {
             editele.hide("Successfully edited !");
             notify("Successfully edited !")
