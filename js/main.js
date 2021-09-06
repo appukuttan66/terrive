@@ -388,9 +388,10 @@ function postLike(){
 
 function editPost() {
   const rTarg = document.getElementById('post-tray'),
-        pa = rTarg.getAtrribute("data-tr-author"),
-        pp = rTarg.getAtrribute("data-tr-permlink"),
-        body = document.querySelector("#edit-tray .modal-body textarea");
+        pa = rTarg.getAttribute("data-tr-author"),
+        pp = rTarg.getAttribute("data-tr-permlink"),
+        body = document.querySelector("#edit-tray .modal-body textarea"),
+        editele = new bootstrap.Modal(document.getElementById("edit-post"));
   
   hive.api.getContent(pa,pp,function(e,r){
     if (e === null) {
@@ -399,15 +400,20 @@ function editPost() {
       if(accessToken) {
         client.comment('',r.category,r.author,r.permlink,r.title,body,r.json_metadata,function(err,res){
           if (err === null) {
-            new bootstrap.Modal(document.getElementById("edit-post")).hide();
+            editele.hide();
             notify("Successfully edited !")
           } else {
-            notify(err)
+            notify(err,"var(--bs-danger)")
           }
         })
       }else if (loginType = "keychain"){
         hive_keychain.requestPost( r.author, r.title, body, r.category, '', r.jon.description, r.permlink, '', function(er,rs){
-          
+          if ( rs.success == true ) {
+            editele.hide("Successfully edited !");
+            notify()
+          } else {
+            notify(er,"var(--bs-danger)")
+          }
         })
       } else {
         notify("not logged in","var(--bs-danger)")
