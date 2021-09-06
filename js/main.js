@@ -404,6 +404,7 @@ function editPost() {
             notify("Successfully edited !")
           } else {
             notify(err,"var(--bs-danger)")
+            console.log(err)
           }
         })
       }else if (loginType = "keychain"){
@@ -413,6 +414,7 @@ function editPost() {
             notify("Successfully edited !")
           } else {
             notify("Could not edit","var(--bs-danger)")
+            console.log(rs)
           }
         })
       } else {
