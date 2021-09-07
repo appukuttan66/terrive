@@ -19,9 +19,10 @@ addEventListener("message", event => {
        } else {
         x = "";
        }
-      var date = new Date(not.date)
+      var date = new Date(not.date),
+          deltaTime = lastRead - date;
       
-      if(date > lastRead) {
+      if(deltaTime = 1) {
         alert = "alert-primary";
       } else {
         alert = "alert-light";
