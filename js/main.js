@@ -471,7 +471,7 @@ function addReaction (reaction) {
   const ele = document.getElementById("post-tray"),
         parentAuthor = ele.getAttribute("data-tr-author"),
         parentPermlink = ele.getAttribute("data-tr-permlink"),
-        permlink = "re-" + parentAuthor + '-' + parentPermlink + "-" + Math.random().toString(36).substring(2),
+        permlink = "re-" + parentPermlink + "-" + Math.random().toString(36).substring(2),
         meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"}),
         body = 'Here is some ' + reaction + '<br> '+ sticker +'<br> Reactions added using [Terrive](https://terrive.one)';
   
