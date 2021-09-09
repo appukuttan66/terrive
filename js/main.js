@@ -334,7 +334,7 @@ function pushPost(author,permlink,body,image,lc,children) {
 
   } 
   else if (images.length > 1) {
-    imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
+    imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
     var i = 0;
     while ( i < images.length ) {
       document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp&mode=fit" class="d-block" alt="ERROR: Image Not Found !!!"></div>'
