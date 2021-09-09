@@ -22,7 +22,7 @@ addEventListener("message", event => {
       var date = new Date(not.date),
           deltaTime = lastRead - date;
       
-      if(deltaTime == -1) {
+      if(Math.sign(deltaTime) == -1) {
         alert = "alert-primary";
       } else {
         alert = "alert-light";
