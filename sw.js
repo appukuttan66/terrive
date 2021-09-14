@@ -13,7 +13,7 @@ self.addEventListener("install",function(installEvent){
 self.addEventListener("activate",function(e){
   e.waitUntil(
     if ("navigationPreload" in self.registration) {
-      self.registration.navigationPreload.enable();
+      self.registration.navigationPreload.enable()
     }
   )
   self.clients.claim()
