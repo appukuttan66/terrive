@@ -4,7 +4,7 @@ const CACHE_URL = "offline.html"
 self.addEventListener("install",function(installEvent){
   installEvent.waitUntil(
     caches.open(CACHE_NAME).then(function(cache){
-      return cache.add(new Request(CACHE_URL, { cache: "reload" });
+      return cache.add(new Request(CACHE_URL, { cache: "reload" }));
     })
   );
   self.skipWaiting()
