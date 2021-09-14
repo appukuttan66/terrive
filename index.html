@@ -108,14 +108,14 @@
     <div id="login" class="position-fixed invisible w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999997;">
       <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
         <h1 class="mt-auto satisfy">Login to Terrive</h1><br>
-        <p class="lead mx-3">Terrive is a Decentralized Photo-Sharing Platform powered by the Hive Blockchain.</p>
+        <p class="lead mx-3">Terrive is a Decentralized Photo and Video Sharing Platform powered by the Hive Blockchain.</p>
         <a href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.one%2Fauth.html" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" class="me-2" src="https://images.ecency.com/0x26/https://hivesigner.com/logo.svg" alt="Hivesigner">HiveSigner</a>
         <div class="w-75 position-relative my-4" style="height:1px; max-width: 32em; background: #ccc;"><p class="bg-light position-relative start-50 translate-middle" style="color: #aaa; width: 50px;">OR</p></div>
         <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://images.ecency.com/140x0/https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain" width="140" height="auto"></button>
         <footer class="mt-auto text-secondary satisfy">
           <p>
             <a href="/about" class="text-secondary">About</a>
-            <a href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
+            <a target="_blank" rel="noopener" href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
             <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
           </p>
           <p>Made with <svg width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" role="img"><use href="#bi-heart-fill"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
@@ -470,7 +470,7 @@
               <use href="#bi-search"/>
             </svg>
           </div>
-        <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeydown="getSearch(this.id)">
+        <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeyup="getSearch(this.id)" onchange="getSearch(this.id)">
       </div>
      </div>
     </div>
