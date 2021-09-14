@@ -16,6 +16,7 @@
   padding: 0;
 }
 .bg {
+  background: #000;
   background-size: cover;
   background-position: center;
   filter: blur(3px);
@@ -40,10 +41,10 @@ a {
 }
   </style>
 <script>
-document.querySelector('.bg').style.background = 'url("https://picsum.photos/'+window.innerWidth+'/'+window.innerHeight+'?random=1")';
+document.querySelector('.bg').style.background = 'url("https://source.unsplash.com/random/'+window.innerWidth+'x'+window.innerHeight+'")';
 
 window.onresize = function(){
-  document.querySelector('.bg').style.background = 'url("https://picsum.photos/'+window.innerWidth+'/'+window.innerHeight+'?random=1")';
+  document.querySelector('.bg').style.background = 'url("https://source.unsplash.com/random/'+window.innerWidth+'x'+window.innerHeight+'")';
 }
 </script>
 </body>
