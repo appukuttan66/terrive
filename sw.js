@@ -20,20 +20,23 @@ self.addEventListener("activate",function(e){
   self.clients.claim()
 })
 
+// let's do this with smaller variables
 self.addEventListener("fetch",function(e){
-  e.respondWith(function(){
-      try {
-        if(e.preloadResponse) {
-          return e.preloadResponse
+  console.log(e.request.url)
+  e.respondWith(
+  async function () {
+        try {
+          const nr = await fetch(e.request);
+          
+          return nr;
+          
+        } catch (er) {
+          console.log(er)
+          const c = await caches.open(CACHE_NAME),
+                cr = await c.match(CACHE_URL);
+
+          return cr;
         }
-        return fetch(e.request)
-      }
-      catch (err) {
-        console.log(err)
-        caches.open(CACHE_NAME).then(function(cache){
-          return cache.match(CACHE_URL)
-        })
-      }
-    }
-  );
+      }()
+  )
 });
