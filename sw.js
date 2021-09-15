@@ -1,4 +1,4 @@
-const CACHE_NAME = "tr-offline";
+const CACHE_NAME = "tr-offline-alpha2";
 const CACHE_URL = "offline.html"
 
 self.addEventListener("install",function(installEvent){
