@@ -10,7 +10,7 @@
   <meta name="description" content="Login to Terrive. Terrive is a decentralized Photo and Video Sharing Platform powered by the Hive Blockchain and Hosted on IPFS.">
   <meta name="og:description" content="Login to Terrive. Terrive is a decentralized Photo and Video Sharing Platform powered by the Hive Blockchain and hosted on IPFS">
   <meta name="og:site_name" content="Terrive Login">
-  <meta name="og:image" content="https://images.hive.blog/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
+  <meta name="og:image" content="https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit">
   <!--Favicons and Manifest-->
   <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -39,13 +39,15 @@
   </script>
   <!--Preconnects, DNS prefetch and Preload-->
   <link rel="preload" href="fonts/satisfy-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://images.hive.blog">
-  <link rel="dns-prefetch" href="https://images.hive.blog">
+  <link rel="dns-prefetch" href="https://images.ecency.com">
+  <link rel="preconnect" href="https://images.ecency.com">
+  <link rel="preconnect" href="https://api.hive.blog">
+  <link rel="dns-prefetch" href="https://api.hive.blog">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <!--CSS-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link href="css/main.css" rel="stylesheet">
+  <link href="css/main.css?v=a1" rel="stylesheet">
   <link href="css/satisfy.css" rel="stylesheet">
   </head>
   <body class="h-100 w-100 bg-light p-3 my-5">
@@ -94,7 +96,7 @@
     
     
     <p class="offline-notify bg-dark position-fixed top-0 start-0 end-0 text-light text-center p-1" style="z-index: 999999;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wifi-off m-0" viewBox="0 0 16 16">
+      <svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wifi-off m-0" viewBox="0 0 16 16">
         <path d="M10.706 3.294A12.545 12.545 0 0 0 8 3C5.259 3 2.723 3.882.663 5.379a.485.485 0 0 0-.048.736.518.518 0 0 0 .668.05A11.448 11.448 0 0 1 8 4c.63 0 1.249.05 1.852.148l.854-.854zM8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065 8.448 8.448 0 0 1 3.51-1.27L8 6zm2.596 1.404.785-.785c.63.24 1.227.545 1.785.907a.482.482 0 0 1 .063.745.525.525 0 0 1-.652.065 8.462 8.462 0 0 0-1.98-.932zM8 10l.933-.933a6.455 6.455 0 0 1 2.013.637c.285.145.326.524.1.75l-.015.015a.532.532 0 0 1-.611.09A5.478 5.478 0 0 0 8 10zm4.905-4.905.747-.747c.59.3 1.153.645 1.685 1.03a.485.485 0 0 1 .047.737.518.518 0 0 1-.668.05 11.493 11.493 0 0 0-1.811-1.07zM9.02 11.78c.238.14.236.464.04.66l-.707.706a.5.5 0 0 1-.707 0l-.707-.707c-.195-.195-.197-.518.04-.66A1.99 1.99 0 0 1 8 11.5c.374 0 .723.102 1.021.28zm4.355-9.905a.53.53 0 0 1 .75.75l-10.75 10.75a.53.53 0 0 1-.75-.75l10.75-10.75z"/>
       </svg> Looks like you ran out of juice
     </p>
@@ -106,15 +108,16 @@
     <div id="login" class="position-fixed invisible w-100 top-0 bottom-0 start-0 end-0" style="z-index: 999997;">
       <div class="bg-light d-flex w-100 h-100 justify-content-center align-items-center text-center flex-column">
         <h1 class="mt-auto satisfy">Login to Terrive</h1><br>
-        <p class="lead mx-3">Terrive is a Decentralized Photo-Sharing Platform powered by the Hive Blockchain.</p>
+        <p class="lead mx-3">Terrive is a Decentralized Photo and Video Sharing Platform powered by the Hive Blockchain.</p>
         <a href="https://hivesigner.com/oauth2/authorize?client_id=terrive&redirect_uri=https%3A%2F%2Fterrive.one%2Fauth.html" class="btn btn-lg mt-2" style="background: #ccc;"><img height="26" class="me-2" src="https://images.ecency.com/0x26/https://hivesigner.com/logo.svg" alt="Hivesigner">HiveSigner</a>
         <div class="w-75 position-relative my-4" style="height:1px; max-width: 32em; background: #ccc;"><p class="bg-light position-relative start-50 translate-middle" style="color: #aaa; width: 50px;">OR</p></div>
-        <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://images.hive.blog/140x0/https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain" width="140" height="auto"></button>
+        <button onclick="keychainLogin()" class="btn btn-lg btn-dark"><img src="https://images.ecency.com/140x0/https://raw.githubusercontent.com/stoodkev/hive-keychain/master/images/keychain_logo.png" alt="KeyChain" width="140" height="auto"></button>
         <footer class="mt-auto text-secondary satisfy">
           <p>
             <a href="/about" class="text-secondary">About</a>
-            <a href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
-            <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Support</a>
+            <a target="_blank" rel="noopener" href="https://hivel.ink/@terrive" class="text-secondary ms-3">Blog</a>
+            <a target="_blank" rel="noopener" href="https://matrix.to/#/#terrive:matrix.org" class="text-secondary ms-3">Contact</a>
+            <a target="_blank" rel="noopener" href="https://hivesigner.com/sign/transfer?to=terrive&amount=1HBD&memo=a%20tip%20refered%20from%20the%20login%20page" class="text-secondary ms-3">Donate</a>
           </p>
           <p>Made with <svg width="16" height="16" fill="var(--bs-danger)" class="bi bi-heart-fill" role="img"><use href="#bi-heart-fill"/></svg> by <a href="https://hivel.ink/@appukuttan66" class="link-secondary">appukuttan66</a></p>
         </footer>
@@ -251,7 +254,7 @@
               <input type="file" accept="image/*" id="input-image-ele" hidden>
               <div class="position-relative">
                 <label class="position-absolute end-0 m-1-5" for="input-image-ele">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--bs-primary)" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                  <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" fill="var(--bs-primary)" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
                   </svg>
                 </label>
@@ -340,7 +343,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body px-0 mx-0">
-            <div class="w-100 post-img"></div>
+            <div class="w-100 post-img bg-dark d-flex justify-content-center"></div>
             <div class="border-bottom p-3 satisfy">
               <svg onclick="postLike()" width="22" height="22" fill="currentColor" class="bi bi-heart" id="post-like">
                 <use href="#bi-heart"/>
@@ -353,6 +356,26 @@
               <svg width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3">
                 <use href="#bi-arrow-return-right"/>
               </svg>
+              
+              <div class="alert-dark rounded border px-2 float-end border-secondary text-secondary bg-transparent" data-bs-target="#add-reaction" data-bs-toggle="modal">
+                <svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-heart-eyes" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M11.315 10.014a.5.5 0 0 1 .548.736A4.498 4.498 0 0 1 7.965 13a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .548-.736h.005l.017.005.067.015.252.055c.215.046.515.108.857.169.693.124 1.522.242 2.152.242.63 0 1.46-.118 2.152-.242a26.58 26.58 0 0 0 1.109-.224l.067-.015.017-.004.005-.002zM4.756 4.566c.763-1.424 4.02-.12.952 3.434-4.496-1.596-2.35-4.298-.952-3.434zm6.488 0c1.398-.864 3.544 1.838-.952 3.434-3.067-3.554.19-4.858.952-3.434z"/>
+                </svg>
+              </div>
+              <svg width="22" height="22" fill="var(--bs-secondary)" class="bi bi-pencil mx-3 float-end invisible" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#edit-post">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+              </svg>
+              <span class="float-end border border-secondary rounded px-1 mx-1 luv invisible" title="" data-bs-toggle="tooltip">
+                <img src="https://images.ecency.com/22x22/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/2665.svg" height="16" width="16"> <span class="luv-count"></span>
+              </span>
+              <span class="float-end border border-secondary rounded px-1 mx-1 pizza invisible" title="" data-bs-toggle="tooltip">
+                <img src="https://images.ecency.com/22x22/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/1f355.svg" height="16" width="16"> <span class="pizza-count"></span>
+              </span>
+              <span class="float-end border border-secondary rounded px-1 mx-1 beer invisible" title="" data-bs-toggle="tooltip">
+                <img src="https://images.ecency.com/22x22/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/1f37a.svg" height="16" width="16"> <span class="beer-count"></span>
+              </span>
+              
             </div>
             <div class="p-3 border-bottom text-secondary text-center" id="post-body"></div>
             <p class="post-comment"></p>
@@ -361,11 +384,71 @@
             <div class="input-group mb-3 w-max-32 mx-auto">
               <input type="text" class="form-control" placeholder="Say Something nice ...">
               <button onclick="postComment()" class="btn btn-outline-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cursor" viewBox="0 0 16 16">
+                <svg xmlns="https://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cursor" viewBox="0 0 16 16">
                   <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"/>
                 </svg>
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="add-reaction" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <br>
+            <img class="float-start m-2" src="https://images.ecency.com/26x26/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/2665.svg" width="26" height="26" onclick="addReaction('!LUV')">
+            <img class="float-start m-2" src="https://images.ecency.com/26x26/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/1f355.svg" width="26" height="26" onclick="addReaction('!PIZZA')">
+            <img class="float-start m-2" src="https://images.ecency.com/26x26/https://raw.githubusercontent.com/twitter/twemoji/gh-pages/svg/1f37a.svg" width="26" height="26" onclick="addReaction('!BEER')">
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="profile-edit" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Update Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <br>
+            <textarea class="form-control" placeholder="About"></textarea>
+            <br>
+            <input type="text" class="form-control" placeholder="Profile Image">
+            <br>
+            <input type="text" class="form-control" placeholder="Website">
+            <br>
+            <input type="text" class="form-control" placeholder="Location">
+            <br>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-danger" onclick="logOut()">Log Out</button>
+            <button type="button" class="btn btn-primary" onclick="saveProfile()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="edit-post" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Post</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="editPost()">Edit</button>
           </div>
         </div>
       </div>
@@ -388,7 +471,7 @@
               <use href="#bi-search"/>
             </svg>
           </div>
-        <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeydown="getSearch(this.id)">
+        <input id="search-txt" class="form-control" type="search" placeholder="Search User" aria-label="Search" onkeyup="getSearch(this.id)" onchange="getSearch(this.id)">
       </div>
      </div>
     </div>
@@ -434,7 +517,7 @@
         </ul>
       </div>
       <div class="w-100 float-start">
-        <div class="tab-content m-0 p-0 w-100">
+        <div class="tab-content m-0 p-0 w-100 mb-5 pb-5">
           <div class="container w-100 m-0 p-0 tab-pane mx-auto pb-3 mb-3 fade show active" id="profile-grid" data-bs-toggle="tabpanel">
             <div class="row w-100 row-cols-3 m-0 p-0 mx-auto pb-3 mb-3">
             </div>
@@ -476,6 +559,9 @@
                 <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                 <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
               </svg> <span id="profile-info-rec-acc"></span></p>
+              
+              <div class="setting-wrap">
+              </div>
 
             </div>
         </div>
@@ -487,8 +573,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/hivesigner@latest/lib/hivesigner.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/remarkable@2.0.1/dist/remarkable.min.js" defer></script>
-  <script src="js/b58.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/b58.js?v=a1" defer></script>
+  <script src="js/main.js?v=a1" defer></script>
 
 </body>
 </html>

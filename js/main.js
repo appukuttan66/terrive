@@ -44,19 +44,12 @@ function notify(body,fill) {
 
 function keychainLogin(){
   var keychainUser = prompt("username")
-  hive_keychain.requestEncodeMessage(
-    keychainUser,
-    keychainUser,
-    "#login-true",
-    "Posting",
+  hive_keychain.requestEncodeMessage( keychainUser, keychainUser, "#login-true", "Posting",
     function (response) {
       console.log("endoding key ...");
       console.log(response);
       if ( response.success == true ) {
-        hive_keychain.requestVerifyKey(
-        keychainUser,
-        response.result,
-        "Posting",
+        hive_keychain.requestVerifyKey( keychainUser, response.result, "Posting",
         function (res) {
           console.log("verifying key ...");
           console.log(res);
@@ -235,15 +228,7 @@ function broadcastPost(u,body,jsonMetadata,type,title){
       }
     })
   } else if (loginType == "keychain") {
-    hive_keychain.requestPost(
-    u,
-    title,
-    body,
-    type,
-    '',
-    jsonMetadata,
-    title.replaceAll(" ","-").toLowerCase(),
-    '',
+    hive_keychain.requestPost(u, title, body, type, '', jsonMetadata, title.replaceAll(" ","-").toLowerCase(), '',
     function (response) {
       if(response.success == true) {
         clearUploadTray();
@@ -282,12 +267,7 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
           permlink: permlink,
         },
       ]);
-      hive_keychain.requestCustomJson(
-          username,
-          'follow',
-          'Posting',
-          json,
-          'Reblog a Post',
+      hive_keychain.requestCustomJson( username, 'follow', 'Posting', json, 'Reblog a Post',
           function (response) {
             console.log(response);
             notify("Reblogged")
@@ -297,29 +277,46 @@ document.getElementById('reblogPop').addEventListener('show.bs.modal', function 
   })
 });
 
+function filterType (res,type) {
+  let rTarg = document.getElementById("post-tray");
+  
+  rTarg.setAttribute("data-tr-vote",res.active_votes.length);
+  rTarg.setAttribute("data-tr-children",res.children);
+  
+  if (type == "re") {
+    rTarg.setAttribute("data-tr-body",res.body)
+  } else if (type == "vid") {
+    rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+    rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).video[0])
+  } else {
+    rTarg.setAttribute("data-tr-body",JSON.parse(res.json_metadata).description)
+    rTarg.setAttribute("data-tr-src",JSON.parse(res.json_metadata).image.toString())
+   }
+}
+
+document.getElementById('post-tray').addEventListener('hide.bs.modal', function(){
+  document.querySelector('#post-like use').setAttribute("href","#bi-heart")
+  document.querySelector('#post-like').style.fill = "var(--tr-color)";
+})
 
 document.getElementById('post-tray').addEventListener('show.bs.modal',function(event){
-  this.addEventListener('hide.bs.modal', function(){
-    document.querySelector('#post-like use').setAttribute("href","#bi-heart")
-    document.querySelector('#post-like').style.fill = "var(--tr-color)";
-  })
-  var rTarg = event.relatedTarget;
-  var author = rTarg.getAttribute("data-tr-author")
-  var permlink = rTarg.getAttribute("data-tr-permlink")
-  var body = rTarg.getAttribute("data-tr-body");
-  var images = rTarg.getAttribute("data-tr-src")
-  var lc = rTarg.getAttribute('data-tr-vote')
-  var children = rTarg.getAttribute("data-tr-children")
-  var type = rTarg.getAttribute("data-tr-type")
+  const rTarg = event.relatedTarget,
+        author = rTarg.getAttribute("data-tr-author"),
+        permlink = rTarg.getAttribute("data-tr-permlink"),
+        type = rTarg.getAttribute("data-tr-type"),
+        body = rTarg.getAttribute("data-tr-body"),
+        images = rTarg.getAttribute("data-tr-src"),
+        lc = rTarg.getAttribute('data-tr-vote'),
+        children = rTarg.getAttribute("data-tr-children");
+  
   if (type == "vid") {
-    pushPost(author,permlink,body,'',lc,children);
+    pushPost(author,permlink,body,"",lc,children);
     document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-post" src="'+images+'" class="w-100" preload="metadata" controls></video>'
   }
   else {
     pushPost(author,permlink,body,images,lc,children);
   }
 })
-
 function pushPost(author,permlink,body,image,lc,children) {
   var images = image.split(",")
   var likeCountPost = document.getElementById('like-count-post')
@@ -333,23 +330,29 @@ function pushPost(author,permlink,body,image,lc,children) {
   var imgTray = document.querySelector("#post-tray .modal-body .post-img")
   imgTray.innerHTML = "";
   if (images.length == 1) {
-    imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp&mode=fit" class="w-100 mb-3">'
+    imgTray.innerHTML += '<img src="'+imgHoster+'/p/'+b58(images[0])+'?format=webp&mode=fit">'
 
   } 
   else if (images.length > 1) {
-    imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide mb-3" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
+    imgTray.innerHTML += '<div id="carouselPostControls" class="carousel slide" data-bs-ride="carousel"><div class="carousel-inner"></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselPostControls" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselPostControls" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div>'
     var i = 0;
     while ( i < images.length ) {
-      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp&mode=fit" class="d-block w-100" alt="ERROR: Image Not Found !!!"></div>'
+      document.querySelector("#carouselPostControls .carousel-inner").innerHTML += '<div class="carousel-item"><img src="'+imgHoster+'/p/'+b58(images[i])+'?format=webp&mode=fit" class="d-block" alt="ERROR: Image Not Found !!!"></div>'
       i = i + 1;
     }
     document.querySelector("#carouselPostControls .carousel-inner .carousel-item:first-child").classList.add("active")
   }
   
+  if (author == username) {
+    document.querySelector("#post-tray .bi-pencil").classList.replace("invisible","visible")
+  } else {
+    document.querySelector("#post-tray .bi-pencil").classList.replace("visible","invisible")
+  }
 
   document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
 
   getReplies(author,permlink);
+  document.querySelector('#edit-post textarea').value = body;
 }
 
 function postLike(){
@@ -370,11 +373,7 @@ function postLike(){
         else {notify(err.error_description);}
       })
     } else if (loginType == "keychain" && postLikeEle.style.fill !== "#ff0000" ){
-      hive_keychain.requestVote(
-        username,
-        permlink,
-        author,
-        10000,
+      hive_keychain.requestVote( username, permlink, author, 10000,
         function (response) {
           if (response.success == true){
             document.querySelector('#post-like use').setAttribute("href","#bi-heart-fill");
@@ -387,13 +386,56 @@ function postLike(){
     } else { notify("Failed to vote","var(--bs-danger)") }
   }
 
+function editPost() {
+  const rTarg = document.getElementById('post-tray'),
+        pa = rTarg.getAttribute("data-tr-author"),
+        pp = rTarg.getAttribute("data-tr-permlink"),
+        body = document.querySelector("#edit-post .modal-body textarea"),
+        editele = new bootstrap.Modal(document.getElementById("edit-post"));
+  
+  hive.api.getContent(pa,pp,function(e,r){
+    if (e === null) {
+    var json = JSON.parse(r.json_metadata);
+    
+      json.description = body.value;
+      
+      if(accessToken) {
+        client.comment('',r.category,r.author,r.permlink,r.title,body.value, JSON.stringify(json),function(err,res){
+          if (err === null) {
+            editele.hide();
+            notify("Successfully edited !")
+          } else {
+            notify(err,"var(--bs-danger)")
+            console.log(err)
+          }
+        })
+      }else if (loginType = "keychain"){
+        hive_keychain.requestPost( r.author, r.title, body.value, r.category, '', JSON.stringify(json), r.permlink, '', function(rs){
+          if ( rs.success == true ) {
+            editele.hide("Successfully edited !");
+            notify("Successfully edited !")
+          } else {
+            notify("Could not edit","var(--bs-danger)")
+            console.log(rs)
+          }
+        })
+      } else {
+        notify("not logged in","var(--bs-danger)")
+      }
+    } else {
+      notify(e,"var(--bs-danger)")
+    }
+  })
+}
+                     
 function postComment(){
-  var rTarg = document.getElementById('post-tray');
-  var parentAuthor = rTarg.getAttribute("data-tr-author")
-  var parentPermlink = rTarg.getAttribute("data-tr-permlink")
-  var permlink = Math.random().toString(36).substring(2);
-  var body = document.querySelector("#post-tray .modal-footer input")
-  var json = JSON.stringify({app: "terrive/0.0.0"})
+  const rTarg = document.getElementById('post-tray'),
+        parentAuthor = rTarg.getAttribute("data-tr-author"),
+        parentPermlink = rTarg.getAttribute("data-tr-permlink"),
+        permlink = Math.random().toString(36).substring(2),
+        body = document.querySelector("#post-tray .modal-footer input"),
+        json = JSON.stringify({app: "terrive/0.0.0"})
+  
   if(accessToken){
     client.comment(parentAuthor, parentPermlink, username, permlink, '', body.value, json, function (err, res) {
       if ( err === null ){
@@ -403,22 +445,49 @@ function postComment(){
       }else {notify(err.error_description,"var(--bs-danger)");}
     });
   } else if (loginType == "keychain") {
-        hive_keychain.requestPost(
-          username,
-          '',
-          body.value,
-          parentPermlink,
-          parentAuthor,
-          json,
-          permlink,
-          '',
+        hive_keychain.requestPost( username, '', body.value, parentPermlink, parentAuthor, json, permlink, '',
           function (response) {
-            console.log("commenting ...");
             console.log(response);
             if (response.success == true){
               body.value = "";
               notify("Successfully Commented")
             }else {notify("Error while commenting","var(--bs-danger)")}
+          }
+        );
+  }
+}
+
+function addReaction (reaction) {
+  let sticker;
+  
+  if (reaction == '!LUV') {
+    sticker = "![love.webp](https://images.ecency.com/p/5bEGgqZEHBMe6s3wiPgGFTi3naqHERgdwJew6rJYRaB3RR7sSAdZKnpM5EfB7haZJRqrK9eHDfaxfKmryUDHQ7jC7FQfWdCH.webp)";
+  } else if (reaction == '!PIZZA') {
+    sticker = "![pizza.webp](https://images.ecency.com/p/7DceLgR4szFwuz7CAHs19JsfqtMKwxDmgzo1nicPT5tDgv48VYtNCWLUEcb9kRvnGVoVv5qmQZFm7yFHMa6NA.webp)";
+  } else {
+    sticker = "";
+  }
+  
+  const ele = document.getElementById("post-tray"),
+        parentAuthor = ele.getAttribute("data-tr-author"),
+        parentPermlink = ele.getAttribute("data-tr-permlink"),
+        permlink = "re-" + parentPermlink + "-" + Math.random().toString(36).substring(2),
+        meta = JSON.stringify({ reaction: reaction,app: "terrive/0.0.0"}),
+        body = 'Here is some ' + reaction + '<br> '+ sticker +'<br> Reactions added using [Terrive](https://terrive.one)';
+  
+  if(accessToken){
+    client.comment(parentAuthor, parentPermlink, username, permlink, '', body, meta, function (err, res) {
+      if ( err === null ){
+        console.log(res)
+        notify("Successfully Added Reaction")
+      }else {notify(err.error_description,"var(--bs-danger)");}
+    });
+  } else if (loginType == "keychain") {
+        hive_keychain.requestPost(username,'', body, parentPermlink, parentAuthor, meta, permlink, '', function (response) {
+            console.log(response);
+            if (response.success == true){
+              notify("Successfully Added Reaction")
+            }else {notify("Error adding Reaction","var(--bs-danger)")}
           }
         );
   }
@@ -448,6 +517,9 @@ function calcURL(){
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
+    ele.setAttribute("data-tr-type","re")
     var tab = new bootstrap.Modal(ele)
     tab.show()
     getContent(u,p,"reply")
@@ -457,6 +529,9 @@ function calcURL(){
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
     var ele = document.querySelector('#post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
+    ele.setAttribute("data-tr-type","vid")
     var tab = new bootstrap.Modal(ele)
     tab.show()
     getContent(u,p,"video")
@@ -465,7 +540,9 @@ function calcURL(){
     var p = params.get("p")
     var u = params.get("u")
     document.title = p + " by " + u + " on Terrive"
-    var ele = document.querySelector('#post-tray')
+    var ele = document.getElementById('post-tray')
+    ele.setAttribute("data-tr-author",u)
+    ele.setAttribute("data-tr-permlink",p)
     var tab = new bootstrap.Modal(ele)
     tab.show()
     getContent(u,p)
@@ -492,13 +569,13 @@ function getContent(u,p,type) {
       var children = r.children
       if (type == "reply") {
         var body = r.body;
-        pushPost(u,p,body,'',lc,children)
+        pushPost(u,p,'','',lc,children)
         document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<div class="w-100 text-center">'+md.render(body)+'</div>'
       }
       else if (type == "video") {
         var video = JSON.parse(r.json_metadata).video[0]
         pushPost(u,p,body,'',lc,children)
-        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" class="w-100" preload="metadata" controls></video>'
+        document.querySelector("#post-tray .modal-body .post-img").innerHTML = '<video id="upload-video-preview" src="'+video+'" preload="metadata" controls></video>'
       }
       else {
         var json = JSON.parse(r.json_metadata)
@@ -563,11 +640,45 @@ function getReplies(u,p){
   document.querySelector("#post-tray .modal-body p").innerHTML = "";
   hive.api.getContentReplies(u,p,function(e,r) {
     if(e === null){
-      var counter = 0;
+      let counter = 0,
+          reactions = {"LUV": 0,"PIZZA": 0,"BEER": 0};
+      
       while (counter < r.length){
-        document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
+        if (JSON.parse(r[counter].json_metadata).reaction) {
+          const react = JSON.parse(r[counter].json_metadata).reaction.replace("!","")
+          reactions[react] = reactions[react] + 1;
+        } else {
+          document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
+        }
         counter = counter + 1;
       }
+      
+      document.querySelector("#post-tray .modal-body .luv-count").innerHTML = reactions.LUV;
+      document.querySelector("#post-tray .modal-body .pizza-count").innerHTML = reactions.PIZZA;
+      document.querySelector("#post-tray .modal-body .beer-count").innerHTML = reactions.BEER;
+      
+      const luv = document.querySelector("#post-tray .modal-body .luv"),
+            pizza = document.querySelector("#post-tray .modal-body .pizza"),
+            beer = document.querySelector("#post-tray .modal-body .beer");
+      
+      if (reactions.LUV !== 0) {
+        luv.classList.replace("invisible","visible")
+      } else {
+        luv.classList.replace("visible","invisible")
+      }
+      
+      if (reactions.PIZZA !== 0) {
+        pizza.classList.replace("invisible","visible")
+      } else {
+        pizza.classList.replace("visible","invisible")
+      }
+      
+      if (reactions.BEER !== 0) {
+        beer.classList.replace("invisible","visible")
+      } else {
+        beer.classList.replace("visible","invisible")
+      }
+    
     }else{notify(e,"var(--bs-danger)");}
   })
 }
@@ -659,12 +770,7 @@ function followToggle(ele) {
         },
       ]);
 
-       hive_keychain.requestCustomJson(
-          username,
-          'follow',
-          'Posting',
-          json,
-          'Follow a User',
+       hive_keychain.requestCustomJson( username, 'follow', 'Posting', json, 'Follow a User',
           function (response) {
             console.log("following ...");
             console.log(response);
@@ -738,7 +844,30 @@ function getNotifications() {
 setInterval(function(){
   document.getElementById("notify-body").innerHTML = "";
   notifywrkr.postMessage([rpc,username])
-},180000)
+},120000)
+
+var filterwrkr = new Worker('js/filter.js')
+
+filterwrkr.addEventListener("message",function(e){
+  var [r,t] = e.data;
+  push(r,t)
+  
+  var loader = document.getElementById("loader")
+  
+  if(loader.classList.contains("visible")) {
+    loader.classList.replace("visible","invisible")
+  }
+})
+
+function filterTag(r,type){
+  if (type === "feed") {
+    eleHome.innerHTML = "";
+  }
+  else if ( type === "new") { 
+    eleDiscover.innerHTML = '';
+  }
+  filterwrkr.postMessage([r,type])
+}
 
 document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
   ele.addEventListener('show.bs.tab', function (event) {
@@ -748,34 +877,6 @@ document.querySelectorAll('a[href="#discover"]').forEach(function(ele){
       document.getElementById("login").classList.replace("invisible","visible")
     }
 });});
-
-function filterTag(res,type) {
-    counter = 0 ;
-     if (type === "feed") {
-          eleHome.innerHTML = "";
-     }
-     else if ( type === "new") { 
-       eleDiscover.innerHTML = '';
-     }
-    
-    while( counter < res.length ) {
-      if(res[counter] === undefined || JSON.parse(res[counter].json_metadata).image === undefined){
-        
-      }
-      else if (type === "feed" && res[counter].category == "trhome" || res[counter].category == "trvideo") {
-          push(res,eleHome);
-        }
-      else if ( type === "new") { 
-          push(res,eleDiscover);
-        }
-      else { console.log(counter); }
-
-        document.getElementById("loader").classList.replace("visible","invisible")
-
-        counter = counter + 1;
-    }
- 
-}
 
 function getFollowers(u) {
   var piFollowers = document.getElementById("profile-info-followers");
@@ -802,13 +903,53 @@ function getFollowers(u) {
 
 }
 
+var ProfileJsonMeta = "" , JsonMeta = "";
+
+function saveProfile() {
+  ProfileJsonMeta.profile.about = document.querySelector("#profile-edit textarea").value;
+  ProfileJsonMeta.profile.location = document.querySelector('#profile-edit input[placeholder="Location"]').value;
+  ProfileJsonMeta.profile.profile_image = document.querySelector('#profile-edit input[placeholder="Profile Image"]').value
+  ProfileJsonMeta.profile.website = document.querySelector('#profile-edit input[placeholder="Website"]').value
+  
+  const ele = document.getElementById("profile-edit"),
+        op = [
+          [
+            'account_update2', {
+            'account': username,
+            'json_metadata': JsonMeta,
+            'posting_json_metadata': JSON.stringify(ProfileJsonMeta)
+          }
+        ]
+       ];
+  if (accessToken) {
+    hivesigner.sendOperation(op, { 'callback': window.location.href }, function(e,r){
+      console.log(e,r)
+    })
+  } else if (loginType == "keychain") {
+    hive_keychain.requestBroadcast(username, op, 'Posting', function(r){
+      console.log(r)
+    })
+  }
+}
+
 function pushProfileInfo (res) {
-  var json = JSON.parse(res[0].posting_json_metadata);
+  if (res[0].posting_json_metadata !== "") {
+    ProfileJsonMeta = JSON.parse(res[0].posting_json_metadata);
+  } else { ProfileJsonMetadata = "" }
+  if (res[0].json_metadata !== "") { 
+    JsonMeta = res[0].json_metadata;
+  } else { JsonMetadata = "" }
+  
+  var json = ProfileJsonMeta;
   document.getElementById("profile-info-username").innerHTML = res[0].name;
   document.getElementById("profile-info-about").innerHTML = json.profile.about;
+  document.querySelector('#profile-edit textarea').value = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
+  document.querySelector('#profile-edit input[placeholder="Location"]').value = json.profile.location;
   document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/u/' + res[0].name + '/avatar/medium' +'")';
+  document.querySelector('#profile-edit input[placeholder="Profile Image"]').value = json.profile.profile_image;
   document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
+  document.querySelector('#profile-edit input[placeholder="Website"]').value = json.profile.website;
   document.getElementById("profile-info-created").innerHTML = res[0].created.replace("T"," | ");
   document.getElementById("profile-info-pst-count").innerHTML = res[0].post_count;
   document.getElementById("profile-info-last-up").innerHTML = res[0].last_account_update.replace("T"," | ");
@@ -816,6 +957,9 @@ function pushProfileInfo (res) {
   document.getElementById("profile-info-rec-acc").innerHTML = res[0].recovery_account;
   document.getElementById("profile-info-vp").style.width = res[0].voting_power / 100 + '%';
   document.getElementById("profile-info-vp").innerHTML = res[0].voting_power / 100 + '%';
+  if (res[0].name == username) {
+    document.querySelector(".setting-wrap").innerHTML = '<button class="btn btn-outline-primary m-3" data-bs-target="#profile-edit" data-bs-toggle="modal">Edit Profile</button><button class="btn btn-outline-danger m-3" onclick="logOut()">Logout</button>'
+  }
 }
 
 function pushProfile (res) {
@@ -840,17 +984,8 @@ function pushProfile (res) {
   }
 }
 
-function push (res,type) {
-  var json = JSON.parse(res[counter].json_metadata);
-  var x ;
-  var src ;
-  if (json.video) {
-    src = json.video[0]
-    x = 'vid'
-  } else {
-    src = json.image.toString()
-  }
-  type.innerHTML += '<div class="mx-auto card mb-3 bg-white shadow w-max-42"><div class="card-body"><img class="rounded-circle float-start" src="'+imgHoster+'/u/' + res[counter].author + '/avatar/small" alt="user image" height="36" width="36"><a href="?u='+res[counter].author+'" class="tr-username-link card-title fs-6 fw-bold float-start link-dark text-decoration-none" style="margin-left: 3vmin; margin-top: 5px;" id="author-'+counter+type.id+'" data-tr-permlink="'+res[counter].permlink+'">' + res[counter].author + '</a><div style="height: 36px; width: 36px;" class="dot rounded-circle float-end dropdown"><a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><svg width="36" height="26" fill="dark" style="margin-top: 5px"><use href="#bi-three-dots"/></svg></a><ul class="dropdown-menu-end dropdown-menu"><li><a class="dropdown-item" target="_blank" href="https://buymeberri.es/@'+res[counter].author+'">Tip Author</a></li><li><a class="dropdown-item" href="#reblogPop" data-bs-toggle="modal" data-tr-permlink="'+res[counter].permlink+'" data-tr-author="'+res[counter].author+'">Reblog</a></li><li><a class="dropdown-item" href="#sharePop" data-bs-toggle="modal" data-tr-url="'+res[counter].url+'">Share</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text+-danger disabled" href="#mutePop" data-bs-toggle="modal">Mute Post</a></li></ul></div></div><img src="'+imgHoster+'/p/' + b58(json.image[0]) + '/?format=webp&mode=fit&width=800" data-tr-src="'+src+'" data-tr-type="'+x+'" alt="Image not found" data-tr-author="'+res[counter].author+'" data-tr-permlink="'+res[counter].permlink+'" data-tr-vote="'+res[counter].active_votes.length+'" data-tr-children="'+res[counter].children+'" data-tr-body="'+json.description+'" data-bs-toggle="modal" data-bs-target="#post-tray"><div class="card-body border-bottom"><svg width="22" height="22" fill="currentColor" class="bi bi-heart" id="like-'+ counter +type.id+'" onclick="like(this.id)"><use href="#bi-heart"/></svg><span id="like-count-'+counter+type.id+'" class="ms-2">'+ res[counter].active_votes.length+'</span><svg  width="22" height="22" fill="currentColor" class="bi bi-chat-square ms-3"><use href="#bi-chat-square"/></svg><span class="ms-2">' + res[counter].children +'</span><svg width="22" height="22" fill="currentColor" class="bi bi-arrow-return-right ms-3"><use href="#bi-arrow-return-right"/></svg></div><div class="card-body text-center"><p class="card-text lead">' + md.render(json.description) + '</p><span class="link-primary satisfy tr-tag">#' + json.tags.toString().replaceAll(",",' </span><span class="link-primary tr-tag">#') + '</span></span></p><p class="card-text text-center"><small class="text-muted satisfy">Last updated ' + timeDiff(res[counter].last_update) + '</small></p></div></div>' ;
+function push(r,type) {
+  document.getElementById(type).innerHTML += r
 }
 
 window.addEventListener("load",function(){

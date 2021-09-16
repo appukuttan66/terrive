@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>:( You are offline</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Helvetica', sans-serif;
+      }
+      body {
+        background: linear-gradient(135deg,#77b7f8,#cc98ff);
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        color: #fff;
+        animation-name: gradient;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+      }
+      p {
+        font-weight: 300;
+        font-size: 1.25rem;
+        padding-bottom: 3rem;
+        padding-top: 1rem;
+      }
+      button {
+        background: transparent;
+        border: #fff solid 2px;
+        font-size: 1.25rem;
+        color: #fff;
+        padding: 0.75rem 2rem;
+        border-radius: 50rem;
+      }
+      button:hover {
+        opacity: 0.6;
+     }
+      button:active {
+        opacity: 0.4;
+      }
+      @keyframes gradient {
+        0% {
+          background:  #77b7f8;
+        }
+        50% {
+          background: #cc98ff;
+        }
+        100% {
+          background:  #77b7f8;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>You are offline :(</h1>
+    <p>Aww Snap! Looks you ran out of juice. Better wait until your online ! I promise to wake you up then !</p>
+    <button onclick="location.reload()">Reload</button>
+  </body>
+  <script>
+    window.addEventListener("online",function(){
+      location.reload();
+    })
+  </script>
+</html>
