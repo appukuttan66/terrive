@@ -1,18 +1,42 @@
-const cacheNAME = "tr-cache-v2";
-const cacheURL = 'ipfs-404.html'
+const CACHE_NAME = "tr-offline-alpha2";
+const CACHE_URL = "offline.html"
 
 self.addEventListener("install",function(installEvent){
   installEvent.waitUntil(
-    caches.open(cacheNAME).then(function(cache){
-      return cache.add(cacheURL);
+    caches.open(CACHE_NAME).then(function(cache){
+      return cache.add(new Request(CACHE_URL, { cache: "reload" }));
     })
   );
+  self.skipWaiting()
 });
 
+self.addEventListener("activate",function(e){
+  e.waitUntil(function(){
+      if ("navigationPreload" in self.registration) {
+        self.registration.navigationPreload.enable()
+      }
+    }
+  )
+  self.clients.claim()
+})
+
+// let's do this with smaller variables
 self.addEventListener("fetch",function(e){
+  console.log(e.request.url)
   e.respondWith(
-    caches.match(e.request).then(function(r) {
-      return r || fetch(e.request);
-    })
-  );
+  async function () {
+        try {
+          const nr = await fetch(e.request);
+          
+          return nr;
+          
+        } catch (er) {
+          console.log(er)
+          const c = await caches.open(CACHE_NAME),
+                cr = await c.match(CACHE_URL);
+
+          return cr;
+        }
+      }()
+  )
 });
