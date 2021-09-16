@@ -20,7 +20,9 @@
 - Matrix 
   - [Terrive's room](https://matrix.to/#/#terrive:matrix.org)
   - [Contact me](https://matrix.to/#/#appukuttan66:matrix.org)
+- Hive
+  - [My Personal Blog](https://hivel.ink/@appukuttan66)
 
 ## License
 
-[MIT](https://terrive.on.fleek.co/LICENSE)
+[MIT](https://github.com/appukuttan66/terrive/blob/dev/LICENSE)
