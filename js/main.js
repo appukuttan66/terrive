@@ -349,7 +349,7 @@ function pushPost(author,permlink,body,image,lc,children) {
     document.querySelector("#post-tray .bi-pencil").classList.replace("visible","invisible")
   }
 
-  document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/u/"+author+"/avatar/small");
+  document.querySelector("#post-tray .modal-header img").setAttribute("src",imgHoster+"/webp/u/"+author+"/avatar/small");
 
   getReplies(author,permlink);
   document.querySelector('#edit-post textarea').value = body;
@@ -630,7 +630,7 @@ function getSearch(id) {
   hive.api.callAsync('condenser_api.lookup_accounts',[val,10]).then(function(res){
     var counter = 0;
     while(counter < res.length){
-     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="/?u='+res[counter]+'"><img class="rounded-circle float-start" src="'+imgHoster+'/u/'+res[counter]+'/avatar/small" height="48" width="48"><p class="fs-5 fw-bold float-start mt-2 ms-3">'+res[counter]+'</p></a>';
+     document.getElementById("search-tray").innerHTML += '<a class="list-group-item list-group-item-action mx-auto" href="/?u='+res[counter]+'"><img class="rounded-circle float-start" src="'+imgHoster+'/webp/u/'+res[counter]+'/avatar/small" height="48" width="48"><p class="fs-5 fw-bold float-start mt-2 ms-3">'+res[counter]+'</p></a>';
      counter = counter + 1;
     }
   })
@@ -648,7 +648,7 @@ function getReplies(u,p){
           const react = JSON.parse(r[counter].json_metadata).reaction.replace("!","")
           reactions[react] = reactions[react] + 1;
         } else {
-          document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
+          document.querySelector("#post-tray .modal-body .post-comment").innerHTML += '<br><div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 36em;"><img src="'+imgHoster+'/webp/u/'+r[counter].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[counter].author+'">'+r[counter].author+'</a><br><br><span class="reply-body">'+md.render(r[counter].body)+ '</span><a href="?u='+r[counter].author+'&p='+r[counter].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><a data-tr-author="'+r[counter].author+'" data-tr-permlink="'+r[counter].permlink+'" onclick="getChildReplies(this)"><svg width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></a></div><br><div id="child-replies-'+r[counter].permlink+'"></div>';
         }
         counter = counter + 1;
       }
@@ -690,7 +690,7 @@ function getChildReplies(ev) {
     if (e === null){
       var c = 0;
       while (c < r.length) {
-        el.innerHTML += '<div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 32em;"><img src="'+imgHoster+'/u/'+r[c].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[c].author+'">'+r[c].author+'</a><br><span class="reply-body">'+md.render(r[c].body)+ '</span><a href="?u='+r[c].author+'&p='+r[c].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><svg data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="getChildReplies(this)" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></div><div id="child-replies-'+r[c].permlink+'"></div><br>';
+        el.innerHTML += '<div class="mx-3 shadow alert-light rounded p-3 mx-auto position-relative" style="max-width: 32em;"><img src="'+imgHoster+'/webp/u/'+r[c].author+'/avatar/small" class="rounded-circle me-2" height="24" width="24"><a class="fw-bold link-dark text-decoration-none" href="?u='+r[c].author+'">'+r[c].author+'</a><br><span class="reply-body">'+md.render(r[c].body)+ '</span><a href="?u='+r[c].author+'&p='+r[c].permlink+'&reply" class="link-dark satisfy">reply</a><svg width="16" height="16" fill="#d3d3d3" class="bi bi-star-fill position-absolute mt-3 me-3 top-0 end-0" data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="likeReplies(this)"><use href="#bi-star-fill"/></svg><svg data-tr-author="'+r[c].author+'" data-tr-permlink="'+r[c].permlink+'" onclick="getChildReplies(this)" width="16" height="16" fill="var(--tr-color)" class="bi bi-chevron-down position-absolute end-0 bottom-0 me-3 mb-3"><use href="#bi-chevron-down"/></svg></div><div id="child-replies-'+r[c].permlink+'"></div><br>';
         c = c + 1;
       }
       if(r.length = 0){ notify("No Replies","var(--bs-danger)") }
@@ -946,7 +946,7 @@ function pushProfileInfo (res) {
   document.querySelector('#profile-edit textarea').value = json.profile.about;
   document.getElementById("profile-info-loc").innerHTML = json.profile.location;
   document.querySelector('#profile-edit input[placeholder="Location"]').value = json.profile.location;
-  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/u/' + res[0].name + '/avatar/medium' +'")';
+  document.getElementById("profile-info-profile-pic").style.backgroundImage = 'url("' + imgHoster + '/webp/u/' + res[0].name + '/avatar/medium' +'")';
   document.querySelector('#profile-edit input[placeholder="Profile Image"]').value = json.profile.profile_image;
   document.getElementById("profile-info-web").innerHTML = '<a class="text-secondary" target="_blank" rel="noopener" href="'+json.profile.website+'">'+json.profile.website+'</a>';
   document.querySelector('#profile-edit input[placeholder="Website"]').value = json.profile.website;
