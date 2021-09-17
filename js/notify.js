@@ -28,7 +28,7 @@ addEventListener("message", event => {
         alert = "alert-light";
       }
         
-        var notifymsg = '<a class="nav-link p-0" href="/'+not.url.replace("@","?u=").replace("/","&p=")+x+'"><div class="alert rounded-0 border-0 '+alert+' my-0 d-flex align-item-center d-flex"><img src="https://images.ecency.com/u/'+not.msg.split(" ")[0].replace("@","")+'/avatar/small" width="36" height="36" class="rounded-circle flex-shrink-0 me-2" viewBox="0 0 16 16"><div>'+not.msg+'</div></div></a>';
+        var notifymsg = '<a class="nav-link p-0" href="/'+not.url.replace("@","?u=").replace("/","&p=")+x+'"><div class="alert rounded-0 border-0 '+alert+' my-0 d-flex align-item-center d-flex"><img src="https://images.ecency.com/webp/u/'+not.msg.split(" ")[0].replace("@","")+'/avatar/small" width="36" height="36" class="rounded-circle flex-shrink-0 me-2" viewBox="0 0 16 16"><div>'+not.msg+'</div></div></a>';
         postMessage(notifymsg)
        }   
       counter = counter + 1;
