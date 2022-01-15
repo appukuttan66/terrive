@@ -1,5 +1,11 @@
 # Terrive
 
+
+<br><br>
+**TERRIVE HAS REACHED IT'S END OF LIFE AND IS NO LONGER MAINTAINED, [READ MORE](https://ecency.com/terrive/@appukuttan66/eol-terrive)**
+**if you are looking for the new ui go to [appukuttan66/terrive-edge](/appukuttan66/terrive-edge)**
+
+<br><br>
 **Decentralized Photo and Video Sharing platform Powered by Hive**
 
 ![terrive-logo](https://images.ecency.com/p/ADdPNihJzmPc6cMNdFWhXtGFVjABfghsMP7ZwGbDKuSnQFUcRt5Nhy41yDe7rMJKEWdKhBcXaL5fK5JwBHtEpSTY2.webp?format=webp&mode=fit)
